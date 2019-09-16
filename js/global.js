@@ -94,6 +94,7 @@ function getAnswersKeyHTMLTable(answers_key) {
             <thead>\
                 <tr>\
                 <th>Question Number</th>\
+                <th>Question Text</th>\
                 <th>Your Answer</th>\
                 <th>Correct or Incorrect</th>\
                 </tr>\
@@ -103,6 +104,7 @@ function getAnswersKeyHTMLTable(answers_key) {
     for (var index in answers_key) {
         html += '<tr>' +
             '<td>' + answers_key[index].question + '</td>' +
+            '<td>' + answers_key[index].text + '</td>' +
             '<td>' + answers_key[index].answer + '</td>' +
             '<td>' + answers_key[index].correct + '</td>' +
             '</tr>';

@@ -308,7 +308,7 @@ function getFinalMessage() {
 
     // TODO: add input for email
     html += '<br><br><div class="form-group">';
-    html += '<label for="email">If you want to recive these retults, please insert your Email</label>';
+    html += '<label for="email">If you want to recive these results, please insert your Email</label>';
     html += '<input type="text" class="form-control" id="email"><br>';
     html += '<a id="send_email" onclick="sendEmailClicked(event)" class="btn btn-primary">Send Results to Email</a>';
     html += '</div>';
@@ -928,9 +928,11 @@ function answerSelected(event) {
     var strEvent = unixtime + "_" + str_date + "_" + event.target.value;
 
     var correct;
+    var questionText;
 
     if (event.target.value.startsWith("E")) {
         correct = examQuestions.exam.questions[examQuestions.exam.pos - 1].correct;
+        questionText = examQuestions.exam.questions[examQuestions.exam.pos - 1].text
         strEvent += "_Response for exam question # " + (examQuestions.exam.pos);
     } else {
         correct = "";
@@ -949,6 +951,7 @@ function answerSelected(event) {
         answers_key[parseInt(data[3])] = {
             question: data[3],
             answer: data[5],
+            text: questionText,
             correct: correctString
         };
     }
