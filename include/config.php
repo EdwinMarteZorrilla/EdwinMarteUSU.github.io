@@ -18,8 +18,19 @@ DEFINE('LOGPWD', 'Letmein1');
 // email data
 DEFINE('LAB_EMAIL', 'feel.lab@aggies.usu.edu');
 DEFINE('LAB_EMAIL_NAME', 'FEEL Lab');
-DEFINE('LAB_EMAIL_PASSWORD', 'parkinglightsilver');
+DEFINE('LAB_EMAIL_PASSWORDtls', 'parkinglightsilver');
 DEFINE('LAB_SMTP_SERVER', 'smtp.office365.com');
+
+
+// GMail email data
+//DEFINE('LAB_EMAIL', 'drvlabgroup@gmail.com');
+//DEFINE('LAB_EMAIL_NAME', 'FEEL Lab');
+//DEFINE('LAB_EMAIL_PASSWORD', 'Welcome2019!');
+//DEFINE('LAB_SMTP_SERVER', 'smtp.gmail.com');
+
+DEFINE('MAIL_TLS_PORT', '587');
+DEFINE('MAIL_SSL_PORT', '465');
+
 
 DEFINE('OUTPUT_PATH', '/data/output');
 DEFINE('ZIPS_PATH', '/data/zips');

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Mock Exam</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- bootstrap css -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/login-style.css">
+    <link rel="stylesheet" href="./css/my-style.css">
+
+    <link
+        href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+        rel='stylesheet' type='text/css'>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="./js/jquery.cookie.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <script src="./js/global.js"></script>
+    <!-- <script src="./js/login.js"></script>
+  <script src="./js/main.js"></script> -->
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <nav>
+            </nav>
+            <h3 class="text-muted">Exam</h3>
+        </div>
+
+        <div class="jumbotron" style="background:transparent !important">
+            <a id="send_email" class="btn btn-lg btn-success begin" href="#" role="button">Send Email</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+    </footer>
+
+    </div>
+    <!-- /container -->
+
+    <script>
+        $("#send_email").click(function (event) {
+            var email = 'marte.edwin@gmail.com';
+            var subject = 'Feel Lab Test';
+            var body = 'Feel Lab Test Body!!!';
+            var ccmail = '';
+            sendEMail(email, subject, body, ccmail);
+        });
+    </script>
+</body>
+
+</html>

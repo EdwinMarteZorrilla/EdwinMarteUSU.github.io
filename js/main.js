@@ -4,13 +4,13 @@ var DEBUG_MODE = true;
 var NUM_TEST_QUESTIONS = 0; // 0 for all
 
 // Qualtrics Surveys
-var SURVEY_PRE_EXAM_LINK = "https://oregon.qualtrics.com/jfe/form/SV_dc0CI07g8PSDpqZ";
-var SURVEY_40_MIN_LINK = "https://oregon.qualtrics.com/jfe/form/SV_cOc5yIbPf04qO9f";
-var SURVEY_AT_END_TEST_LINK = "https://oregon.qualtrics.com/jfe/form/SV_9RLMrnY1JONTRJz";
-var SURVEY_AFTER_20_MIN_LINK = "https://oregon.qualtrics.com/jfe/form/SV_b8eYnM3c38OzZgp";
+var SURVEY_PRE_EXAM_LINK = "https://oregon.qualtrics.com/jfe/form/SV_29uye3Rm6EvZw7r";
+var SURVEY_40_MIN_LINK = "https://oregon.qualtrics.com/jfe/form/SV_5nVtBb53SNq3KvP";
+var SURVEY_AT_END_TEST_LINK = "https://oregon.qualtrics.com/jfe/form/SV_6XccY3rT0uwtRxH";
+var SURVEY_AFTER_20_MIN_LINK = "https://oregon.qualtrics.com/jfe/form/SV_0cBWXNgHZ3IbzDf";
 // var YOUTUBE_INTRO_VIDEO_LINK = "https://youtu.be/3KrfamSDrJA";
 var YOUTUBE_INTRO_VIDEO_LINK = "https://youtu.be/lDdtbynxyA0";
-var SURVEY_PROMPT_LINK = "https://oregon.qualtrics.com/jfe/form/SV_dmwrXYbKOlWPDBX";
+var SURVEY_PROMPT_LINK = "https://oregon.qualtrics.com/jfe/form/SV_3ITkIqti7gfcHwp";
 
 var timeCounter;
 
@@ -312,7 +312,7 @@ function getFinalMessage() {
     html += '<input type="text" class="form-control" id="email"><br>';
     html += '<a id="send_email" onclick="sendEmailClicked(event)" class="btn btn-primary">Send Results to Email</a>';
     html += '</div>';
-
+ge
     return html;
 }
 
