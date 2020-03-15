@@ -235,7 +235,7 @@ function compArrays(arr1, arr2) {
     if (!arr1 || !arr2)
         return false;
 
-    // compare lengths - can save a lot of time 
+    // compare lengths - can save a lot of time
     if (arr2.length != arr1.length)
         return false;
 

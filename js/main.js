@@ -312,7 +312,6 @@ function getFinalMessage() {
     html += '<input type="text" class="form-control" id="email"><br>';
     html += '<a id="send_email" onclick="sendEmailClicked(event)" class="btn btn-primary">Send Results to Email</a>';
     html += '</div>';
-ge
     return html;
 }
 
