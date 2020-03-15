@@ -1,12 +1,12 @@
 CREATE SCHEMA exams;
 use exams;
 CREATE TABLE exam1 ( question_id INT NOT NULL AUTO_INCREMENT, question VARCHAR(21844) NOT NULL, image VARCHAR(1000), answer VARCHAR(5) NOT NULL, PRIMARY KEY (question_id));
-INSERT INTO exam1 (question,image, answer) VALUES ('According to Hibbelers convention, all zero force members are two force members.','A');
-INSERT INTO exam1 (question,image, answer) VALUES ('Using method of sections to analyze compression or tension in a truss member requires you to interpret a force pointing into the cut member as compressive?','A');
-INSERT INTO exam1 (question,image, answer) VALUES ('If we have a joint on a truss experiencing a force from an external load, then we can say one of the members attached to this joint is a zero force member?','B');
-INSERT INTO exam1 (question,image, answer) VALUES ('All frame and machine problems must have at least one _______________?','A');
-INSERT INTO exam1 (question,image, answer) VALUES ('Two properly aligned journal bearings that support a straight shaft with an axis passing through them on a common line of action will _____?','D');
-INSERT INTO exam1 (question,image, answer) VALUES ('Rollers are often used as a support on bridges to ___________________________?','C');
+INSERT INTO exam1 (question, answer) VALUES ('According to Hibbelers convention, all zero force members are two force members.','A');
+INSERT INTO exam1 (question, answer) VALUES ('Using method of sections to analyze compression or tension in a truss member requires you to interpret a force pointing into the cut member as compressive?','A');
+INSERT INTO exam1 (question, answer) VALUES ('If we have a joint on a truss experiencing a force from an external load, then we can say one of the members attached to this joint is a zero force member?','B');
+INSERT INTO exam1 (question, answer) VALUES ('All frame and machine problems must have at least one _______________?','A');
+INSERT INTO exam1 (question, answer) VALUES ('Two properly aligned journal bearings that support a straight shaft with an axis passing through them on a common line of action will _____?','D');
+INSERT INTO exam1 (question, answer) VALUES ('Rollers are often used as a support on bridges to ___________________________?','C');
 INSERT INTO exam1 (question,image, answer) VALUES ('What is the tensile force in the rope required to keep the rigid body in equilibrium with the indicated loads? ','Q07.png','E');
 INSERT INTO exam1 (question,image, answer) VALUES ('The bent rod is supported at A, B, and C by smooth properly aligned journal bearings. The rod is subjected to the force F = 800 N. What is the vertical component of the 800 N force (Fz)? Could you find the other two F components? Could you find the reaction forces at the journal bearings?','Q08.png','B');
 INSERT INTO exam1 (question,image, answer) VALUES ('Assume all bearings to be journal bearings. What would be the appropriate FBD to represent this problem? Assume any forces or moments that have 0 as magnitude to not be drawn.','Q09.png','C');
