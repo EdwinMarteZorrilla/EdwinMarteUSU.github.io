@@ -42,6 +42,7 @@ function goBack(){
           return false;
       }
   });
+  document.getElementById('exam').innerHTML = '';
 
 
 }
@@ -55,6 +56,16 @@ function addExam(){
 
 }
 
+function backToExams(){
+  document.getElementById('exam').style.display = 'block';
+  document.getElementById('add').style.display = 'none';
+}
+
+function limitInput(event) {
+  var key = event.keyCode;
+  return ((key >= 65 && key <= 69) || key == 8 || (key>=97 && key<=101));
+};
+
 function newQuestion(){
   let question = document.getElementById('question').value
   let a = document.getElementById('A').value
@@ -62,7 +73,7 @@ function newQuestion(){
   let c = document.getElementById('C').value
   let d = document.getElementById('D').value
   let e = document.getElementById('E').value
-  let correct = document.getElementById('correct').value
+  let correct = document.getElementById('correct').value.toUpperCase()
   let json = {question: question,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam}
   console.log(json)
 

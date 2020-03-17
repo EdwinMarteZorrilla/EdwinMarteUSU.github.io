@@ -23,10 +23,12 @@ $games_answers_file = MEDIA_PATH . GAMES_ANSWERS_FILE;
 
 $questionsJSON = '{"exam": {"pos": 0, "questions": [';
 
+
 while($row = $result->fetch_assoc()){
     $counter++;
     $questionsJSON .= '{"id": ' . $row['question_id'] . ',';
     $questionsJSON .= '"text": "' . preg_replace('/[[:^print:]]/', '', $row['question']) . '",';
+
     if($row['image'] !== 'NULL'){
       $questionsJSON .= '"image": "' . $row['image'] . '",';
     }
@@ -37,11 +39,13 @@ while($row = $result->fetch_assoc()){
     $questionsJSON .= '"answers": [';
     $sql = "SELECT * FROM answers1 WHERE question_id = " .  $row['question_id'];
     $answers = mysqli_query($connect,$sql);
+
     while($ans = $answers->fetch_assoc()){
       $questionsJSON .= '"' . $ans['answer'] . '",';
     }
     $questionsJSON = rtrim($questionsJSON, ',');
     $questionsJSON .= ']},';
+
 
 }
 $questionsJSON = rtrim($questionsJSON, ',');

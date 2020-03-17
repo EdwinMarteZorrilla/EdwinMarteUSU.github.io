@@ -56,13 +56,15 @@
     </div>
     <div class="form-group">
       <label for="name">Correct answer:</label>
-      <input type="text" class="form-control" id="correct" placeholder="Please enter the letter of the correct answer A-E">
+      <input type="text" class="form-control" maxlength="1"style="text-transform: uppercase" onkeydown="return limitInput(event);" id="correct" placeholder="Please enter the letter of the correct answer A-E">
     </div>
-    <label class="btn btn-default">
+    <!-- <label class="btn btn-default">
         Browse <input type="file" hidden>
-    </label>
-    <button>Back to exams</button>
-    <button class="btn btn-lg btn-success" onclick="newQuestion()">Add question</button>
+    </label> -->
+    <div style="display:flex; justify-content:space-between;">
+      <button class="btn btn-secondary" onclick="backToExams()">Back to exams</button>
+      <button class="btn btn-lg btn-success" onclick="newQuestion()">Add question</button>
+    </div>
   </div>
 
 </body>
