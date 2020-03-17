@@ -96,6 +96,13 @@ function newQuestion(){
 function modify(){
   document.getElementById('exam').style.display = 'none'
   document.getElementById('questions').style.display = "block";
+  document.getElementById('question').value = ''
+  document.getElementById('A').value = ''
+  document.getElementById('B').value = ''
+  document.getElementById('C').value = ''
+  document.getElementById('D').value = ''
+  document.getElementById('E').value = ''
+  document.getElementById('correct').value = ''
 }
 
 
