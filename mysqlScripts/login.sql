@@ -10,5 +10,5 @@ CREATE TABLE users (
 	email VARCHAR(100),
 	user_type VARCHAR(100),
 	password VARCHAR(100),
-	PRIMARY KEY (question_id)
+	PRIMARY KEY (id)
 );
