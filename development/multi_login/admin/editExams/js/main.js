@@ -1,4 +1,6 @@
-let mainExam = ''
+let mainExam = '';
+
+
 
 $(document).ready(function () {
   $.ajax({
@@ -19,6 +21,20 @@ $(document).ready(function () {
           return false;
       }
   });
+
+  var input = document.getElementById('image'); /* finds the input */
+
+  function changeLabelText() {
+      var value = input.value; /* gets the filepath and filename from the input */
+      var fileNameStart = value.lastIndexOf('\\'); /* finds the end of the filepath */
+      value = value.substr(fileNameStart + 1); /* isolates the filename */
+      var profilePicLabelText = document.getElementById('label'); /* finds the label text */
+      if (value !== '') {
+          profilePicLabelText.textContent = value;
+      }
+  }
+
+  input.addEventListener('change',changeLabelText,false);
 });
 
 
@@ -58,7 +74,7 @@ function addExam(){
 
 function backToExams(){
   document.getElementById('exam').style.display = 'block';
-  document.getElementById('add').style.display = 'none';
+  document.getElementById('questions').style.display = 'none';
 }
 
 function limitInput(event) {
@@ -74,7 +90,12 @@ function newQuestion(){
   let d = document.getElementById('D').value
   let e = document.getElementById('E').value
   let correct = document.getElementById('correct').value.toUpperCase()
-  let json = {question: question,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam}
+  var input = document.getElementById('image');
+
+  var value = input.value;
+  var fileNameStart = value.lastIndexOf('\\');
+  value = value.substr(fileNameStart + 1);
+  let json = {question: question,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam,image:value}
   console.log(json)
 
   if(confirm("Add question")){

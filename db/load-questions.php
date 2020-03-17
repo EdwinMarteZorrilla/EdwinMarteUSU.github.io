@@ -37,7 +37,7 @@ while($row = $result->fetch_assoc()){
     }
     $questionsJSON .= '"correct": "' . $row['answer'] . '",';
     $questionsJSON .= '"answers": [';
-    $sql = "SELECT * FROM answers1 WHERE question_id = " .  $row['question_id'];
+    $sql = "SELECT * FROM answersexam1 WHERE question_id = " .  $row['question_id'];
     $answers = mysqli_query($connect,$sql);
 
     while($ans = $answers->fetch_assoc()){
