@@ -1,3 +1,17 @@
+<?php
+include('../../functions.php');
+
+if (!isAdmin()) {
+	$_SESSION['msg'] = "You must log in first";
+	header('location: ../../login.php');
+}
+
+if (isset($_GET['logout'])) {
+	session_destroy();
+	unset($_SESSION['user']);
+	header("location: ../../login.php");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,8 +21,6 @@
   <!-- <meta name="viewport" content="width=device-width,initial-scale=1"> -->
   <!-- bootstrap css -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css"> -->
-  <link rel="stylesheet" href="./css/style.css">
 
   <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
     rel='stylesheet' type='text/css'>

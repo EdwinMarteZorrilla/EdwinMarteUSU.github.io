@@ -1,6 +1,26 @@
 let mainExam = '';
 
 
+function updateExam(value){
+  let json = {new: value}
+  $.ajax({
+      type: 'POST',
+      url: './php/changeCurrentExam.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+        alert("The exam will be changed to: " + value)
+        return true;
+      },
+      error: function (msg) {
+          console.log("AJAX Error");
+          console.log(msg);
+          return false;
+      }
+  });
+
+
+}
 
 $(document).ready(function () {
   $.ajax({
@@ -12,7 +32,16 @@ $(document).ready(function () {
       success: function (data) {
           exams = data;
           document.getElementById('table').innerHTML = data;
-          // console.log(examQuestions);
+          var currentExam = document.getElementById('current'); /* finds the input */
+
+          function changeCurrentExam() {
+              var value = currentExam.value; /* gets the filepath and filename from the input */
+              if (value !== '') {
+                updateExam(value)
+              }
+          }
+
+          currentExam.addEventListener('change',changeCurrentExam,false);
           return true;
       },
       error: function (msg) {
@@ -35,6 +64,7 @@ $(document).ready(function () {
   }
 
   input.addEventListener('change',changeLabelText,false);
+
 });
 
 
@@ -79,7 +109,36 @@ function backToExams(){
 
 function limitInput(event) {
   var key = event.keyCode;
-  return ((key >= 65 && key <= 69) || key == 8 || (key>=97 && key<=101));
+  let limit1 = 64
+  let limit2 = 96
+  let a = document.getElementById('A').value
+  let b = document.getElementById('B').value
+  let c = document.getElementById('C').value
+  let d = document.getElementById('D').value
+  let e = document.getElementById('E').value
+
+  if(a !=''){
+    limit1 +=1
+    limit2 +=1
+  }
+  if(b !=''){
+    limit1 +=1
+    limit2 +=1
+  }
+  if(c !=''){
+    limit1 +=1
+    limit2 +=1
+  }
+  if(d !=''){
+    limit1 +=1
+    limit2 +=1
+  }
+  if(e !=''){
+    limit1 +=1
+    limit2 +=1
+  }
+
+  return ((key >= 65 && key <= limit1) || key == 8 || (key>=97 && key<=limit2));
 };
 
 function newQuestion(){
