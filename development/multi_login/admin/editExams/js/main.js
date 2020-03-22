@@ -156,29 +156,33 @@ function newQuestion(){
   value = value.substr(fileNameStart + 1);
   let json = {question: question,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam,image:value}
   console.log(json)
-
-  if(confirm("Add question")){
-    $.ajax({
+  if(a != '' && b != '' && correct != ''){
+    if(confirm("Add question?")){
+      $.ajax({
         type: 'POST',
         url: './php/add-question.php',
         dataType: 'json',
         data: json,
         success: function (data) {
-            if(data.result){
-              editExam(mainExam)
-              return true;
-            }
-            else{
-              alert("Could not add question")
-              return false;
-            }
+          if(data.result){
+            editExam(mainExam)
+            return true;
+          }
+          else{
+            alert("Could not add question")
+            return false;
+          }
         },
         error: function (msg) {
-            console.log("AJAX Error");
-            console.log(msg);
-            return false;
+          console.log("AJAX Error");
+          console.log(msg);
+          return false;
         }
-    });
+      });
+    }
+  }
+  else{
+    alert("Please enter at least answers A and B and the correct answer")
   }
 
 }
@@ -229,7 +233,7 @@ function editExam(exam){
 function createExam(){
   let name = document.getElementById('name').value
   mainExam = name
-  if(confirm("You are about to create a new exam. Is " + name + "correct?")){
+  if(confirm("You are about to create a new exam. Is " + name + " correct?")){
     $.ajax({
         type: 'POST',
         url: './php/create-exam.php',
