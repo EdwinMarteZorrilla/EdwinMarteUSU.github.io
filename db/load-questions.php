@@ -7,12 +7,18 @@ ini_set('auto_detect_line_endings',TRUE);
 
 $counter = 0;
 $connect = mysqli_connect("127.0.0.1:3306", "root", "calvorm123", "exams");
+
 // $result = mysqli_query($connect, "INSERT INTO exam1 (question,image, answer) VALUES ('Using the methods of sections, calculate the force in member DF and select the clower answer below to represent that force.','Q10.png','C');");
 if ($connect == false) {
   echo "DID not work";
 }
-// echo($connect);
-$result = mysqli_query($connect,"SELECT * FROM exam1");
+
+$current = mysqli_query($connect,"SELECT * FROM current");
+$exam = '';
+while($row = $current->fetch_assoc()){
+  $exam = $row['currentExam'];
+}
+$result = mysqli_query($connect,"SELECT * FROM " . $exam);
 // echo $result
 
 
@@ -37,7 +43,7 @@ while($row = $result->fetch_assoc()){
     }
     $questionsJSON .= '"correct": "' . $row['answer'] . '",';
     $questionsJSON .= '"answers": [';
-    $sql = "SELECT * FROM answersexam1 WHERE question_id = " .  $row['question_id'];
+    $sql = "SELECT * FROM answers" . $exam . " WHERE question_id = " .  $row['question_id'];
     $answers = mysqli_query($connect,$sql);
 
     while($ans = $answers->fetch_assoc()){
