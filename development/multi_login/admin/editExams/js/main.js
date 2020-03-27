@@ -1,5 +1,5 @@
 let mainExam = '';
-
+let saveData
 
 function updateExam(value){
   let json = {new: value}
@@ -23,6 +23,19 @@ function updateExam(value){
 }
 
 $(document).ready(function () {
+  saveData = (function () {
+      const a = document.createElement("a");
+      document.body.appendChild(a);
+      a.style = "display: none";
+      return function (data, fileName) {
+          const blob = new Blob([data], {type: "octet/stream"}),
+              url = window.URL.createObjectURL(blob);
+          a.href = url;
+          a.download = fileName;
+          a.click();
+          window.URL.revokeObjectURL(url);
+      };
+  }());
   $.ajax({
       type: 'GET',
       url: './php/load-exams.php',
@@ -32,10 +45,10 @@ $(document).ready(function () {
       success: function (data) {
           exams = data;
           document.getElementById('table').innerHTML = data;
-          var currentExam = document.getElementById('current'); /* finds the input */
+          var currentExam = document.getElementById('current');
 
           function changeCurrentExam() {
-              var value = currentExam.value; /* gets the filepath and filename from the input */
+              var value = currentExam.value;
               if (value !== '') {
                 updateExam(value)
               }
@@ -107,6 +120,126 @@ function backToExams(){
   document.getElementById('questions').style.display = 'none';
 }
 
+
+function deleteExam(exam){
+  let json = {delete: exam}
+  if(confirm("Are you sure you want to delete this exam?")){
+    $.ajax({
+      type: 'POST',
+      url: './php/deleteExam.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+        $.ajax({
+            type: 'GET',
+            url: './php/load-exams.php',
+            dataType: 'html',
+            data: {
+            },
+            success: function (data) {
+                exams = data;
+                document.getElementById('table').innerHTML = data;
+                var currentExam = document.getElementById('current');
+
+                function changeCurrentExam() {
+                    var value = currentExam.value;
+                    if (value !== '') {
+                      updateExam(value)
+                    }
+                }
+
+                currentExam.addEventListener('change',changeCurrentExam,false);
+                return true;
+            },
+            error: function (msg) {
+                console.log("AJAX Error");
+                console.log(msg);
+                return false;
+            }
+        });
+        return true;
+      },
+      error: function (msg) {
+        console.log("AJAX Error");
+        console.log(msg);
+        return false;
+      }
+    });
+  }
+}
+
+
+function copyExam(exam){
+  let name = prompt("Enter the name for the new exam")
+  let json = {copy: exam, new: name}
+  if(name != null || name != ""){
+    $.ajax({
+      type: 'POST',
+      url: './php/copyExam.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+        $.ajax({
+            type: 'GET',
+            url: './php/load-exams.php',
+            dataType: 'html',
+            data: {
+            },
+            success: function (data) {
+                exams = data;
+                document.getElementById('table').innerHTML = data;
+                var currentExam = document.getElementById('current');
+
+                function changeCurrentExam() {
+                    var value = currentExam.value;
+                    if (value !== '') {
+                      updateExam(value)
+                    }
+                }
+
+                currentExam.addEventListener('change',changeCurrentExam,false);
+                return true;
+            },
+            error: function (msg) {
+                console.log("AJAX Error");
+                console.log(msg);
+                return false;
+            }
+        });
+        return true;
+      },
+      error: function (msg) {
+        console.log("AJAX Error");
+        console.log(msg);
+        return false;
+      }
+    });
+  }
+}
+
+
+
+function exportCSV(exam){
+  let json = {name: exam}
+  let name = exam + '.csv'
+  $.ajax({
+    type: 'POST',
+    url: './php/exportCSV.php',
+    dataType: 'text',
+    data: json,
+    success: function (data) {
+      saveData(data,name)
+      return true;
+    },
+    error: function (msg) {
+      console.log("AJAX Error");
+      console.log(msg);
+      return false;
+    }
+  });
+}
+
+
 function limitInput(event) {
   var key = event.keyCode;
   let limit1 = 64
@@ -155,7 +288,6 @@ function newQuestion(){
   var fileNameStart = value.lastIndexOf('\\');
   value = value.substr(fileNameStart + 1);
   let json = {question: question,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam,image:value}
-  console.log(json)
   if(a != '' && b != '' && correct != ''){
     if(confirm("Add question?")){
       $.ajax({

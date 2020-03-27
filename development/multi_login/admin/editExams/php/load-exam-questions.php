@@ -18,7 +18,7 @@ while($row = $result->fetch_assoc()){
   $examTable .= '</ol></td></tr>';
 }
 $examTable .= '</table>';
-$examTable .= '<div style="display:flex; justify-content:space-between;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
+$examTable .= '<div style="display:flex; justify-content:space-between; padding:15px"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
 $examTable .= '<button class="btn btn-lg btn-success" onclick="modify()">Add Question</button></div>';
 
 echo $examTable;
