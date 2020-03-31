@@ -1,5 +1,7 @@
 <?php
 
+require_once('../../../../../include/config.php');
+
 $connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exams");
 $question = "INSERT INTO " . $_POST['exam'] . " (question, image, answer) VALUES ('" . $_POST['question'] . "','" . $_POST['image'] . "','" . $_POST['correct'] . "');";
 $result = mysqli_query($connect,$question);
