@@ -1,6 +1,6 @@
 <?php
 
-$connect = mysqli_connect("127.0.0.1:3306", "root", "calvorm123", "exams");
+$connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exams");
 header('Content-Type: text/csv; charset=utf-8');
 $string = 'Content-Disposition: attachment; filename=' . $_POST['name'] . '.csv';
 header('Content-Disposition: attachment; filename=data.csv');

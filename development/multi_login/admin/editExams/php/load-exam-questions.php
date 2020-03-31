@@ -1,6 +1,6 @@
 <?php
 
-$connect = mysqli_connect("127.0.0.1:3306", "root", "calvorm123", "exams");
+$connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exams");
 $sql = "SELECT question_id, question, image, answer FROM " . $_POST['exam'];
 $result = mysqli_query($connect,$sql);
 $examTable = '<h1 style="text-align:center">' .$_POST['exam'] . '</h1>';

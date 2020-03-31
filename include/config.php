@@ -1,5 +1,6 @@
 <?php
 
+DEFINE('DB_PASS', 'Edcp-2020');
 DEFINE('EXAM_QUESTIONS_FILE', 'exam_questions.csv');
 DEFINE('EXAM_ANSWERS_FILE', 'exam_answers.csv');
 DEFINE('GAMES_QUESTIONS_FILE', 'game_questions.csv');
