@@ -1,6 +1,11 @@
 <?php
 
-include_once('../../include/config.php');
+//Either use the require once
+//or both the include once because this functions.php is used by two files with different
+//relative pahts to config.php because they are in different directories.
+require_once('/var/www/html/NHR-Core/include/config.php');
+//include_once('../../include/config.php');
+//include_once('../../../include/config.php');
 
 session_start();
 
