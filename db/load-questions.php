@@ -6,7 +6,7 @@ require_once('../include/config.php');
 ini_set('auto_detect_line_endings',TRUE);
 
 $counter = 0;
-$connect = mysqli_connect("127.0.0.1:3306", "root", "calvorm123", "exams");
+$connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exams");
 
 // $result = mysqli_query($connect, "INSERT INTO exam1 (question,image, answer) VALUES ('Using the methods of sections, calculate the force in member DF and select the clower answer below to represent that force.','Q10.png','C');");
 if ($connect == false) {

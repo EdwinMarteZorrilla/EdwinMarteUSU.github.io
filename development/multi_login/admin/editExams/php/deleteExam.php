@@ -1,6 +1,6 @@
 <?php
 
-$connect = mysqli_connect("127.0.0.1:3306", "root", "calvorm123", "exams");
+$connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exams");
 $sql = "DROP TABLE answers" . $_POST['delete'];
 $sql2 = "DROP TABLE " . $_POST['delete'];
 $result = mysqli_query($connect,$sql);

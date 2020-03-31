@@ -1,6 +1,6 @@
 <?php
 
-$connect = mysqli_connect("127.0.0.1:3306", "root", "calvorm123", "exams");
+$connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exams");
 $question = "INSERT INTO " . $_POST['exam'] . " (question, image, answer) VALUES ('" . $_POST['question'] . "','" . $_POST['image'] . "','" . $_POST['correct'] . "');";
 $result = mysqli_query($connect,$question);
 $number = mysqli_query($connect,"SELECT question_id FROM " . $_POST['exam'] . " WHERE question = '" . $_POST['question'] . "';");

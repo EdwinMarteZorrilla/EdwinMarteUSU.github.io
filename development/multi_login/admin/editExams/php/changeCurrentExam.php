@@ -1,6 +1,6 @@
 <?php
 
-$connect = mysqli_connect("127.0.0.1:3306", "root", "calvorm123", "exams");
+$connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exams");
 $current = mysqli_query($connect,"SELECT * FROM current;");
 
 while($row = $current->fetch_assoc()){
