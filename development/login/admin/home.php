@@ -51,11 +51,11 @@ if (isset($_GET['logout'])) {
 
                     <small>
                         <i  style="color: #888;">(<?php echo ucfirst($_SESSION['user']['user_type']); ?>)</i> 
-                        <a href="home.php?logout='1'" style="color: red;">logout</a>
                     </small>
 
                 <?php endif ?>
             </div>
+                        <a id="logoutButton" href="home.php?logout='1'" style="color: #9B0303;">logout</a>
         </div>
             <div id="menu">
                 <ul>
