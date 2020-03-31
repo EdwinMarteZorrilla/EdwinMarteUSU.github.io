@@ -17,6 +17,14 @@
 	<div class="header">
 		<h2>Admin - create user</h2>
 	</div>
+
+    <div class="contentMiddle">
+            <div id="menu">
+                <ul>
+                    <li><a href="home.php">Home</a></li>
+                </ul>
+            </div>
+	</div>
 	
 	<form method="post" action="create_user.php">
 
@@ -35,7 +43,7 @@
 			<select name="user_type" id="user_type" >
 				<option value=""></option>
 				<option value="admin">Admin</option>
-				<option value="user">User</option>
+				<!--<option value="user">User</option>-->
 			</select>
 		</div>
 		<div class="input-group">

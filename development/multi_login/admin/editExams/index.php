@@ -24,6 +24,7 @@ if (isset($_GET['logout'])) {
 
   <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
     rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="css/style.css">
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src='./js/main.js'></script>
   <script src="../../../../js/jquery.cookie.js"></script>
@@ -32,6 +33,13 @@ if (isset($_GET['logout'])) {
 </head>
 
 <body>
+    <div class="contentMiddle">
+            <div id="menu">
+                <ul>
+                    <li><a href="../home.php">Home</a></li>
+                </ul>
+            </div>
+	</div>
   <div id="table">
 
   </div>
