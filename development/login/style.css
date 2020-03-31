@@ -116,3 +116,10 @@ form, .contentMiddle {
 #menu a:hover {
   background-color: #A1D7F0;
 }
+
+#logoutButton {
+    background-color: #FFA6A6;
+    padding: 3px;
+    text-decoration: none;
+    float: right;
+}
