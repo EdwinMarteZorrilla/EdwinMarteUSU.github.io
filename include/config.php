@@ -1,6 +1,6 @@
 <?php
 
-DEFINE('DB_PASS', 'Edcp-2020');
+DEFINE('DB_PASS', 'calvorm123');
 DEFINE('EXAM_QUESTIONS_FILE', 'exam_questions.csv');
 DEFINE('EXAM_ANSWERS_FILE', 'exam_answers.csv');
 DEFINE('GAMES_QUESTIONS_FILE', 'game_questions.csv');
@@ -47,18 +47,18 @@ function console_log($data)
 function create_zip($files = array(), $destination = '', $overwrite = false)
 {
     //if the zip file already exists and overwrite is false, return false
-    
+
     // console_log('Files: ' . $files);
     // console_log('Overwrite: ' . $overwrite);
     //set error handler
     set_error_handler("customError");
-    
+
     if (file_exists($destination) && !$overwrite) {
         return false;
     }
-    
+
     $valid_files = array();
-    
+
     // if files were passed in...
     if (is_array($files)) {
         // cycle through each file
@@ -69,23 +69,23 @@ function create_zip($files = array(), $destination = '', $overwrite = false)
             }
         }
     }
-    
+
     // if we have good files...
     if (count($valid_files)) {
         //create the archive
-        
+
         // console_log('Destination: ' . $destination);
         // console_log('Valid files: ' . json_encode($valid_files));
-        
+
         $zip = new ZipArchive();
-        
+
         $result = $zip->open($destination, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-        
+
         if ($result !== true) {
             console_log(getZipErrorString($result));
             return false;
         }
-        
+
         //add the files
         foreach ($valid_files as $file) {
             $zip->addFile($file, basename($file));
@@ -93,10 +93,10 @@ function create_zip($files = array(), $destination = '', $overwrite = false)
         }
         //debug
         //echo 'The zip archive contains ',$zip->numFiles,' files with a status of ',$zip->status;
-        
+
         //close the zip -- done!
         $zip->close();
-        
+
         //check to make sure the file exists
         return file_exists($destination);
     } else {
@@ -109,7 +109,7 @@ function zip_folder($source, $destination, $overwrite = false)
     if (!extension_loaded('zip') || (file_exists($destination) && !$overwrite)) {
         return false;
     }
-    
+
     // if (file_exists($destination) && !$overwrite) {
     //     return false;
     // }
@@ -118,24 +118,24 @@ function zip_folder($source, $destination, $overwrite = false)
     if (!$zip->open($destination, ZIPARCHIVE::CREATE | ZipArchive::OVERWRITE)) {
         return false;
     }
-    
+
     $source = str_replace('\\', '/', realpath($source));
-    
+
     if (is_dir($source) === true) {
         $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($source), RecursiveIteratorIterator::SELF_FIRST);
-        
+
         foreach ($files as $file) {
             $file = str_replace('\\', '/', $file);
-            
+
             // Ignore "." and ".." folders
             if (in_array(substr($file, strrpos($file, '/') + 1), array(
                 '.',
                 '..'
             )))
                 continue;
-            
+
             $file = realpath($file);
-            
+
             if (is_dir($file) === true) {
                 $zip->addEmptyDir(str_replace($source . '/', '', $file . '/'));
                 // $zip->addEmptyDir(basename($file));
@@ -147,7 +147,7 @@ function zip_folder($source, $destination, $overwrite = false)
     } else if (is_file($source) === true) {
         $zip->addFromString(basename($source), file_get_contents($source));
     }
-    
+
     return $zip->close();
     //check to make sure the file exists
     // return file_exists($destination);
@@ -155,7 +155,7 @@ function zip_folder($source, $destination, $overwrite = false)
 
 function getZipErrorString($error)
 {
-    
+
     switch ($error) {
         case ZipArchive::ER_EXISTS:
             return 'ZipArchive::ER_EXISTS -> File already exists';

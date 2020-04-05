@@ -275,6 +275,7 @@ function limitInput(event) {
 };
 
 function newQuestion(){
+
   let question = document.getElementById('question').value
   let a = document.getElementById('A').value
   let b = document.getElementById('B').value
@@ -283,18 +284,31 @@ function newQuestion(){
   let e = document.getElementById('E').value
   let correct = document.getElementById('correct').value.toUpperCase()
   var input = document.getElementById('image');
-
+  let properties = input.files[0]
+  // properties['question'] = question
+  // properties = JSON.stringify(prop?erties)
+  let formData = new FormData();
   var value = input.value;
   var fileNameStart = value.lastIndexOf('\\');
   value = value.substr(fileNameStart + 1);
-  let json = {question: question,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam,image:value}
+  const json = {question: question,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam,image:value}
+  formData.append("file", properties)
+  for (var key in json){
+    formData.append(key,json[key])
+  }
+
+
+
   if(a != '' && b != '' && correct != ''){
     if(confirm("Add question?")){
       $.ajax({
         type: 'POST',
         url: './php/add-question.php',
         dataType: 'json',
-        data: json,
+        data: formData,
+        contentType: false,
+        cache: false,
+        processData: false,
         success: function (data) {
           if(data.result){
             editExam(mainExam)

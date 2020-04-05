@@ -50,44 +50,45 @@ if (isset($_GET['logout'])) {
     <input type="text" id="name" name="name">
     <button class="btn btn-lg btn-success" onclick="createExam()">Create</button>
   </div>
+
   <div id="questions" style="display:none;">
-    <div class="form-group">
+		`<div class="form-group">
       <label for="name">Question:</label>
-      <input type="text" class="form-control"  id="question" placeholder="Enter the question">
+      <input type="text" class="form-control"  id="question" placeholder="Enter the question" name"question">
     </div>
     <div class="form-group">
       <label for="name">Possible answer A:</label>
-      <input type="text" class="form-control" placeholder="Answer A" id="A">
+      <input type="text" class="form-control" placeholder="Answer A" id="A" name"a">
     </div>
     <div class="form-group">
       <label for="name">Possible answer B:</label>
-      <input type="text" class="form-control" id="B" placeholder="Answer B">
+      <input type="text" class="form-control" id="B" placeholder="Answer B" name"b">
     </div>
     <div class="form-group">
       <label for="name">Possible answer C:</label>
-      <input type="text" class="form-control" id="C" placeholder="Answer C">
+      <input type="text" class="form-control" id="C" placeholder="Answer C" name"c">
     </div>
     <div class="form-group">
       <label for="name">Possible answer D:</label>
-      <input type="text" class="form-control" id="D" placeholder="Answer D">
+      <input type="text" class="form-control" id="D" placeholder="Answer D" name"d">
     </div>
     <div class="form-group">
       <label for="name">Possible answer E:</label>
-      <input type="text" class="form-control" id="E" placeholder="Answer E">
+      <input type="text" class="form-control" id="E" placeholder="Answer E" name"e">
     </div>
     <div class="form-group">
       <label for="name">Correct answer:</label>
-      <input type="text" class="form-control" maxlength="1"style="text-transform: uppercase" onkeydown="return limitInput(event);" id="correct" placeholder="Please enter the letter of the correct answer A-E">
+      <input type="text" class="form-control" maxlength="1"style="text-transform: uppercase" onkeydown="return limitInput(event);" id="correct" name"correct" placeholder="Please enter the letter of the correct answer A-E">
     </div>
     <label for="image">Image:</label>
-    <div class="custom-file">
-      <input accept="image/*" type="file" class="custom-file-input" id="image">
-      <label class="custom-file-label" for="image" id="label">Choose file</label>
-    </div>
+	    <div class="custom-file">
+	      <input accept="image/*" type="file" class="custom-file-input" id="image" name='userfile'>
+	      <label class="custom-file-label" for="image" id="label">Choose file</label>
+	    </div>
     <div style="display:flex; justify-content:space-between; padding:10px;">
       <button class="btn btn-secondary" onclick="backToExams()">Back to exams</button>
-      <button class="btn btn-lg btn-success" onclick="newQuestion()">Add question</button>
-    </div>
+      <button class="btn btn-lg btn-success" onclick="newQuestion()">Add Question</button>
+    </div>`
   </div>
 
 </body>
