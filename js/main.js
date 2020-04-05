@@ -974,6 +974,24 @@ function answerSelected(event) {
 
 $(document).ready(function () {
 
+    $.ajax({
+        type: 'POST',
+        url: './db/get_study_ids.php',
+        dataType: 'html',
+        data: {
+        },
+        success: function (data) {
+            document.getElementById('login-modal').innerHTML += data
+            // console.log(examQuestions);
+            return true;
+        },
+        error: function (msg) {
+            console.log("AJAX Error");
+            console.log(msg);
+            return false;
+        }
+    });
+
     $.when(getQuestions()).done(function (a1, a2, a3, a4) {
         // the code here will be executed when all four ajax requests resolve.
         // a1, a2, a3 and a4 are lists of length 3 containing the response text,

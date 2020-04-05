@@ -82,6 +82,7 @@ $(document).ready(function () {
 
 
 function goBack(){
+  
   $.ajax({
       type: 'GET',
       url: './php/load-exams.php',
@@ -92,7 +93,16 @@ function goBack(){
           document.getElementById('table').innerHTML = data;
           document.getElementById('table').style.display = 'block';
           document.getElementById('exam').style.display = 'none';
-          // console.log(examQuestions);
+          var currentExam = document.getElementById('current');
+
+          function changeCurrentExam() {
+              var value = currentExam.value;
+              if (value !== '') {
+                updateExam(value)
+              }
+          }
+
+          currentExam.addEventListener('change',changeCurrentExam,false);
           return true;
       },
       error: function (msg) {
@@ -102,7 +112,6 @@ function goBack(){
       }
   });
   document.getElementById('exam').innerHTML = '';
-
 
 }
 
@@ -205,7 +214,21 @@ function copyExam(exam){
                 console.log(msg);
                 return false;
             }
+
         });
+        var input = document.getElementById('image'); /* finds the input */
+
+        function changeLabelText() {
+            var value = input.value; /* gets the filepath and filename from the input */
+            var fileNameStart = value.lastIndexOf('\\'); /* finds the end of the filepath */
+            value = value.substr(fileNameStart + 1); /* isolates the filename */
+            var profilePicLabelText = document.getElementById('label'); /* finds the label text */
+            if (value !== '') {
+                profilePicLabelText.textContent = value;
+            }
+        }
+
+        input.addEventListener('change',changeLabelText,false);
         return true;
       },
       error: function (msg) {

@@ -80,3 +80,4 @@ INSERT INTO answersexam1 (question_id, answer) VALUE (15,'1250 N to right');
 INSERT INTO answersexam1 (question_id, answer) VALUE (15,'590 N to right');
 INSERT INTO answersexam1 (question_id, answer) VALUE (15,'540 N to left');
 INSERT INTO answersexam1 (question_id, answer) VALUE (15,'420 N to left');
+CREATE TABLE idsexam1 (id INT NOT NULL AUTO_INCREMENT, study_id VARCHAR(100) NOT NULL, PRIMARY KEY (id))
