@@ -1,6 +1,5 @@
 <?php
 include('../../functions.php');
-require_once('../header/header.php');
 
 if (!isAdmin()) {
 	$_SESSION['msg'] = "You must log in first";
@@ -12,6 +11,8 @@ if (isset($_GET['logout'])) {
 	unset($_SESSION['user']);
 	header("location: ../../login.php");
 }
+
+require_once('../header/header.php');
 ?>
 <!DOCTYPE html>
 <html lang="en">
