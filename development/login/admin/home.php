@@ -17,6 +17,7 @@ if (isset($_GET['logout'])) {
 <head>
     <title>Home</title>
     <link rel="stylesheet" type="text/css" href="../style.css">
+    <link rel="stylesheet" type="text/css" href="./header/header.css">
     <style>
     .header {
         background: #003366;
@@ -61,6 +62,7 @@ if (isset($_GET['logout'])) {
                 <ul>
                     <li><a href="create_user.php">Add New Admin User</a></li>
                     <li><a href="editExams/index.php">Edit Exams</a></li>
+                    <li><a href="journal/journal.php">Exam Journal</a></li>
                 </ul>
             </div>
     </div>

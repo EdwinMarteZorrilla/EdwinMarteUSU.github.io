@@ -1,0 +1,19 @@
+#menu li {
+  list-style-type: none;
+  text-align: center;
+  width: 100%;
+}
+
+#menu a {
+  text-decoration: none;
+  background-color: #D6E6ED;
+  display: block;
+  color: black;
+  margin-right: 2px;
+  padding: 10px;
+}
+
+#menu a:hover {
+  background-color: #A1D7F0;
+}
+
