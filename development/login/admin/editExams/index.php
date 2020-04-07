@@ -33,9 +33,7 @@ if (isset($_GET['logout'])) {
 </head>
 
 <body>
-    <div class="contentMiddle">
-        <?php require_once('../header/header.php');?>
-	</div>
+  <?php require_once('../header/header.php');?>
   <div id="table">
 
   </div>
