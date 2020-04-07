@@ -65,6 +65,7 @@ $(document).ready(function () {
   });
 
   var input = document.getElementById('image'); /* finds the input */
+  var csvInput = document.getElementById('newImport'); /* finds the input */
 
   function changeLabelText() {
       var value = input.value; /* gets the filepath and filename from the input */
@@ -75,14 +76,121 @@ $(document).ready(function () {
           profilePicLabelText.textContent = value;
       }
   }
+  function changeCsvLabel() {
+    var value = csvInput.value; /* gets the filepath and filename from the input */
+    var fileNameStart = value.lastIndexOf('\\'); /* finds the end of the filepath */
+    value = value.substr(fileNameStart + 1); /* isolates the filename */
+    var profilePicLabelText = document.getElementById('csvlabel'); /* finds the label text */
+    if (value !== '') {
+      profilePicLabelText.textContent = value;
+    }
+  }
 
   input.addEventListener('change',changeLabelText,false);
+  csvInput.addEventListener('change',changeCsvLabel,false);
 
 });
 
 
+function saveId(){
+  // document.getElementById('idInput').style = "display:block;"
+  let id = document.getElementById('newID').value
+  let json = {exam: mainExam,newId:id}
+  $.ajax({
+      type: 'POST',
+      url: './php/add-id.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+          $('#idInput').modal('hide')
+          document.getElementById('newID').value = ''
+          switchTabs('ids')
+          // console.log(examQuestions);
+          return true;
+      },
+      error: function (msg) {
+          console.log("AJAX Error");
+          console.log(msg);
+          return false;
+      }
+  });
+
+}
+
+function importIds(){
+  let csv = document.getElementById('newImport')
+  let properties = csv.files[0]
+  let formData = new FormData();
+  formData.append('file',properties)
+  formData.append('exam',mainExam)
+  $.ajax({
+      type: 'POST',
+      url: './php/import-ids.php',
+      dataType: 'json',
+      data: formData,
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function (data) {
+          $('#importModal').modal('hide')
+          switchTabs('ids')
+          document.getElementById('csvlabel').textContent = 'Choose file'
+          // console.log(examQuestions);
+          return true;
+      },
+      error: function (msg) {
+          console.log("AJAX Error");
+          console.log(msg);
+          return false;
+      }
+  });
+}
+
+function switchTabs(tab){
+  if(tab == 'questions'){
+    tab1 = document.getElementById('tab1')
+    tab1.style = "background-color:green; color:white"
+
+    tab2 = document.getElementById('tab2')
+    tab2.style = "color:green;"
+    document.getElementById('exam').style = "display:block;"
+    document.getElementById('study_ids').style = "display:none;"
+
+
+  }
+  else if(tab == 'ids'){
+    $.ajax({
+        type: 'POST',
+        url: './php/load-exam-ids.php',
+        dataType: 'html',
+        data: { 'exam': mainExam
+        },
+        success: function (data) {
+            document.getElementById('exam').style = "display:none;"
+            document.getElementById('study_ids').style = "display:block;"
+            document.getElementById('study_ids').innerHTML = data;
+            // console.log(examQuestions);
+            return true;
+        },
+        error: function (msg) {
+            console.log("AJAX Error");
+            console.log(msg);
+            return false;
+        }
+    });
+    tab1 = document.getElementById('tab1')
+    tab1.style = "color:green;"
+
+    tab2 = document.getElementById('tab2')
+    tab2.style = "background-color:green; color:white"
+  }
+
+
+}
+
+
 function goBack(){
-  
+
   $.ajax({
       type: 'GET',
       url: './php/load-exams.php',
@@ -93,6 +201,8 @@ function goBack(){
           document.getElementById('table').innerHTML = data;
           document.getElementById('table').style.display = 'block';
           document.getElementById('exam').style.display = 'none';
+          document.getElementById('study_ids').style.display = 'none';
+
           var currentExam = document.getElementById('current');
 
           function changeCurrentExam() {
@@ -261,6 +371,7 @@ function exportCSV(exam){
     }
   });
 }
+
 
 
 function limitInput(event) {

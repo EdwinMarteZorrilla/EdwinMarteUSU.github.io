@@ -7,15 +7,15 @@ $result = mysqli_query($connect,"SHOW TABLES;");
 $current = mysqli_query($connect,"SELECT * FROM current;");
 
 
-$examTable = '<h1 style="text-align:center">Exams</h1><div class="form-group"><label for="current"><b>Current exam:</b></label><select class="form-control" id="current">';
 
 while($row = $current->fetch_assoc()){
   $temp = $row['currentExam'];
+  $examTable = '<h1 style="text-align:center">Exams</h1><div class="form-group"><label for="current"><b>Current exam: ' . $row['currentExam'] . '</b></label><select class="form-control" id="current">';
   $examTable .= '<option class="dropdown-item" href="#">' . $row['currentExam'] .'</option>';
 }
 
 while($row = $result->fetch_assoc()){
-  if(substr($row['Tables_in_exams'],0,3) != 'ids' and substr($row['Tables_in_exams'],0,3) != 'ans' and $row['Tables_in_exams'] !='current' and $row['Tables_in_exams'] != $temp ){
+  if(substr($row['Tables_in_exams'],0,5) != 'links' and substr($row['Tables_in_exams'],0,3) != 'ids' and substr($row['Tables_in_exams'],0,3) != 'ans' and $row['Tables_in_exams'] !='current' and $row['Tables_in_exams'] != $temp ){
     $examTable .= '<option class="dropdown-item" href="#">' . $row['Tables_in_exams'] .'</option>';
   }
 }
@@ -26,7 +26,7 @@ $examTable .= '<table class="table table-striped table-bordered"> <tr><th>Exams<
 
 $result = mysqli_query($connect,"SHOW TABLES;");
 while($row = $result->fetch_assoc()){
-  if(substr($row['Tables_in_exams'],0,3) != 'ids' and substr($row['Tables_in_exams'],0,3) != 'ans' and $row['Tables_in_exams'] !='current' ){
+  if(substr($row['Tables_in_exams'],0,5) != 'links' and substr($row['Tables_in_exams'],0,3) != 'ids' and substr($row['Tables_in_exams'],0,3) != 'ans' and $row['Tables_in_exams'] !='current' ){
     $examTable .= '<tr><td>' . $row['Tables_in_exams'] . '</td><td><button style="margin-right:10px; margin-left:10px" class="btn btn-outline-success btn-sm" onclick="editExam(\'' . $row['Tables_in_exams'] . '\')">Edit</button>';
     $examTable .= '<button style="margin-right:10px; margin-left:10px" class="btn btn-outline-secondary btn-sm" onclick="copyExam(\'' . $row['Tables_in_exams'] . '\')">Copy</button>';
     $examTable .= '<button style="margin-right:10px; margin-left:10px" class="btn btn-outline-secondary btn-sm" onclick="exportCSV(\'' . $row['Tables_in_exams'] . '\')">Export</button>';
