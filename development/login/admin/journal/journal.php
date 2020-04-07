@@ -13,6 +13,8 @@ if (isset($_GET['logout'])) {
 }
 
 require_once('../header/header.php');
+require_once('./journalFunctions.php');
+loadJournalData();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,7 +36,7 @@ require_once('../header/header.php');
 </head>
 
 <body>
-
+    <h1>Test Journal</h1>
 </body>
 
 </html>
