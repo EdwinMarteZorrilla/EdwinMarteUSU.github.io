@@ -47,11 +47,13 @@ if (isset($_GET['logout'])) {
   </div>
 	<div id="study_ids" style="display:none;">
 	</div>
-  <div id="add" style="display:none;">
+	<div id="links" style="display:none;">
+	</div>
+  <!-- <div id="add" style="display:none;">
     <label for="name">Exam name:</label>
     <input type="text" id="name" name="name">
     <button class="btn btn-lg btn-success" onclick="createExam()">Create</button>
-  </div>
+  </div> -->
 
   <div id="questions" style="display:none;">
 		`<div class="form-group">
@@ -133,6 +135,27 @@ if (isset($_GET['logout'])) {
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			<button type="button" class="btn btn-secondary btn-success" onclick="importIds()">Add</button>
+		</div>
+	</div>
+</div>
+</div>
+
+<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title" id="addTitle">Enter the new exam name</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="modal-body">
+			<label for="name" class="col-form-label">Exam name:</label>
+			<input type="text" class="form-control" id="name">
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button type="button" class="btn btn-secondary btn-success" onclick="createExam()">Save</button>
 		</div>
 	</div>
 </div>

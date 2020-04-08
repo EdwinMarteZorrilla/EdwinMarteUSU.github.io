@@ -34,7 +34,7 @@ while($row = $result->fetch_assoc()){
     $examTable .= '</td></tr>';
   }
 }
-$examTable .= '</table><button class="btn btn-lg btn-success btn-block" onclick="addExam()">Add</button>';
+$examTable .= '</table><button data-toggle="modal" data-target="#add" class="btn btn-lg btn-success btn-block">Add</button>';
 
 echo $examTable;
 ?>

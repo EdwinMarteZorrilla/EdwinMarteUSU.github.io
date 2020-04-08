@@ -117,6 +117,27 @@ function saveId(){
 
 }
 
+function deleteId(id){
+  let json = {exam:mainExam,id:id}
+  if(confirm("Are you sure you want to delete this ID?")){
+    $.ajax({
+      type: 'POST',
+      url: './php/delete-id.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+        switchTabs('ids')
+        return true;
+      },
+      error: function (msg) {
+        console.log("AJAX Error");
+        console.log(msg);
+        return false;
+      }
+    });
+  }
+}
+
 function importIds(){
   let csv = document.getElementById('newImport')
   let properties = csv.files[0]
@@ -153,8 +174,13 @@ function switchTabs(tab){
 
     tab2 = document.getElementById('tab2')
     tab2.style = "color:green;"
+
+    tab3 = document.getElementById('tab3')
+    tab3.style = "color:green;"
+
     document.getElementById('exam').style = "display:block;"
     document.getElementById('study_ids').style = "display:none;"
+    document.getElementById('links').style = "display:none;"
 
 
   }
@@ -167,6 +193,7 @@ function switchTabs(tab){
         },
         success: function (data) {
             document.getElementById('exam').style = "display:none;"
+            document.getElementById('links').style = "display:none;"
             document.getElementById('study_ids').style = "display:block;"
             document.getElementById('study_ids').innerHTML = data;
             // console.log(examQuestions);
@@ -183,6 +210,40 @@ function switchTabs(tab){
 
     tab2 = document.getElementById('tab2')
     tab2.style = "background-color:green; color:white"
+    tab3 = document.getElementById('tab3')
+    tab3.style = "color:green;"
+  }
+
+  else if(tab == 'links'){
+    $.ajax({
+        type: 'POST',
+        url: './php/load-exam-links.php',
+        dataType: 'html',
+        data: { 'exam': mainExam
+        },
+        success: function (data) {
+            document.getElementById('exam').style = "display:none;"
+            document.getElementById('links').style = "display:block;"
+            document.getElementById('study_ids').style = "display:none;"
+            document.getElementById('links').innerHTML = data;
+            // console.log(examQuestions);
+            return true;
+        },
+        error: function (msg) {
+            console.log("AJAX Error");
+            console.log(msg);
+            return false;
+        }
+    });
+    tab1 = document.getElementById('tab1')
+    tab1.style = "color:green;"
+
+    tab2 = document.getElementById('tab2')
+    tab2.style = "color:green;"
+
+    tab3 = document.getElementById('tab3')
+    tab3.style = "background-color:green; color:white"
+
   }
 
 
@@ -225,14 +286,6 @@ function goBack(){
 
 }
 
-function addExam(){
-  document.getElementById('add').style.display = 'block';
-  document.getElementById('table').style.display = 'none';
-  document.getElementById('exam').style.display = 'none';
-
-
-
-}
 
 function backToExams(){
   document.getElementById('exam').style.display = 'block';
@@ -522,6 +575,11 @@ function createExam(){
         },
         success: function (data) {
             if(data.result){
+              $('#add').modal('hide')
+              document.getElementById('table').style.display = 'none';
+              document.getElementById('exam').style.display = 'none';
+              document.getElementById('questions').style.display = 'block';
+              document.getElementById('name').value = ''
               return true;
             }
             else{
@@ -536,6 +594,5 @@ function createExam(){
         }
     });
   }
-  document.getElementById('add').style.display = 'none';
-  document.getElementById('questions').style.display = 'block';
+
 }
