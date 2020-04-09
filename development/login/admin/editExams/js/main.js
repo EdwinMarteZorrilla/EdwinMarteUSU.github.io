@@ -117,6 +117,53 @@ function saveId(){
 
 }
 
+
+function saveLink(){
+  let linkName = document.getElementById('linkName').value
+  let link = document.getElementById('newLink').value
+  let json = {exam: mainExam,newLink:link,name:linkName}
+  $.ajax({
+      type: 'POST',
+      url: './php/add-link.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+          $('#addLink').modal('hide')
+          document.getElementById('linkName').value = ''
+          document.getElementById('newLink').value = ''
+          switchTabs('links')
+          // console.log(examQuestions);
+          return true;
+      },
+      error: function (msg) {
+          console.log("AJAX Error");
+          console.log(msg);
+          return false;
+      }
+  });
+}
+
+function deleteLink(link){
+  let json = {exam:mainExam,link:link}
+  if(confirm("Are you sure you want to delete this link?")){
+    $.ajax({
+      type: 'POST',
+      url: './php/delete-link.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+        switchTabs('links')
+        return true;
+      },
+      error: function (msg) {
+        console.log("AJAX Error");
+        console.log(msg);
+        return false;
+      }
+    });
+  }
+}
+
 function deleteId(id){
   let json = {exam:mainExam,id:id}
   if(confirm("Are you sure you want to delete this ID?")){
@@ -263,6 +310,8 @@ function goBack(){
           document.getElementById('table').style.display = 'block';
           document.getElementById('exam').style.display = 'none';
           document.getElementById('study_ids').style.display = 'none';
+          document.getElementById('links').style.display = 'none';
+
 
           var currentExam = document.getElementById('current');
 
