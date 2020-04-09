@@ -65,6 +65,7 @@ $(document).ready(function () {
   });
 
   var input = document.getElementById('image'); /* finds the input */
+  var csvInput = document.getElementById('newImport'); /* finds the input */
 
   function changeLabelText() {
       var value = input.value; /* gets the filepath and filename from the input */
@@ -75,13 +76,229 @@ $(document).ready(function () {
           profilePicLabelText.textContent = value;
       }
   }
+  function changeCsvLabel() {
+    var value = csvInput.value; /* gets the filepath and filename from the input */
+    var fileNameStart = value.lastIndexOf('\\'); /* finds the end of the filepath */
+    value = value.substr(fileNameStart + 1); /* isolates the filename */
+    var profilePicLabelText = document.getElementById('csvlabel'); /* finds the label text */
+    if (value !== '') {
+      profilePicLabelText.textContent = value;
+    }
+  }
 
   input.addEventListener('change',changeLabelText,false);
+  csvInput.addEventListener('change',changeCsvLabel,false);
 
 });
 
 
+function saveId(){
+  // document.getElementById('idInput').style = "display:block;"
+  let id = document.getElementById('newID').value
+  let json = {exam: mainExam,newId:id}
+  $.ajax({
+      type: 'POST',
+      url: './php/add-id.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+          $('#idInput').modal('hide')
+          document.getElementById('newID').value = ''
+          switchTabs('ids')
+          // console.log(examQuestions);
+          return true;
+      },
+      error: function (msg) {
+          console.log("AJAX Error");
+          console.log(msg);
+          return false;
+      }
+  });
+
+}
+
+
+function saveLink(){
+  let linkName = document.getElementById('linkName').value
+  let link = document.getElementById('newLink').value
+  let json = {exam: mainExam,newLink:link,name:linkName}
+  $.ajax({
+      type: 'POST',
+      url: './php/add-link.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+          $('#addLink').modal('hide')
+          document.getElementById('linkName').value = ''
+          document.getElementById('newLink').value = ''
+          switchTabs('links')
+          // console.log(examQuestions);
+          return true;
+      },
+      error: function (msg) {
+          console.log("AJAX Error");
+          console.log(msg);
+          return false;
+      }
+  });
+}
+
+function deleteLink(link){
+  let json = {exam:mainExam,link:link}
+  if(confirm("Are you sure you want to delete this link?")){
+    $.ajax({
+      type: 'POST',
+      url: './php/delete-link.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+        switchTabs('links')
+        return true;
+      },
+      error: function (msg) {
+        console.log("AJAX Error");
+        console.log(msg);
+        return false;
+      }
+    });
+  }
+}
+
+function deleteId(id){
+  let json = {exam:mainExam,id:id}
+  if(confirm("Are you sure you want to delete this ID?")){
+    $.ajax({
+      type: 'POST',
+      url: './php/delete-id.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+        switchTabs('ids')
+        return true;
+      },
+      error: function (msg) {
+        console.log("AJAX Error");
+        console.log(msg);
+        return false;
+      }
+    });
+  }
+}
+
+function importIds(){
+  let csv = document.getElementById('newImport')
+  let properties = csv.files[0]
+  let formData = new FormData();
+  formData.append('file',properties)
+  formData.append('exam',mainExam)
+  $.ajax({
+      type: 'POST',
+      url: './php/import-ids.php',
+      dataType: 'json',
+      data: formData,
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function (data) {
+          $('#importModal').modal('hide')
+          switchTabs('ids')
+          document.getElementById('csvlabel').textContent = 'Choose file'
+          // console.log(examQuestions);
+          return true;
+      },
+      error: function (msg) {
+          console.log("AJAX Error");
+          console.log(msg);
+          return false;
+      }
+  });
+}
+
+function switchTabs(tab){
+  if(tab == 'questions'){
+    tab1 = document.getElementById('tab1')
+    tab1.style = "background-color:green; color:white"
+
+    tab2 = document.getElementById('tab2')
+    tab2.style = "color:green;"
+
+    tab3 = document.getElementById('tab3')
+    tab3.style = "color:green;"
+
+    document.getElementById('exam').style = "display:block;"
+    document.getElementById('study_ids').style = "display:none;"
+    document.getElementById('links').style = "display:none;"
+
+
+  }
+  else if(tab == 'ids'){
+    $.ajax({
+        type: 'POST',
+        url: './php/load-exam-ids.php',
+        dataType: 'html',
+        data: { 'exam': mainExam
+        },
+        success: function (data) {
+            document.getElementById('exam').style = "display:none;"
+            document.getElementById('links').style = "display:none;"
+            document.getElementById('study_ids').style = "display:block;"
+            document.getElementById('study_ids').innerHTML = data;
+            // console.log(examQuestions);
+            return true;
+        },
+        error: function (msg) {
+            console.log("AJAX Error");
+            console.log(msg);
+            return false;
+        }
+    });
+    tab1 = document.getElementById('tab1')
+    tab1.style = "color:green;"
+
+    tab2 = document.getElementById('tab2')
+    tab2.style = "background-color:green; color:white"
+    tab3 = document.getElementById('tab3')
+    tab3.style = "color:green;"
+  }
+
+  else if(tab == 'links'){
+    $.ajax({
+        type: 'POST',
+        url: './php/load-exam-links.php',
+        dataType: 'html',
+        data: { 'exam': mainExam
+        },
+        success: function (data) {
+            document.getElementById('exam').style = "display:none;"
+            document.getElementById('links').style = "display:block;"
+            document.getElementById('study_ids').style = "display:none;"
+            document.getElementById('links').innerHTML = data;
+            // console.log(examQuestions);
+            return true;
+        },
+        error: function (msg) {
+            console.log("AJAX Error");
+            console.log(msg);
+            return false;
+        }
+    });
+    tab1 = document.getElementById('tab1')
+    tab1.style = "color:green;"
+
+    tab2 = document.getElementById('tab2')
+    tab2.style = "color:green;"
+
+    tab3 = document.getElementById('tab3')
+    tab3.style = "background-color:green; color:white"
+
+  }
+
+
+}
+
+
 function goBack(){
+
   $.ajax({
       type: 'GET',
       url: './php/load-exams.php',
@@ -92,7 +309,20 @@ function goBack(){
           document.getElementById('table').innerHTML = data;
           document.getElementById('table').style.display = 'block';
           document.getElementById('exam').style.display = 'none';
-          // console.log(examQuestions);
+          document.getElementById('study_ids').style.display = 'none';
+          document.getElementById('links').style.display = 'none';
+
+
+          var currentExam = document.getElementById('current');
+
+          function changeCurrentExam() {
+              var value = currentExam.value;
+              if (value !== '') {
+                updateExam(value)
+              }
+          }
+
+          currentExam.addEventListener('change',changeCurrentExam,false);
           return true;
       },
       error: function (msg) {
@@ -103,17 +333,8 @@ function goBack(){
   });
   document.getElementById('exam').innerHTML = '';
 
-
 }
 
-function addExam(){
-  document.getElementById('add').style.display = 'block';
-  document.getElementById('table').style.display = 'none';
-  document.getElementById('exam').style.display = 'none';
-
-
-
-}
 
 function backToExams(){
   document.getElementById('exam').style.display = 'block';
@@ -205,7 +426,21 @@ function copyExam(exam){
                 console.log(msg);
                 return false;
             }
+
         });
+        var input = document.getElementById('image'); /* finds the input */
+
+        function changeLabelText() {
+            var value = input.value; /* gets the filepath and filename from the input */
+            var fileNameStart = value.lastIndexOf('\\'); /* finds the end of the filepath */
+            value = value.substr(fileNameStart + 1); /* isolates the filename */
+            var profilePicLabelText = document.getElementById('label'); /* finds the label text */
+            if (value !== '') {
+                profilePicLabelText.textContent = value;
+            }
+        }
+
+        input.addEventListener('change',changeLabelText,false);
         return true;
       },
       error: function (msg) {
@@ -238,6 +473,7 @@ function exportCSV(exam){
     }
   });
 }
+
 
 
 function limitInput(event) {
@@ -275,6 +511,7 @@ function limitInput(event) {
 };
 
 function newQuestion(){
+
   let question = document.getElementById('question').value
   let a = document.getElementById('A').value
   let b = document.getElementById('B').value
@@ -283,18 +520,31 @@ function newQuestion(){
   let e = document.getElementById('E').value
   let correct = document.getElementById('correct').value.toUpperCase()
   var input = document.getElementById('image');
-
+  let properties = input.files[0]
+  // properties['question'] = question
+  // properties = JSON.stringify(prop?erties)
+  let formData = new FormData();
   var value = input.value;
   var fileNameStart = value.lastIndexOf('\\');
   value = value.substr(fileNameStart + 1);
-  let json = {question: question,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam,image:value}
+  const json = {question: question,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam,image:value}
+  formData.append("file", properties)
+  for (var key in json){
+    formData.append(key,json[key])
+  }
+
+
+
   if(a != '' && b != '' && correct != ''){
     if(confirm("Add question?")){
       $.ajax({
         type: 'POST',
         url: './php/add-question.php',
         dataType: 'json',
-        data: json,
+        data: formData,
+        contentType: false,
+        cache: false,
+        processData: false,
         success: function (data) {
           if(data.result){
             editExam(mainExam)
@@ -374,6 +624,11 @@ function createExam(){
         },
         success: function (data) {
             if(data.result){
+              $('#add').modal('hide')
+              document.getElementById('table').style.display = 'none';
+              document.getElementById('exam').style.display = 'none';
+              document.getElementById('questions').style.display = 'block';
+              document.getElementById('name').value = ''
               return true;
             }
             else{
@@ -388,6 +643,5 @@ function createExam(){
         }
     });
   }
-  document.getElementById('add').style.display = 'none';
-  document.getElementById('questions').style.display = 'block';
+
 }
