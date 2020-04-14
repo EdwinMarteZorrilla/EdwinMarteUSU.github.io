@@ -7,9 +7,11 @@ USE journal;
 CREATE TABLE entries (
 	id INT NOT NULL AUTO_INCREMENT,
 	username VARCHAR(100) NOT NULL,
-    date DATE NOT NULL,
+	email VARCHAR(100) NOT NULL,
+    event_date DATE NOT NULL,
+    journal_entry_date DATE NOT NULL,
     test VARCHAR(100) NOT NULL,
-    acivity VARCHAR(100) NOT NULL,
+    activity VARCHAR(100) NOT NULL,
     detail VARCHAR(21844),
 	PRIMARY KEY (id)
 );
