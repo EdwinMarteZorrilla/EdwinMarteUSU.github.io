@@ -14,7 +14,6 @@ if (isset($_GET['logout'])) {
 
 require_once('../header/header.php');
 require_once('./journalFunctions.php');
-loadJournalData();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,7 +35,42 @@ loadJournalData();
 </head>
 
 <body>
-    <h1>Test Journal</h1>
+    <h1>Exams Journal</h1>
+	<form method="post" action="journalFunctions.php">
+
+		<?php echo display_error(); ?>
+
+		<div class="input-group">
+			<label>Username</label>
+			<input type="text" name="username" value="<?php echo $username; ?>">
+		</div>
+		<div class="input-group">
+			<label>Email</label>
+			<input type="email" name="email" value="<?php echo $email; ?>">
+		</div>
+		<div class="input-group">
+			<label>Event Date</label>
+			<input type="date" name="event_date">
+		</div>
+		<div class="input-group">
+			<label>Test Name</label>
+			<input type="text" name="test">
+		</div>
+		<div class="input-group">
+			<label>Activity Type</label>
+			<input type="text" name="activity">
+		</div>
+		<div class="input-group">
+			<label>Details (Optional)</label>
+			<input type="text" name="detail">
+		</div>
+		<div class="input-group">
+			<button type="submit" class="btn" name="add_entry_btn">Add Entry</button>
+		</div>
+	</form>
+    <div>
+        <?php loadJournalData(); ?>
+    </div>
 </body>
 
 </html>
