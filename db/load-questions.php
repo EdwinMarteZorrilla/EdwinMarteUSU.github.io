@@ -32,7 +32,7 @@ $questionsJSON = '{"exam": {"pos": 0, "questions": [';
 
 while($row = $result->fetch_assoc()){
     $counter++;
-    $questionsJSON .= '{"id": ' . $row['question_id'] . ',';
+    $questionsJSON .= '{"id": ' . $counter . ',';
     $questionsJSON .= '"text": "' . preg_replace('/[[:^print:]]/', '', $row['question']) . '",';
 
     if($row['image'] !== 'NULL'){

@@ -10,16 +10,19 @@ $examTable .= '<nav class="nav nav-pills nav-fill"><a id="tab1" style="backgroun
 $examTable .= '<a id="tab3" onclick="switchTabs(\'links\')" style=" color:green" class="nav-item nav-link" href="#">Links</a></nav>';
 $examTable .= '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
 $examTable .= '<button class="btn btn-lg btn-success" onclick="modify()">Add Question</button></div>';
-$examTable .= '<table class="table table-striped table-bordered"><tr><th>Question</th><th>Text</th><th>Image</th><th>Answer</th></tr>';
+$examTable .= '<table class="table table-striped table-bordered"><tr><th>Question</th><th>Text</th><th>Image</th><th>Answer</th><th></th></tr>';
 
+$counter = 1;
 while($row = $result->fetch_assoc()){
-  $examTable .= '<tr><td>' . $row['question_id'] . '</td><td>' . $row['question'] . '</td><td>' . $row['image'] . '</td><td>' . $row['answer'] . '</td></tr>';
+  $examTable .= '<tr><td>' . $counter . '</td><td>' . $row['question'] . '</td><td>' . $row['image'] . '</td><td>' . $row['answer'] . '</td>';
+  $examTable .= '<td><button style="margin-right:10px; margin-left:10px" class="btn btn-outline-danger btn-sm" onclick="deleteQuestion(\'' . $row['question_id'] . '\')">Delete</button></td></tr>';
   $answer = mysqli_query($connect, "SELECT answer FROM answers" . $_POST['exam'] . " WHERE question_id = " . $row['question_id'] . ";");
-  $examTable .= '<tr><td>Answers</td><td colspan=3><ol>';
+  $examTable .= '<tr><td>Answers</td><td colspan=4><ol>';
   while($row2 = $answer->fetch_assoc()){
     $examTable .= "<li = type='A'>" . $row2['answer'] . "</li>";
   }
   $examTable .= '</ol></td></tr>';
+  $counter++;
 }
 $examTable .= '</table>';
 $examTable .= '<div style="display:flex; justify-content:space-between; padding:15px"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';

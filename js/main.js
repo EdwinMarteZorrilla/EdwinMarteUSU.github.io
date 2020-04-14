@@ -1,5 +1,5 @@
 /*jshint multistr: true */
-
+let links = []
 var DEBUG_MODE = true;
 var NUM_TEST_QUESTIONS = 0; // 0 for all
 
@@ -976,13 +976,77 @@ $(document).ready(function () {
 
     $.ajax({
         type: 'POST',
+        url: './db/get_links.php',
+        dataType: 'json',
+        data: {
+        },
+        success: function (data) {
+            links = data.links
+            return true;
+        },
+        error: function (msg) {
+            console.log("AJAX Error");
+            console.log(msg);
+            return false;
+        }
+    });
+
+
+    $.ajax({
+        type: 'POST',
         url: './db/get_study_ids.php',
         dataType: 'html',
         data: {
         },
         success: function (data) {
             document.getElementById('login-modal').innerHTML += data
-            // console.log(examQuestions);
+            $(".participant_id").on('input', function () {
+                var study_id = $('#study_id').val();
+                var dob = $('#dob').val();
+                var a_number = $('#a_number').val();
+
+                if ((typeof study_id != 'undefined' && study_id != "") &&
+                    (typeof dob != 'undefined' && dob != "") &&
+                    (typeof a_number != 'undefined' && a_number != "" && a_number.length > 3)) {
+
+                    $('#login').show();
+                } else {
+                    $('#login').hide();
+                }
+            });
+
+            $("#login").click(function (event) {
+                event.preventDefault();
+
+                // read input from user and create ID
+                var study_id = $('#study_id').val().toUpperCase();
+                var dob = pad($('#dob').val(), 2);
+                var a_number = pad($('#a_number').val(), 4);
+                var id = dob + a_number;
+
+                // save the User ID in a cookie
+                setUserID(id);
+                setStudyID(study_id);
+
+                $('#login-modal').modal('hide');
+
+                // Show Study intro message
+                showMessage(getStudyIntroMessageHTML());
+
+                // hide prompt question button
+                $('#save_prompt_answer').hide();
+
+                // check if there is and answer
+                $("#prompt_answer").on('input', function () {
+                    var answer = $('#prompt_answer').val();
+
+                    if (typeof answer != 'undefined' && answer != "" && answer.length > 0) {
+                        $('#save_prompt_answer').show();
+                    } else {
+                        $('#save_prompt_answer').hide();
+                    }
+                });
+            });
             return true;
         },
         error: function (msg) {
@@ -1028,58 +1092,13 @@ $(document).ready(function () {
         }, HALFTIME_BREAK_TIME * 1000);
     });
 
-    $("#login").click(function (event) {
-        event.preventDefault();
 
-        // read input from user and create ID
-        var study_id = $('#study_id').val().toUpperCase();
-        var dob = pad($('#dob').val(), 2);
-        var a_number = pad($('#a_number').val(), 4);
-        var id = dob + a_number;
-
-        // save the User ID in a cookie
-        setUserID(id);
-        setStudyID(study_id);
-
-        $('#login-modal').modal('hide');
-
-        // Show Study intro message
-        showMessage(getStudyIntroMessageHTML());
-
-        // hide prompt question button
-        $('#save_prompt_answer').hide();
-
-        // check if there is and answer
-        $("#prompt_answer").on('input', function () {
-            var answer = $('#prompt_answer').val();
-
-            if (typeof answer != 'undefined' && answer != "" && answer.length > 0) {
-                $('#save_prompt_answer').show();
-            } else {
-                $('#save_prompt_answer').hide();
-            }
-        });
-    });
 
     // Make sure only numbers accepted
     $(".number_text").on('keypress', function (event) {
         return event.charCode >= 48 && event.charCode <= 57;
     });
 
-    // here the participant ID is generated
-    $(".participant_id").on('input', function () {
-        var study_id = $('#study_id').val();
-        var dob = $('#dob').val();
-        var a_number = $('#a_number').val();
 
-        if ((typeof study_id != 'undefined' && study_id != "") &&
-            (typeof dob != 'undefined' && dob != "") &&
-            (typeof a_number != 'undefined' && a_number != "" && a_number.length > 3)) {
-
-            $('#login').show();
-        } else {
-            $('#login').hide();
-        }
-    });
 
 });

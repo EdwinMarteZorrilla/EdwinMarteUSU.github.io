@@ -121,7 +121,8 @@ function saveId(){
 function saveLink(){
   let linkName = document.getElementById('linkName').value
   let link = document.getElementById('newLink').value
-  let json = {exam: mainExam,newLink:link,name:linkName}
+  let time = document.getElementById('time').value
+  let json = {exam: mainExam,newLink:link,name:linkName,time:time}
   $.ajax({
       type: 'POST',
       url: './php/add-link.php',
@@ -153,6 +154,27 @@ function deleteLink(link){
       data: json,
       success: function (data) {
         switchTabs('links')
+        return true;
+      },
+      error: function (msg) {
+        console.log("AJAX Error");
+        console.log(msg);
+        return false;
+      }
+    });
+  }
+}
+
+function deleteQuestion(id){
+  let json = {exam:mainExam,id:id}
+  if(confirm("Are you sure you want to delete this question?")){
+    $.ajax({
+      type: 'POST',
+      url: './php/delete-question.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+        editExam(mainExam)
         return true;
       },
       error: function (msg) {
