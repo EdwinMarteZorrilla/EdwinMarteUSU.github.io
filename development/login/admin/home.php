@@ -1,4 +1,4 @@
-<?php 
+<?php
 include('../functions.php');
 
 if (!isAdmin()) {
@@ -35,8 +35,8 @@ if (isset($_GET['logout'])) {
         <?php if (isset($_SESSION['success'])) : ?>
             <div class="error success" >
                 <h3>
-                    <?php 
-                        echo $_SESSION['success']; 
+                    <?php
+                        echo $_SESSION['success'];
                         unset($_SESSION['success']);
                     ?>
                 </h3>
@@ -50,7 +50,7 @@ if (isset($_GET['logout'])) {
                     <strong><?php echo $_SESSION['user']['username']; ?></strong>
 
                     <small>
-                        <i  style="color: #888;">(<?php echo ucfirst($_SESSION['user']['user_type']); ?>)</i> 
+                        <i  style="color: #888;">(<?php echo ucfirst($_SESSION['user']['user_type']); ?>)</i>
                     </small>
 
                 <?php endif ?>
@@ -60,6 +60,7 @@ if (isset($_GET['logout'])) {
             <div id="menu">
                 <ul>
                     <li><a href="create_user.php">Add New Admin User</a></li>
+                    <li><a href="agenda/index.php">Agenda</a></li>
                     <li><a href="editExams/index.php">Edit Exams</a></li>
                 </ul>
             </div>
