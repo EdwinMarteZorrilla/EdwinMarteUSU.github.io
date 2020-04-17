@@ -36,13 +36,14 @@ $(document).ready(function () {
           window.URL.revokeObjectURL(url);
       };
   }());
-  $.ajax({
-      type: 'GET',
-      url: './php/load-exams.php',
-      dataType: 'html',
-      data: {
-      },
-      success: function (data) {
+
+    jQuery.ajax({
+        type: "POST",
+        url: './php/editExamsConnect.php',
+        dataType: 'html',
+        data: {functionname: 'loadExams'},
+    
+        success: function (data) {
           exams = data;
           document.getElementById('table').innerHTML = data;
           var currentExam = document.getElementById('current');
@@ -62,7 +63,7 @@ $(document).ready(function () {
           console.log(msg);
           return false;
       }
-  });
+    });
 
   var input = document.getElementById('image'); /* finds the input */
   var csvInput = document.getElementById('newImport'); /* finds the input */
@@ -254,12 +255,13 @@ function switchTabs(tab){
 
   }
   else if(tab == 'ids'){
-    $.ajax({
-        type: 'POST',
-        url: './php/load-exam-ids.php',
+
+
+    jQuery.ajax({
+        type: "POST",
+        url: './php/editExamsConnect.php',
         dataType: 'html',
-        data: { 'exam': mainExam
-        },
+        data: {functionname: 'loadExamIds', parameters: { 'exam': mainExam }},
         success: function (data) {
             document.getElementById('exam').style = "display:none;"
             document.getElementById('links').style = "display:none;"
@@ -284,18 +286,16 @@ function switchTabs(tab){
   }
 
   else if(tab == 'links'){
-    $.ajax({
-        type: 'POST',
-        url: './php/load-exam-links.php',
+    jQuery.ajax({
+        type: "POST",
+        url: './php/editExamsConnect.php',
         dataType: 'html',
-        data: { 'exam': mainExam
-        },
+        data: {functionname: 'loadExamLinks', parameters: { 'exam': mainExam }},
         success: function (data) {
             document.getElementById('exam').style = "display:none;"
             document.getElementById('links').style = "display:block;"
             document.getElementById('study_ids').style = "display:none;"
             document.getElementById('links').innerHTML = data;
-            // console.log(examQuestions);
             return true;
         },
         error: function (msg) {
@@ -312,22 +312,19 @@ function switchTabs(tab){
 
     tab3 = document.getElementById('tab3')
     tab3.style = "background-color:green; color:white"
-
   }
-
-
 }
 
 
 function goBack(){
 
-  $.ajax({
-      type: 'GET',
-      url: './php/load-exams.php',
-      dataType: 'html',
-      data: {
-      },
-      success: function (data) {
+    jQuery.ajax({
+        type: "POST",
+        url: './php/editExamsConnect.php',
+        dataType: 'html',
+        data: {functionname: 'loadExams'},
+    
+        success: function (data) {
           document.getElementById('table').innerHTML = data;
           document.getElementById('table').style.display = 'block';
           document.getElementById('exam').style.display = 'none';
@@ -352,9 +349,8 @@ function goBack(){
           console.log(msg);
           return false;
       }
-  });
+    });
   document.getElementById('exam').innerHTML = '';
-
 }
 
 
@@ -373,13 +369,15 @@ function deleteExam(exam){
       dataType: 'json',
       data: json,
       success: function (data) {
-        $.ajax({
-            type: 'GET',
-            url: './php/load-exams.php',
-            dataType: 'html',
-            data: {
-            },
-            success: function (data) {
+          
+
+    jQuery.ajax({
+        type: "POST",
+        url: './php/editExamsConnect.php',
+        dataType: 'html',
+        data: {functionname: 'loadExams'},
+    
+        success: function (data) {
                 exams = data;
                 document.getElementById('table').innerHTML = data;
                 var currentExam = document.getElementById('current');
@@ -416,60 +414,60 @@ function copyExam(exam){
   let name = prompt("Enter the name for the new exam")
   let json = {copy: exam, new: name}
   if(name != null || name != ""){
-    $.ajax({
-      type: 'POST',
-      url: './php/copyExam.php',
-      dataType: 'json',
-      data: json,
-      success: function (data) {
-        $.ajax({
-            type: 'GET',
-            url: './php/load-exams.php',
+
+    jQuery.ajax({
+        type: "POST",
+        url: './php/editExamsConnect.php',
+        dataType: 'json',
+        data: {functionname: 'copyExams', parameters: {copy: exam, new: name}},
+        success: function (data) {
+        jQuery.ajax({
+            type: "POST",
+            url: './php/editExamsConnect.php',
             dataType: 'html',
-            data: {
-            },
+            data: {functionname: 'loadExams'},
             success: function (data) {
-                exams = data;
-                document.getElementById('table').innerHTML = data;
-                var currentExam = document.getElementById('current');
-
-                function changeCurrentExam() {
-                    var value = currentExam.value;
-                    if (value !== '') {
-                      updateExam(value)
+                    exams = data;
+                    document.getElementById('table').innerHTML = data;
+                    var currentExam = document.getElementById('current');
+    
+                    function changeCurrentExam() {
+                        var value = currentExam.value;
+                        if (value !== '') {
+                          updateExam(value)
+                        }
                     }
+    
+                    currentExam.addEventListener('change',changeCurrentExam,false);
+                    return true;
+                },
+                error: function (msg) {
+                    console.log("AJAX Error");
+                    console.log(msg);
+                    return false;
                 }
-
-                currentExam.addEventListener('change',changeCurrentExam,false);
-                return true;
-            },
-            error: function (msg) {
-                console.log("AJAX Error");
-                console.log(msg);
-                return false;
+    
+            });
+    
+            var input = document.getElementById('image'); /* finds the input */
+    
+            function changeLabelText() {
+                var value = input.value; /* gets the filepath and filename from the input */
+                var fileNameStart = value.lastIndexOf('\\'); /* finds the end of the filepath */
+                value = value.substr(fileNameStart + 1); /* isolates the filename */
+                var profilePicLabelText = document.getElementById('label'); /* finds the label text */
+                if (value !== '') {
+                    profilePicLabelText.textContent = value;
+                }
             }
-
-        });
-        var input = document.getElementById('image'); /* finds the input */
-
-        function changeLabelText() {
-            var value = input.value; /* gets the filepath and filename from the input */
-            var fileNameStart = value.lastIndexOf('\\'); /* finds the end of the filepath */
-            value = value.substr(fileNameStart + 1); /* isolates the filename */
-            var profilePicLabelText = document.getElementById('label'); /* finds the label text */
-            if (value !== '') {
-                profilePicLabelText.textContent = value;
-            }
-        }
-
-        input.addEventListener('change',changeLabelText,false);
-        return true;
-      },
-      error: function (msg) {
-        console.log("AJAX Error");
-        console.log(msg);
-        return false;
-      }
+            input.addEventListener('change',changeLabelText,false);
+            return true;
+          },
+          error: function (msg) {
+            console.log("AJAX Error");
+            console.log(msg);
+            return false;
+          }
     });
   }
 }
@@ -607,15 +605,14 @@ function modify(){
 
 function editExam(exam){
   mainExam = exam
-  $.ajax({
-      type: 'POST',
-      url: './php/load-exam-questions.php',
-      dataType: 'html',
-      data: { 'exam': exam
-      },
-      success: function (data) {
+
+    jQuery.ajax({
+        type: "POST",
+        url: './php/editExamsConnect.php',
+        dataType: 'html',
+        data: {functionname: 'loadExamQuestions', parameters: { 'exam': exam }},
+        success: function (data) {
           document.getElementById('exam').innerHTML = data;
-          // console.log(examQuestions);
           return true;
       },
       error: function (msg) {
@@ -624,7 +621,6 @@ function editExam(exam){
           return false;
       }
   });
-
   document.getElementById('table').style.display = 'none';
   document.getElementById('exam').style.display = 'block';
   document.getElementById('add').style.display = 'none';

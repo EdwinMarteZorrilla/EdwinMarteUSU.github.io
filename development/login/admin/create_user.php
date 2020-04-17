@@ -19,11 +19,7 @@
 	</div>
 
     <div class="contentMiddle">
-            <div id="menu">
-                <ul>
-                    <li><a href="home.php">Home</a></li>
-                </ul>
-            </div>
+        <?php include('./header/header.php') ?>
 	</div>
 	
 	<form method="post" action="create_user.php">

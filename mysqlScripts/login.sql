@@ -1,8 +1,8 @@
---Created by: Eduardo Cordova
---Date: 2020-March-17
+-- Created by: Eduardo Cordova
+-- Date: 2020-March-17
 
---If you have not created the login database uncomment the next line
---CREATE DATABASE login;
+-- If you have not created the login database uncomment the next line
+-- CREATE DATABASE login;
 USE login;
 CREATE TABLE users (
 	id INT NOT NULL AUTO_INCREMENT,
