@@ -8,7 +8,7 @@ $errors   = array();
 
 function loadJournalData() {
     global $db;
-    $sql = "SELECT username, email, event_date, journal_entry_date, test, activity, detail
+    $sql = "SELECT journal_entry_date, username, email, event_date, test, activity, detail
             FROM entries";
     $result = mysqli_query($db,$sql);
     return $result->fetch_all();

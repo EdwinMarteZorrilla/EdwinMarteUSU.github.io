@@ -71,9 +71,9 @@ require_once('./journalFunctions.php');
     <div>
         <table id="journalTable">
             <tr>
+                <th>Date of Entry</th>
                 <th>User</th>
                 <th>Email</th>
-                <th>Date of Entry</th>
                 <th>Date of Event</th>
                 <th>Test</th>
                 <th>Activity</th>
