@@ -604,15 +604,14 @@ function modify(){
 
 function editExam(exam){
   mainExam = exam
-  $.ajax({
-      type: 'POST',
-      url: './php/load-exam-questions.php',
-      dataType: 'html',
-      data: { 'exam': exam
-      },
-      success: function (data) {
+
+    jQuery.ajax({
+        type: "POST",
+        url: './php/editExamsConnect.php',
+        dataType: 'html',
+        data: {functionname: 'loadExamQuestions', parameters: { 'exam': exam }},
+        success: function (data) {
           document.getElementById('exam').innerHTML = data;
-          // console.log(examQuestions);
           return true;
       },
       error: function (msg) {
@@ -621,7 +620,6 @@ function editExam(exam){
           return false;
       }
   });
-
   document.getElementById('table').style.display = 'none';
   document.getElementById('exam').style.display = 'block';
   document.getElementById('add').style.display = 'none';
