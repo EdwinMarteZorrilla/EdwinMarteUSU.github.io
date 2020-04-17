@@ -70,28 +70,27 @@ function loadExams() {
 }
 
 function copyExams($parameters) {
-    $connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exams");
-    $exam = "CREATE TABLE " . $parameters['new'] . " ( question_id INT NOT NULL AUTO_INCREMENT, question VARCHAR(21844) NOT NULL, image VARCHAR(1000), answer VARCHAR(5) NOT NULL, PRIMARY KEY (question_id));";
-    $answers = "CREATE TABLE answers" . $parameters['new'] . " ( answer_id INT NOT NULL AUTO_INCREMENT, question_id INT NOT NULL, answer VARCHAR(21844) NOT NULL, PRIMARY KEY (answer_id));
-    ";
-    $ids = "CREATE TABLE ids" . $parameters['new'] . " (id INT NOT NULL AUTO_INCREMENT, study_id VARCHAR(100) NOT NULL, PRIMARY KEY (id))";
-    $links = "CREATE TABLE links" . $parameters['new'] . "(id INT NOT NULL AUTO_INCREMENT, name VARCHAR(200) NOT NULL, link VARCHAR(2000), after INT NOT NULL, PRIMARY KEY (id))";
+    global $connect;
+    $exam = "CREATE TABLE exams." . $parameters['new'] . " ( question_id INT NOT NULL AUTO_INCREMENT, question VARCHAR(21844) NOT NULL, image VARCHAR(1000), answer VARCHAR(5) NOT NULL, PRIMARY KEY (question_id));";
+    $answers = "CREATE TABLE exams.answers" . $parameters['new'] . " ( answer_id INT NOT NULL AUTO_INCREMENT, question_id INT NOT NULL, answer VARCHAR(21844) NOT NULL, PRIMARY KEY (answer_id));";
+    $ids = "CREATE TABLE exams.ids" . $parameters['new'] . " (id INT NOT NULL AUTO_INCREMENT, study_id VARCHAR(100) NOT NULL, PRIMARY KEY (id))";
+    $links = "CREATE TABLE exams.links" . $parameters['new'] . "(id INT NOT NULL AUTO_INCREMENT, name VARCHAR(200) NOT NULL, link VARCHAR(2000), after INT NOT NULL, PRIMARY KEY (id))";
     $result = mysqli_query($connect,$exam);
     $result2 = mysqli_query($connect,$answers);
     $result3 = mysqli_query($connect,$ids);
     $result4 = mysqli_query($connect,$links);
     
-    $copyQuests = 'INSERT ' . $parameters['new'] . ' SELECT * FROM ' . $parameters['copy'];
-    $copyIds = 'INSERT ids' . $parameters['new'] . ' SELECT * FROM ids' . $parameters['copy'];
-    $copyAns = 'INSERT answers' . $parameters['new'] . ' SELECT * FROM answers' . $parameters['copy'];
-    $copyLinks = 'INSERT links' . $parameters['new'] . ' SELECT * FROM links' . $parameters['copy'];
+    $copyQuests = 'INSERT exams.' . $parameters['new'] . ' SELECT * FROM exams.' . $parameters['copy'];
+    $copyIds = 'INSERT exams.ids' . $parameters['new'] . ' SELECT * FROM exams.ids' . $parameters['copy'];
+    $copyAns = 'INSERT exams.answers' . $parameters['new'] . ' SELECT * FROM exams.answers' . $parameters['copy'];
+    $copyLinks = 'INSERT exams.links' . $parameters['new'] . ' SELECT * FROM exams.links' . $parameters['copy'];
     $result5 = mysqli_query($connect,$copyQuests);
     $result6 = mysqli_query($connect,$copyAns);
     $result7 = mysqli_query($connect,$copyLinks);
     $result8 = mysqli_query($connect,$copyIds);
     
     
-    $sql = "SELECT question_id, question, image, answer FROM " . $parameters['copy'];
+    $sql = "SELECT question_id, question, image, answer FROM exams." . $parameters['copy'];
     $result = mysqli_query($connect,$sql);
     return '{"result": true}';
 }
