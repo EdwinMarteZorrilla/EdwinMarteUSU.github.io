@@ -4,18 +4,6 @@ require_once('/var/www/html/NHR-Core/include/config.php');
 
 $connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "");
 
-function addId($exam, $newId) {
-    global $connect;
-    $sql = "INSERT INTO exams.ids" . $_POST['exam'] . " (study_id) VALUES('" . $_POST['newId'] . "')";
-    $result = mysqli_query($connect,$sql);
-    if($result){
-      echo '{"result": true}';
-    }
-    else{
-      echo '{"result": false}';
-    }
-}
-
 function loadExams() {
     global $connect;
     $result = mysqli_query($connect,"SHOW TABLES IN exams;");
