@@ -23,6 +23,10 @@ if( !isset($aResult['error']) ) {
             $parameters = $_POST['parameters'];
             $aResult = copyExams($parameters);
             break;
+        case 'loadExamLinks':
+            $parameters = $_POST['parameters'];
+            $aResult = loadExamLinks($parameters);
+            break;
 
         default:
            $aResult['error'] = 'Not found function '.$_POST['functionname'].'!';

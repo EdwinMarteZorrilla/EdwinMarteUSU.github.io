@@ -285,18 +285,16 @@ function switchTabs(tab){
   }
 
   else if(tab == 'links'){
-    $.ajax({
-        type: 'POST',
-        url: './php/load-exam-links.php',
+    jQuery.ajax({
+        type: "POST",
+        url: './php/editExamsConnect.php',
         dataType: 'html',
-        data: { 'exam': mainExam
-        },
+        data: {functionname: 'loadExamLinks', parameters: { 'exam': mainExam }},
         success: function (data) {
             document.getElementById('exam').style = "display:none;"
             document.getElementById('links').style = "display:block;"
             document.getElementById('study_ids').style = "display:none;"
             document.getElementById('links').innerHTML = data;
-            // console.log(examQuestions);
             return true;
         },
         error: function (msg) {
@@ -313,10 +311,7 @@ function switchTabs(tab){
 
     tab3 = document.getElementById('tab3')
     tab3.style = "background-color:green; color:white"
-
   }
-
-
 }
 
 
