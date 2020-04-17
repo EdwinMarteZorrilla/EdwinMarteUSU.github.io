@@ -16,7 +16,7 @@ if( !isset($aResult['error']) ) {
         case 'add-id':
             $aResult['data'] = addId();
             break;
-        case 'load-exams':
+        case 'loadExams':
             $aResult = loadExams();
             break;
 

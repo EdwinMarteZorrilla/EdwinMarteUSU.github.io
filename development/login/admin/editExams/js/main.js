@@ -41,7 +41,7 @@ $(document).ready(function () {
         type: "POST",
         url: './php/editExamsConnect.php',
         dataType: 'html',
-        data: {functionname: 'load-exams'},
+        data: {functionname: 'loadExams'},
     
         success: function (data) {
           exams = data;
@@ -322,13 +322,13 @@ function switchTabs(tab){
 
 function goBack(){
 
-  $.ajax({
-      type: 'GET',
-      url: './php/load-exams.php',
-      dataType: 'html',
-      data: {
-      },
-      success: function (data) {
+    jQuery.ajax({
+        type: "POST",
+        url: './php/editExamsConnect.php',
+        dataType: 'html',
+        data: {functionname: 'loadExams'},
+    
+        success: function (data) {
           document.getElementById('table').innerHTML = data;
           document.getElementById('table').style.display = 'block';
           document.getElementById('exam').style.display = 'none';
@@ -353,9 +353,8 @@ function goBack(){
           console.log(msg);
           return false;
       }
-  });
+    });
   document.getElementById('exam').innerHTML = '';
-
 }
 
 
@@ -374,13 +373,15 @@ function deleteExam(exam){
       dataType: 'json',
       data: json,
       success: function (data) {
-        $.ajax({
-            type: 'GET',
-            url: './php/load-exams.php',
-            dataType: 'html',
-            data: {
-            },
-            success: function (data) {
+          
+
+    jQuery.ajax({
+        type: "POST",
+        url: './php/editExamsConnect.php',
+        dataType: 'html',
+        data: {functionname: 'loadExams'},
+    
+        success: function (data) {
                 exams = data;
                 document.getElementById('table').innerHTML = data;
                 var currentExam = document.getElementById('current');
@@ -423,13 +424,14 @@ function copyExam(exam){
       dataType: 'json',
       data: json,
       success: function (data) {
-        $.ajax({
-            type: 'GET',
-            url: './php/load-exams.php',
-            dataType: 'html',
-            data: {
-            },
-            success: function (data) {
+
+    jQuery.ajax({
+        type: "POST",
+        url: './php/editExamsConnect.php',
+        dataType: 'html',
+        data: {functionname: 'loadExams'},
+    
+        success: function (data) {
                 exams = data;
                 document.getElementById('table').innerHTML = data;
                 var currentExam = document.getElementById('current');
@@ -451,6 +453,7 @@ function copyExam(exam){
             }
 
         });
+
         var input = document.getElementById('image'); /* finds the input */
 
         function changeLabelText() {
