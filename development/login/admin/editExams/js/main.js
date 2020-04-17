@@ -255,12 +255,13 @@ function switchTabs(tab){
 
   }
   else if(tab == 'ids'){
-    $.ajax({
-        type: 'POST',
-        url: './php/load-exam-ids.php',
+
+
+    jQuery.ajax({
+        type: "POST",
+        url: './php/editExamsConnect.php',
         dataType: 'html',
-        data: { 'exam': mainExam
-        },
+        data: {functionname: 'loadExamIds', parameters: { 'exam': mainExam }},
         success: function (data) {
             document.getElementById('exam').style = "display:none;"
             document.getElementById('links').style = "display:none;"
