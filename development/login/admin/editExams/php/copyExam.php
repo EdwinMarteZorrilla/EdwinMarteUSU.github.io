@@ -3,6 +3,10 @@
 require_once('../../../../../include/config.php');
 
 $connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exams");
+
+echo($_POST['new']);
+echo($_POST['copy']);
+
 $exam = "CREATE TABLE " . $_POST['new'] . " ( question_id INT NOT NULL AUTO_INCREMENT, question VARCHAR(21844) NOT NULL, image VARCHAR(1000), answer VARCHAR(5) NOT NULL, PRIMARY KEY (question_id));";
 $answers = "CREATE TABLE answers" . $_POST['new'] . " ( answer_id INT NOT NULL AUTO_INCREMENT, question_id INT NOT NULL, answer VARCHAR(21844) NOT NULL, PRIMARY KEY (answer_id));
 ";
