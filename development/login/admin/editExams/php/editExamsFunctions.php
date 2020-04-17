@@ -2,11 +2,11 @@
 
 require_once('/var/www/html/NHR-Core/include/config.php');
 
-$connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exams");
+$connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "");
 
 function addId($exam, $newId) {
     global $connect;
-    $sql = "INSERT INTO ids" . $_POST['exam'] . " (study_id) VALUES('" . $_POST['newId'] . "')";
+    $sql = "INSERT INTO exams.ids" . $_POST['exam'] . " (study_id) VALUES('" . $_POST['newId'] . "')";
     $result = mysqli_query($connect,$sql);
     if($result){
       echo '{"result": true}';
@@ -17,11 +17,9 @@ function addId($exam, $newId) {
 }
 
 function loadExams() {
-    $connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exams");
-    $result = mysqli_query($connect,"SHOW TABLES;");
-    $current = mysqli_query($connect,"SELECT * FROM current;");
-    
-    
+    global $connect;
+    $result = mysqli_query($connect,"SHOW TABLES IN exams;");
+    $current = mysqli_query($connect,"SELECT * FROM exams.current;");
     
     while($row = $current->fetch_assoc()){
       $temp = $row['currentExam'];
@@ -35,16 +33,14 @@ function loadExams() {
       }
     }
     
-    
     $examTable .= '</select></div>';
     $examTable .= '<table class="table table-striped table-bordered"> <tr><th>Exams</th><th></th></tr>';
     
-    $result = mysqli_query($connect,"SHOW TABLES;");
-    $connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "agenda");
+    $result = mysqli_query($connect,"SHOW TABLES IN exams;");
     
     while($row = $result->fetch_assoc()){
       if(substr($row['Tables_in_exams'],0,5) != 'links' and substr($row['Tables_in_exams'],0,3) != 'ids' and substr($row['Tables_in_exams'],0,3) != 'ans' and $row['Tables_in_exams'] !='current' ){
-        $sql = "SELECT taken FROM dates WHERE exam='" . $row['Tables_in_exams'] . "'";
+        $sql = "SELECT taken FROM agenda.dates WHERE exam='" . $row['Tables_in_exams'] . "'";
         $result2 = mysqli_query($connect,$sql);
         $flag = false;
         while($row2 = $result2->fetch_assoc()){
