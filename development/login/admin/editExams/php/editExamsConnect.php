@@ -1,0 +1,34 @@
+<?php
+
+require_once('/var/www/html/NHR-Core/development/login/admin/editExams/php/editExamsFunctions.php');
+
+//header('Content-Type: application/json');
+
+$aResult = array();
+
+if( !isset($_POST['functionname']) ) { $aResult['error'] = 'No function name!'; }
+
+//if( !isset($_POST['arguments']) ) { $aResult['error'] = 'No function arguments!'; }
+
+if( !isset($aResult['error']) ) {
+
+    switch($_POST['functionname']) {
+        case 'add-id':
+            $aResult['data'] = addId();
+            break;
+        case 'load-exams':
+            $aResult = loadExams();
+            break;
+
+        default:
+           $aResult['error'] = 'Not found function '.$_POST['functionname'].'!';
+           break;
+    }
+
+}
+
+//echo json_encode($aResult);
+echo $aResult;
+
+?>
+

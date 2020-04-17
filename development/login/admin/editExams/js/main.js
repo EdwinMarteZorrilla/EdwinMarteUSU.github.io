@@ -36,13 +36,14 @@ $(document).ready(function () {
           window.URL.revokeObjectURL(url);
       };
   }());
-  $.ajax({
-      type: 'GET',
-      url: './php/load-exams.php',
-      dataType: 'html',
-      data: {
-      },
-      success: function (data) {
+
+    jQuery.ajax({
+        type: "POST",
+        url: './php/editExamsConnect.php',
+        dataType: 'html',
+        data: {functionname: 'load-exams'},
+    
+        success: function (data) {
           exams = data;
           document.getElementById('table').innerHTML = data;
           var currentExam = document.getElementById('current');
@@ -62,7 +63,7 @@ $(document).ready(function () {
           console.log(msg);
           return false;
       }
-  });
+    });
 
   var input = document.getElementById('image'); /* finds the input */
   var csvInput = document.getElementById('newImport'); /* finds the input */
