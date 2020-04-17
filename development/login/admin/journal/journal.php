@@ -69,7 +69,17 @@ require_once('./journalFunctions.php');
 		</div>
 	</form>
     <div>
-        <?php loadJournalData(); ?>
+        <table id="journalTable">
+            <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Date of Entry</th>
+                <th>Date of Event</th>
+                <th>Test</th>
+                <th>Activity</th>
+                <th>Details</th>
+            </tr>
+        </table>
     </div>
 </body>
 

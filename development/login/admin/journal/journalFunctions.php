@@ -11,7 +11,7 @@ function loadJournalData() {
     $sql = "SELECT username, email, event_date, journal_entry_date, test, activity, detail
             FROM entries";
     $result = mysqli_query($db,$sql);
-    print_r($result->fetch_assoc());
+    return $result->fetch_all();
 }
 
 if (isset($_POST['add_entry_btn'])) {
