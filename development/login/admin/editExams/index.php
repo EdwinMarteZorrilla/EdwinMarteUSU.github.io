@@ -149,7 +149,7 @@ if (isset($_GET['logout'])) {
 		</div>
 		<div class="modal-body">
 			<label for="name" class="col-form-label">Exam name:</label>
-			<input type="text" class="form-control" id="name">
+			<input onkeyup="this.value = this.value.split(' ').join('')" type="text" class="form-control" id="name">
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
