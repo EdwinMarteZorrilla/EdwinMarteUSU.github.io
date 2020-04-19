@@ -42,7 +42,7 @@ $(document).ready(function () {
         url: './php/editExamsConnect.php',
         dataType: 'html',
         data: {functionname: 'loadExams'},
-    
+
         success: function (data) {
           exams = data;
           document.getElementById('table').innerHTML = data;
@@ -96,7 +96,9 @@ $(document).ready(function () {
 function saveId(){
   // document.getElementById('idInput').style = "display:block;"
   let id = document.getElementById('newID').value
-  let json = {exam: mainExam,newId:id}
+  let bday = document.getElementById('bday').value
+  let anum = document.getElementById('a-num').value
+  let json = {exam: mainExam,newId:id,bday:bday,anum:anum}
   $.ajax({
       type: 'POST',
       url: './php/add-id.php',
@@ -105,6 +107,8 @@ function saveId(){
       success: function (data) {
           $('#idInput').modal('hide')
           document.getElementById('newID').value = ''
+          document.getElementById('a-num').value = ''
+          document.getElementById('bday').value = ''
           switchTabs('ids')
           // console.log(examQuestions);
           return true;
@@ -323,7 +327,7 @@ function goBack(){
         url: './php/editExamsConnect.php',
         dataType: 'html',
         data: {functionname: 'loadExams'},
-    
+
         success: function (data) {
           document.getElementById('table').innerHTML = data;
           document.getElementById('table').style.display = 'block';
@@ -369,14 +373,14 @@ function deleteExam(exam){
       dataType: 'json',
       data: json,
       success: function (data) {
-          
+
 
     jQuery.ajax({
         type: "POST",
         url: './php/editExamsConnect.php',
         dataType: 'html',
         data: {functionname: 'loadExams'},
-    
+
         success: function (data) {
                 exams = data;
                 document.getElementById('table').innerHTML = data;
@@ -430,14 +434,14 @@ function copyExam(exam){
                     exams = data;
                     document.getElementById('table').innerHTML = data;
                     var currentExam = document.getElementById('current');
-    
+
                     function changeCurrentExam() {
                         var value = currentExam.value;
                         if (value !== '') {
                           updateExam(value)
                         }
                     }
-    
+
                     currentExam.addEventListener('change',changeCurrentExam,false);
                     return true;
                 },
@@ -446,11 +450,11 @@ function copyExam(exam){
                     console.log(msg);
                     return false;
                 }
-    
+
             });
-    
+
             var input = document.getElementById('image'); /* finds the input */
-    
+
             function changeLabelText() {
                 var value = input.value; /* gets the filepath and filename from the input */
                 var fileNameStart = value.lastIndexOf('\\'); /* finds the end of the filepath */

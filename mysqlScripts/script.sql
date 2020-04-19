@@ -87,4 +87,4 @@ INSERT INTO linksexam1 (name,link,after) VALUES('Pre exam Link','https://oregon.
 INSERT INTO linksexam1 (name,link,after) VALUES('40 min link','https://oregon.qualtrics.com/jfe/form/SV_5nVtBb53SNq3KvP','40');
 INSERT INTO linksexam1 (name,link,after) VALUES('At end survey','https://oregon.qualtrics.com/jfe/form/SV_6XccY3rT0uwtRxH','80');
 INSERT INTO linksexam1 (name,link,after) VALUES('After 20 min','https://oregon.qualtrics.com/jfe/form/SV_0cBWXNgHZ3IbzDf','20');
-CREATE TABLE idsexam1 (id INT NOT NULL AUTO_INCREMENT, study_id VARCHAR(100) NOT NULL, PRIMARY KEY (id));
+CREATE TABLE idsexam1 (id INT NOT NULL AUTO_INCREMENT, study_id VARCHAR(100) NOT NULL, bday VARCHAR(30) NOT NULL, anumber VARCHAR(20) NOT NULL, PRIMARY KEY (id));

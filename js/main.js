@@ -1,5 +1,6 @@
 /*jshint multistr: true */
 let links = []
+let ids = []
 var DEBUG_MODE = true;
 var NUM_TEST_QUESTIONS = 0; // 0 for all
 
@@ -972,6 +973,16 @@ function answerSelected(event) {
 }
 //#endregion
 
+
+function getIdsOptionsHtml(){
+  let html = '<datalist id="ids">'
+  for(let i = 0;i<ids.length;i++){
+    html += '<option value="' + ids[i].study_id + '">'
+  }
+  html += '</datalist>'
+  return html
+}
+
 $(document).ready(function () {
 
     $.ajax({
@@ -995,13 +1006,20 @@ $(document).ready(function () {
     $.ajax({
         type: 'POST',
         url: './db/get_study_ids.php',
-        dataType: 'html',
+        dataType: 'json',
         data: {
         },
         success: function (data) {
-            document.getElementById('login-modal').innerHTML += data
+            ids = data.ids
+            document.getElementById('login-modal').innerHTML += getIdsOptionsHtml()
             $(".participant_id").on('input', function () {
                 var study_id = $('#study_id').val();
+                for(let i = 0;i<ids.length;i++){
+                  if(study_id == ids[i].study_id){
+                    document.getElementById('dob').value = ids[i].bday.substring(8,10)
+                    document.getElementById('a_number').value = ids[i].aNum.substring(ids[i].aNum.length-4,ids[i].aNum.length)
+                  }
+                }
                 var dob = $('#dob').val();
                 var a_number = $('#a_number').val();
 
@@ -1046,6 +1064,8 @@ $(document).ready(function () {
                         $('#save_prompt_answer').hide();
                     }
                 });
+
+
             });
             return true;
         },

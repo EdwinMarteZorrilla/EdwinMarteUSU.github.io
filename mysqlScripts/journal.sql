@@ -2,7 +2,7 @@
 -- Date: 2020-April-6
 
 -- If you have not created the login database uncomment the next line
--- CREATE DATABASE journal;
+CREATE DATABASE journal;
 USE journal;
 CREATE TABLE entries (
 	id INT NOT NULL AUTO_INCREMENT,

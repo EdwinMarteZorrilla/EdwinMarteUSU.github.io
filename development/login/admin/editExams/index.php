@@ -102,7 +102,11 @@ if (isset($_GET['logout'])) {
       <div class="modal-body">
         <label for="newID" class="col-form-label">New ID:</label>
         <input style="text-transform: uppercase" onkeyup="this.value = this.value.toUpperCase()" type="text" class="form-control" id="newID">
-      </div>
+				<label for="bday" class="col-form-label">Birthdate:</label>
+        <input type="date" class="form-control" id="bday">
+				<label for="a-num" class="col-form-label">A-number:</label>
+				<input style="text-transform: uppercase" onkeyup="this.value = this.value.toUpperCase()" type="text" class="form-control" id="a-num">
+			</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-secondary btn-success" onclick="saveId()">Save</button>
