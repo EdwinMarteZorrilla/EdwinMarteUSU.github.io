@@ -1,6 +1,7 @@
 <?php
 
 require_once('../../../../../include/config.php');
+require_once('/var/www/html/NHR-Core/development/login/admin/journal/journalFunctions.php');
 
 $connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exams");
 $sql = "DROP TABLE answers" . $_POST['delete'];
@@ -13,6 +14,7 @@ $result3 = mysqli_query($connect,$sql3);
 $result4 = mysqli_query($connect,$sql4);
 if($result && $result2 && $result3 && $result4){
   echo '{"result": true}';
+  addEntryEvent(date("Y/m/d"), $_POST['delete'], "Delete exam", "Deleted exam: ".$_POST['delete']);
 }
 else{
   echo '{"result": false}';

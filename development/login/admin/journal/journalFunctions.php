@@ -9,8 +9,9 @@ $errors   = array();
 
 function loadJournalData() {
     global $db;
-    $sql = "SELECT journal_entry_date, username, email, event_date, test, activity, detail, id
-            FROM entries";
+    $sql = "SELECT DATE(journal_entry_date) AS date, username, email, event_date, test, activity, detail, id, journal_entry_date
+            FROM entries
+            ORDER BY journal_entry_date DESC";
     $result = mysqli_query($db,$sql);
     return $result->fetch_all();
 }
@@ -31,7 +32,7 @@ function addEntry() {
     } elseif (!$email) {
         $email = $username;
     }
-    $journal_entry_date = date("Y/m/d");
+    $journal_entry_date = date("Y/m/d H:i:s");
     $event_date = e1($_POST['event_date']);
 	$test  =  e1($_POST['test']);
 	$activity  =  e1($_POST['activity']);
@@ -74,7 +75,7 @@ function addEntryEvent($event_date, $test, $activity, $detail) {
     } elseif (!$email) {
         $email = $username;
     }
-    $journal_entry_date = date("Y/m/d");
+    $journal_entry_date = date("Y/m/d H:i:s");
 
 	if (empty($username)) {
 		array_push($errors, "Username is required");

@@ -34,7 +34,6 @@ function generateJournalTable(journalData) {
         deleteButton.innerHTML = "Delete Entry";                   // Insert text
         deleteButton.setAttribute("type", "submit");
         deleteButton.name = "delete_entry_btn[" + journalData[i][7] + "]";
-        console.log(journalData[i][7]);
         deleteForm.appendChild(deleteButton);
         rowData.appendChild(deleteForm);
         row.appendChild(rowData);
