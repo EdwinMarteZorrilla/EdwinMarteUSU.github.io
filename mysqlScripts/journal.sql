@@ -9,7 +9,7 @@ CREATE TABLE entries (
 	username VARCHAR(100) NOT NULL,
 	email VARCHAR(100) NOT NULL,
     event_date DATE NOT NULL,
-    journal_entry_date DATE NOT NULL,
+    journal_entry_date TIMESTAMP NOT NULL,
     test VARCHAR(100) NOT NULL,
     activity VARCHAR(100) NOT NULL,
     detail VARCHAR(21844),
