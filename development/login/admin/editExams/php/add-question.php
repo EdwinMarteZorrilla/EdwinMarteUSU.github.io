@@ -1,6 +1,7 @@
 <?php
 
 require_once('../../../../../include/config.php');
+require_once('/var/www/html/NHR-Core/development/login/admin/journal/journalFunctions.php');
 
 
 if(isset($_FILES['file']['tmp_name'])){
@@ -43,5 +44,6 @@ if($_POST['e'] != ''){
 }
 
 
+addEntryEvent(date("Y/m/d"), $_POST['exam'], "Added question to exam", "");
 echo '{"result": true}';
 ?>

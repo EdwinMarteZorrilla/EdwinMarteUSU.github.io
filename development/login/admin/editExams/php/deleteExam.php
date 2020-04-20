@@ -13,8 +13,8 @@ $result2 = mysqli_query($connect,$sql2);
 $result3 = mysqli_query($connect,$sql3);
 $result4 = mysqli_query($connect,$sql4);
 if($result && $result2 && $result3 && $result4){
-  echo '{"result": true}';
   addEntryEvent(date("Y/m/d"), $_POST['delete'], "Delete exam", "Deleted exam: ".$_POST['delete']);
+  echo '{"result": true}';
 }
 else{
   echo '{"result": false}';
