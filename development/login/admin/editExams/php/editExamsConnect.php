@@ -1,6 +1,7 @@
 <?php
 
 require_once('/var/www/html/NHR-Core/development/login/admin/editExams/php/editExamsFunctions.php');
+require_once('/var/www/html/NHR-Core/development/login/admin/journal/journalFunctions.php');
 
 //header('Content-Type: application/json');
 
@@ -13,9 +14,6 @@ if( !isset($_POST['functionname']) ) { $aResult['error'] = 'No function name!'; 
 if( !isset($aResult['error']) ) {
 
     switch($_POST['functionname']) {
-        case 'add-id':
-            $aResult['data'] = addId();
-            break;
         case 'loadExams':
             $aResult = loadExams();
             break;

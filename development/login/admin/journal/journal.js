@@ -26,6 +26,18 @@ function generateJournalTable(journalData) {
             rowData.appendChild(text);
             row.appendChild(rowData);
         }
+        var rowData = document.createElement("td");
+        var deleteForm = document.createElement("FORM");
+        deleteForm.method = "post";
+        deleteForm.action = "journalFunctions.php";
+        var deleteButton = document.createElement("BUTTON");   // Create a <button> element
+        deleteButton.innerHTML = "Delete Entry";                   // Insert text
+        deleteButton.setAttribute("type", "submit");
+        deleteButton.name = "delete_entry_btn[" + journalData[i][7] + "]";
+        console.log(journalData[i][7]);
+        deleteForm.appendChild(deleteButton);
+        rowData.appendChild(deleteForm);
+        row.appendChild(rowData);
         journalTable.appendChild(row);
     }
 }

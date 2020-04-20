@@ -5,3 +5,7 @@ h1 {
 #journalTable {
     width:100%;
 }
+
+form {
+    margin:0;
+}

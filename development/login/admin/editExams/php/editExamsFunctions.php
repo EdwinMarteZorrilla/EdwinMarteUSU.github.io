@@ -1,6 +1,7 @@
 <?php
 
 require_once('/var/www/html/NHR-Core/include/config.php');
+require_once('/var/www/html/NHR-Core/development/login/admin/journal/journalFunctions.php');
 
 $connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "");
 
@@ -80,6 +81,7 @@ function copyExams($parameters) {
     
     $sql = "SELECT question_id, question, image, answer FROM exams." . $parameters['copy'];
     $result = mysqli_query($connect,$sql);
+    addEntryEvent(date("Y/m/d"), $parameters['copy'], "Copy exam", "New exam: ".$parameters['new']);
     return '{"result": true}';
 }
 
