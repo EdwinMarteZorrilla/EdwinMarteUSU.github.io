@@ -102,7 +102,11 @@ if (isset($_GET['logout'])) {
       <div class="modal-body">
         <label for="newID" class="col-form-label">New ID:</label>
         <input style="text-transform: uppercase" onkeyup="this.value = this.value.toUpperCase()" type="text" class="form-control" id="newID">
-      </div>
+				<label for="bday" class="col-form-label">Birthdate:</label>
+        <input type="date" class="form-control" id="bday">
+				<label for="a-num" class="col-form-label">A-number:</label>
+				<input style="text-transform: uppercase" onkeyup="this.value = this.value.toUpperCase()" type="text" class="form-control" id="a-num">
+			</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-secondary btn-success" onclick="saveId()">Save</button>
@@ -145,7 +149,7 @@ if (isset($_GET['logout'])) {
 		</div>
 		<div class="modal-body">
 			<label for="name" class="col-form-label">Exam name:</label>
-			<input type="text" class="form-control" id="name">
+			<input onkeyup="this.value = this.value.split(' ').join('')" type="text" class="form-control" id="name">
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -169,8 +173,8 @@ if (isset($_GET['logout'])) {
 			<input type="text" class="form-control" id="linkName">
 			<label for="newLink" class="col-form-label">Link:</label>
 			<input type="text" class="form-control" id="newLink">
-			<label for="time" class="col-form-label">After how many minutes do you want the link displayed (0 mins for before exam):</label>
-			<input type="text" class="form-control" id="time">
+			<label for="time" class="col-form-label">On what question do you want the link displayed:</label>
+			<input type="number" class="form-control" id="time">
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
