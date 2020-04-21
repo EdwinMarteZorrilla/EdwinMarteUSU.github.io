@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Mock Exam</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- bootstrap css -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/login-style.css">
+  <link rel="stylesheet" href="./css/my-style.css">
+
+  <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+    rel='stylesheet' type='text/css'>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="./js/jquery.cookie.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+  <script src="./js/global.js"></script>
+  <script src="./js/login.js"></script>
+  <script src="./js/temp.js"></script>
+
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <nav>
+      </nav>
+      <h3 class="text-muted">Exam</h3>
+    </div>
+
+    <div class="jumbotron" style="background:transparent !important">
+      <div class="progress">
+        <div class="progress-bar progress-bar-striped" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+          aria-valuemax="100" style="width: 0%">
+        </div>
+      </div>
+      <br>
+
+      <div class="instructions">
+        <p>The exam answers or choices have been rounded off (i.e., 117.3 may be shown as 120) and you should select
+          the
+          <b>CLOSEST</b>
+          answer or choice to your actual answer. The closest choice may be greater or smaller than the actual answer.
+          Do not round
+          off your work and answers, you may need them for the following questions. Be sure to write down any equation,
+          formula,
+          etc and answer that you derive in your
+          <b>RESEARCH NOTEBOOK</b>. Do not just plug numbers into your calculator. You must show all of your work and
+          equations
+          used on this practice exam or else you cannot get credit from your instructor. Because you will not be able
+          to
+          ask questions during the exam at the test center, please write down any assumptions or clarifications to the
+          test
+          that you have had to make on the practice exam in your
+          <b>RESEARCH NOTEBOOK</b>.</p>
+        <br>
+        <br>
+        <p>Note that at different times of the practice exam, you may be asked to complete a survey and enter your
+          participant
+          ID. You may experience some delay as the program records your responses so we appreciate your patience in
+          advance.
+          At the end of the exam, please stay in your desk for about 20 minutes to allow your physiological levels to
+          settle.
+          You cannot use distractors during this time (e.g., cell phones) and soon after, a final survey will follow.
+          Your
+          practice session will take approximately
+          <b>2.5 hours</b>, about the time that you would have for the actual exam next week.
+          <b>Best of luck!</b>
+        </p>
+        <br>
+        <a id="submit_button" class="btn btn-lg btn-success begin" href="#" role="button">Begin</a>
+      </div>
+      <div id="efficacy" style="display:none">
+        <h4>Hello world</h4>
+        <br><p>How confident are you that you can correctly answer this question?</p><br>
+
+        <table id="table" class="table table-bordered" width="100%">
+                <tr>
+                    <th style="text-align:center">1</th><th style="text-align:center">2</th>
+                    <th style="text-align:center">3</th><th style="text-align:center">4</th>
+                    <th style="text-align:center">5</th><th style="text-align:center">6</th>
+                    <th style="text-align:center">7</th><th style="text-align:center">8</th>
+                    <th style="text-align:center">9</th><th style="text-align:center">10</th>
+                </tr>
+                <tbody>
+                <tr align="center">
+                    <td width="10%"><input style="width: 100%;" type="radio" name="confidence" value="1"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="confidence" value="2"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="confidence" value="3"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="confidence" value="4"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="confidence" value="5"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="confidence" value="6"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="confidence" value="7"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="confidence" value="8"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="confidence" value="9"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="confidence" value="10"></td>
+                </tr>
+                <tr align="center">
+                    <td>Not at all confident</td>
+                    <td> </td><td> </td><td> </td>
+                    <td>Somewhat confident</td>
+                    <td> </td><td> </td><td> </td><td> </td>
+                    <td>Completely confident</td>
+                </tr>
+                </tbody>
+            </table>
+
+        <br><p>How nervous are you?</p><br>
+        <table id="table" class="table table-bordered" width="100%">
+                <tr>
+                    <th style="text-align:center">1</th><th style="text-align:center">2</th>
+                    <th style="text-align:center">3</th><th style="text-align:center">4</th>
+                    <th style="text-align:center">5</th><th style="text-align:center">6</th>
+                    <th style="text-align:center">7</th><th style="text-align:center">8</th>
+                    <th style="text-align:center">9</th><th style="text-align:center">10</th>
+                </tr>
+                <tbody>
+                <tr align="center">
+                    <td width="10%"><input style="width: 100%;" type="radio" name="nervousness" value="1"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="nervousness" value="2"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="nervousness" value="3"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="nervousness" value="4"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="nervousness" value="5"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="nervousness" value="6"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="nervousness" value="7"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="nervousness" value="8"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="nervousness" value="9"></td>
+                    <td width="10%"><input style="width: 100%;" type="radio" name="nervousness" value="10"></td>
+                </tr>
+                <tr align="center">
+                    <td>Not at all nervous</td>
+                    <td> </td><td> </td><td> </td>
+                    <td>Somewhat nervous</td>
+                    <td> </td><td> </td><td> </td><td> </td>
+                    <td>Very nervous</td>
+                </tr>
+                </tbody>
+            </table>
+
+        <br><br><p><a id='play_submit_button' class='btn btn-lg btn-success submit-resp' href='#' role='button' onclick='submitSelfEfficacy(event)'>Next</a></p>
+
+      </div>
+      <div id="test">
+      </div>
+
+
+    </div>
+
+    <footer class="footer">
+    </footer>
+
+  </div>
+  <!-- /container -->
+
+  <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+    style="display: none;">
+    <div class="modal-dialog">
+      <div class="loginmodal-container">
+        <h1>Please provide the following information</h1>
+        <br>
+        <form>
+          <input type="text" class="participant_id" id="study_id" style="text-transform: uppercase" placeholder="Study ID" list="ids">
+          <!-- <input type="text" class="participant_id" id="initials" style="text-transform: uppercase" maxlength="2" placeholder="Initials"> -->
+          <!-- Two-digit Day of Birth (DD) - Example: March 25th = 25; July 8th = 08 -->
+          <input type="text" class="participant_id number_text" id="dob" style="text-transform: uppercase" maxlength="2"
+            placeholder="Two-digit Day of Birth (DD)">
+          <input type="text" class="participant_id number_text" id="a_number" style="text-transform: uppercase"
+            maxlength="4" placeholder="Last 4 digits of A#">
+          <!-- <input type="password" name="pass" placeholder="Password"> -->
+          <input type="submit" id="login" class="login loginmodal-submit" value="OK">
+          <!-- <a id="login" class="btn btn-lg btn-success begin" href="#" role="button" onclick="saveUserID(event)">OK</a> -->
+          <!-- <button id="login" class="btn btn-primary" onclick="saveUserID(event)">OK</button> -->
+        </form>
+
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="message-modal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div id="message" class="modal-content">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="timer-modal" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+          <div class="modal-header">
+              <h3 class="modal-title" id="timer_title"></h3>
+            </div>
+        <div class="modal-body">
+          <div id="timer_message">
+          </div>
+          <br>
+          <div id="timer_display">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div id="timer_button" class="modal-footer">
+            <!-- <br><br><a id="timer_ok" class="btn btn-lg btn-primary">OK</a> -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

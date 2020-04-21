@@ -620,7 +620,7 @@ function goSurvey(event) {
 
         if (currentSurvey == Survey.PROMPT_ESSAY) {
             showMessage(getSurveyMessageHTML());
-        } else {
+        } else if(false){
             switch (currentSalivaSample) {
                 case salivaSample.SAMPLE_A:
                 case salivaSample.SAMPLE_B:
@@ -629,6 +629,9 @@ function goSurvey(event) {
                     showMessage(getSalivaMessageHTML());
                     break;
             }
+        }
+        else{
+          $("#message-modal").modal('hide')
         }
 
         if (currentSurvey == Survey.END) {
