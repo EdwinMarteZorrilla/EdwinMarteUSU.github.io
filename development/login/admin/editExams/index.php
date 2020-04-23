@@ -48,8 +48,8 @@ if (isset($_GET['logout'])) {
     <input type="text" id="name" name="name">
     <button class="btn btn-lg btn-success" onclick="createExam()">Create</button>
   </div> -->
-
-  <div id="questions" style="display:none;">
+	<div style="display:flex; justify-content:center">
+  <div id="questions" style="display:none; width:85vw; align:center">
 		`<div class="form-group">
       <label for="name">Question:</label>
       <input type="text" class="form-control"  id="question" placeholder="Enter the question" name"question">
@@ -85,9 +85,10 @@ if (isset($_GET['logout'])) {
 	    </div>
     <div style="display:flex; justify-content:space-between; padding:10px;">
       <button class="btn btn-secondary" onclick="backToExams()">Back to exams</button>
-      <button class="btn btn-lg btn-success" onclick="newQuestion()">Add Question</button>
+      <button id="addBtn" class="btn btn-lg btn-success" onclick="newQuestion()">Add Question</button>
     </div>`
   </div>
+</div>
 
 
 	<div class="modal fade" id="idInput" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

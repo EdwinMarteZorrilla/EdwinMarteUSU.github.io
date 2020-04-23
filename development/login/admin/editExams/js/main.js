@@ -1,5 +1,5 @@
 let mainExam = '';
-let saveData
+let question = {}
 
 function updateExam(value){
   let json = {new: value}
@@ -133,80 +133,6 @@ function saveId(){
 
 }
 
-
-function saveLink(){
-  let linkName = document.getElementById('linkName').value
-  let link = document.getElementById('newLink').value
-  let time = document.getElementById('time').value
-  let json = {exam: mainExam,newLink:link,name:linkName,time:time}
-  if(linkName != '' && link != '' && time != ''){
-    $.ajax({
-      type: 'POST',
-      url: './php/add-link.php',
-      dataType: 'json',
-      data: json,
-      success: function (data) {
-        $('#addLink').modal('hide')
-        document.getElementById('linkName').value = ''
-        document.getElementById('newLink').value = ''
-        switchTabs('links')
-        // console.log(examQuestions);
-        return true;
-      },
-      error: function (msg) {
-        console.log("AJAX Error");
-        console.log(msg);
-        return false;
-      }
-    });
-  }
-  else{
-    alert("You need to fill all three boxes")
-  }
-}
-
-function deleteLink(link){
-  let json = {exam:mainExam,link:link}
-  if(confirm("Are you sure you want to delete this link?")){
-    $.ajax({
-      type: 'POST',
-      url: './php/delete-link.php',
-      dataType: 'json',
-      data: json,
-      success: function (data) {
-        switchTabs('links')
-        return true;
-      },
-      error: function (msg) {
-        console.log("AJAX Error");
-        console.log(msg);
-        return false;
-      }
-    });
-  }
-}
-
-function deleteQuestion(id){
-  let json = {exam:mainExam,id:id}
-  if(confirm("Are you sure you want to delete this question?")){
-    $.ajax({
-      type: 'POST',
-      url: './php/delete-question.php',
-      dataType: 'json',
-      data: json,
-      success: function (data) {
-        editExam(mainExam)
-        return true;
-      },
-      error: function (msg) {
-        console.log("AJAX Error");
-        console.log(msg);
-        return false;
-      }
-    });
-  }
-}
-
 function deleteId(id){
   let json = {exam:mainExam,id:id}
   if(confirm("Are you sure you want to delete this ID?")){
@@ -255,6 +181,106 @@ function importIds(){
           return false;
       }
   });
+}
+
+function saveLink(){
+  let linkName = document.getElementById('linkName').value
+  let link = document.getElementById('newLink').value
+  let time = document.getElementById('time').value
+  let json = {exam: mainExam,newLink:link,name:linkName,time:time}
+  if(linkName != '' && link != '' && time != ''){
+    $.ajax({
+      type: 'POST',
+      url: './php/add-link.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+        $('#addLink').modal('hide')
+        document.getElementById('linkName').value = ''
+        document.getElementById('newLink').value = ''
+        switchTabs('links')
+        // console.log(examQuestions);
+        return true;
+      },
+      error: function (msg) {
+        console.log("AJAX Error");
+        console.log(msg);
+        return false;
+      }
+    });
+  }
+  else{
+    alert("You need to fill all three boxes")
+  }
+}
+
+function editLink(id){
+  console.log(id)
+}
+
+function deleteLink(link){
+  let json = {exam:mainExam,link:link}
+  if(confirm("Are you sure you want to delete this link?")){
+    $.ajax({
+      type: 'POST',
+      url: './php/delete-link.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+        switchTabs('links')
+        return true;
+      },
+      error: function (msg) {
+        console.log("AJAX Error");
+        console.log(msg);
+        return false;
+      }
+    });
+  }
+}
+
+function modifyQuestion(){
+
+  console.log(5)
+}
+
+function editQuestion(id){
+  btn = document.getElementById('addBtn')
+  btn.onclick = () => modifyQuestion()
+  btn.textContent = "Update Question"
+  let ans = ['A','B','C','D','E']
+  document.getElementById('question').value = question[id].question
+  for(let i = 0; i<question[id].answers.length;i++){
+    document.getElementById(ans[i]).value = question[id].answers[i]
+  }
+  document.getElementById('correct').value = question[id].correct
+  if(!question[id].image == ''){
+    document.getElementById('label').textContent = question[id].image
+  }
+  document.getElementById('exam').style.display = 'none'
+  document.getElementById('questions').style.display = 'block'
+
+}
+
+function deleteQuestion(id){
+  let json = {exam:mainExam,id:id}
+  if(confirm("Are you sure you want to delete this question?")){
+    $.ajax({
+      type: 'POST',
+      url: './php/delete-question.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+        editExam(mainExam)
+        return true;
+      },
+      error: function (msg) {
+        console.log("AJAX Error");
+        console.log(msg);
+        return false;
+      }
+    });
+  }
 }
 
 function switchTabs(tab){
@@ -335,7 +361,6 @@ function switchTabs(tab){
   }
 }
 
-
 function goBack(){
 
     jQuery.ajax({
@@ -375,11 +400,9 @@ function goBack(){
   document.getElementById('exam').innerHTML = '';
 }
 
-
 function backToExams(){
   editExam(mainExam)
 }
-
 
 function deleteExam(exam){
   let json = {delete: exam}
@@ -429,7 +452,6 @@ function deleteExam(exam){
     });
   }
 }
-
 
 function copyExam(exam){
   let name = prompt("Enter the name for the new exam")
@@ -493,8 +515,6 @@ function copyExam(exam){
   }
 }
 
-
-
 function exportCSV(exam){
   let json = {name: exam}
   let name = exam + '.csv'
@@ -514,8 +534,6 @@ function exportCSV(exam){
     }
   });
 }
-
-
 
 function limitInput(event) {
   var key = event.keyCode;
@@ -610,7 +628,6 @@ function newQuestion(){
 
 }
 
-
 function modify(){
   document.getElementById('exam').style.display = 'none'
   document.getElementById('questions').style.display = "block";
@@ -623,6 +640,56 @@ function modify(){
   document.getElementById('correct').value = ''
 }
 
+function getExamHtml(data){
+  if(data.questions == undefined){data.questions = []}
+  let html = '<h1 style="text-align:center">' + data.name + '</h1>';
+  html += '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="background-color:green; color:white" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Study IDs</a>';
+  html += '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Links</a></nav>';
+  html += '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
+  if(data.editable){
+    html += '<button class="btn btn-lg btn-success" onclick="modify()" disabled>Add Question</button></div>';
+    html += '<table class="table table-striped table-bordered"><tr><th>Question</th><th>Text</th><th>Image</th><th>Answer</th></tr>';
+  }
+  else{
+    html += '<button class="btn btn-lg btn-success" onclick="modify()">Add Question</button></div>';
+    html += '<table class="table table-striped table-bordered"><tr><th>Question</th><th>Text</th><th>Image</th><th>Answer</th><th></th></tr>';
+  }
+  for(let i = 0; i<data.questions.length;i++){
+    html += '<tr><td>' + data.questions[i].number +  '</td><td>' + data.questions[i].question + '</td><td>' + data.questions[i].image + '</td><td>' + data.questions[i].correct + '</td>';
+    if(!data.editable){
+      html += '<td style="width:200px;"><button style="margin-right:10px; margin-left:10px" class="btn btn-outline-danger btn-sm" onclick="deleteQuestion(\'' + data.questions[i].id + '\')">Delete</button>';
+      html += '<button style="margin-right:10px; margin-left:10px" class="btn btn-outline-success btn-sm" onclick="editQuestion(' + i + ')">Edit</button></td>';
+    }
+    html += '</tr>';
+    html += '<tr><td>Answers</td><td colspan=4><ol>';
+    for(let j = 0; j<data.questions[i].answers.length;j++){
+      html += "<li = type='A'>" + data.questions[i].answers[j] + "</li>";
+    }
+    html += '</ol></td></tr>';
+  }
+  html += '</table>';
+  html += '<div style="display:flex; justify-content:space-between; padding:15px"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
+  if(data.editable){
+    html += '<button class="btn btn-lg btn-success" onclick="modify()" disabled>Add Question</button></div></div></div>';
+  }
+  else{
+    html += '<button class="btn btn-lg btn-success" onclick="modify()">Add Question</button></div></div></div>';
+  }
+  if(data.questions.length == 0){
+    html = '<h1 style="text-align:center">' + data.name + '</h1>';
+    html += '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="background-color:green; color:white" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Study IDs</a>';
+    html += '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Links</a></nav>';
+    html += '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
+    if(data.editable){
+      html += '<button class="btn btn-lg btn-success" onclick="modify()" disabled>Add Question</button></div>';
+    }
+    else{
+      html += '<button class="btn btn-lg btn-success" onclick="modify()">Add Question</button></div>';
+    }
+    html += '<h4 style="text-align:center">No Questions</h4>';
+  }
+  return html
+}
 
 function editExam(exam){
   mainExam = exam
@@ -630,10 +697,11 @@ function editExam(exam){
     jQuery.ajax({
         type: "POST",
         url: './php/editExamsConnect.php',
-        dataType: 'html',
+        dataType: 'json',
         data: {functionname: 'loadExamQuestions', parameters: { 'exam': exam }},
-        success: function (data) {
-          document.getElementById('exam').innerHTML = data;
+        success: function (json) {
+          question = json.questions
+          document.getElementById('exam').innerHTML = getExamHtml(json)
           return true;
       },
       error: function (msg) {
@@ -648,8 +716,8 @@ function editExam(exam){
   document.getElementById('questions').style.display = 'none';
 
 
-}
 
+}
 
 function createExam(){
   let name = document.getElementById('name').value
