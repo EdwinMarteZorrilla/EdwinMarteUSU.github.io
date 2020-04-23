@@ -61,7 +61,7 @@ if (isset($_GET['logout'])) {
             <div id="menu">
                 <ul>
                     <li><a href="create_user.php">Add New Admin User</a></li>
-                    <li><a href="agenda/index.php">Agenda</a></li>
+                    <li><a href="agenda/index.php">Exam Scheduler</a></li>
                     <li><a href="editExams/index.php">Edit Exams</a></li>
                     <li><a href="journal/journal.php">Exam Journal</a></li>
                 </ul>

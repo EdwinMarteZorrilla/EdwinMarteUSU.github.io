@@ -100,7 +100,7 @@ function loadExamLinks($parameters) {
     $sql = "SELECT name, link,on_question FROM links" . $parameters['exam'];
     $result = mysqli_query($connect,$sql);
     $examTable = '<h1 style="text-align:center">' .$parameters['exam'] . '</h1>';
-    $examTable .= '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="border-style:solid;border-color:green; border-width:1px;color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px; color:green" class="nav-item nav-link" href="#">Study ids</a>';
+    $examTable .= '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="border-style:solid;border-color:green; border-width:1px;color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px; color:green" class="nav-item nav-link" href="#">Study IDs</a>';
     $examTable .= '<a id="tab3" onclick="switchTabs(\'links\')" style="color:white; background-color:green" class="nav-item nav-link" href="#">Links</a></nav>';
     $examTable .= '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
     if($flag){
@@ -118,7 +118,8 @@ function loadExamLinks($parameters) {
     while($row = $result->fetch_assoc()){
       $examTable .= '<tr><td>' . $count . '</td><td>' . $row['name'] . '</td><td>' . $row['link'] . '</td><td>' . $row['on_question'] .'</td>';
       if(!$flag){
-        $examTable .= '<td><button style="margin-right:10px; margin-left:10px" class="btn btn-outline-danger btn-sm" onclick="deleteLink(\'' . $row['link'] . '\')">Delete</button></td>';
+        $examTable .= '<td style="width:200px"><button style="margin-right:10px; margin-left:10px" class="btn btn-outline-danger btn-sm" onclick="deleteLink(\'' . $row['link'] . '\')">Delete</button>';
+        $examTable .= '<button style="margin-right:10px; margin-left:10px" class="btn btn-outline-success btn-sm">Edit</button></td>';
       }
       $examTable .= '</tr>';
       // $examTable .= '<button style="margin-right:10px; margin-left:10px" class="btn btn-outline-danger btn-sm">Delete</button></td></tr>';
@@ -135,7 +136,7 @@ function loadExamLinks($parameters) {
 
     if($count == 1){
       $examTable = '<h1 style="text-align:center">' .$parameters['exam'] . '</h1>';
-      $examTable .= '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style=" color:green" class="nav-item nav-link" href="#">Study ids</a>';
+      $examTable .= '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="border-style:solid;border-color:green; border-width:1px;color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Study IDs</a>';
       $examTable .= '<a id="tab3" onclick="switchTabs(\'links\')" style="color:white; background-color:green" class="nav-item nav-link" href="#">Links</a></nav>';
       $examTable .= '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
       if($flag){
@@ -163,8 +164,8 @@ function loadExamQuestions($parameters) {
     $connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exams");
     $sql = "SELECT question_id, question, image, answer FROM " . $parameters['exam'];
     $result = mysqli_query($connect,$sql);
-    $examTable = '<h1 style="text-align:center">' .$parameters['exam'] . '</h1>';
-    $examTable .= '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="background-color:green; color:white" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Study ids</a>';
+    $examTable = '<h1 style="text-align:center">' . $parameters['exam'] . '</h1>';
+    $examTable .= '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="background-color:green; color:white" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Study IDs</a>';
     $examTable .= '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Links</a></nav>';
     $examTable .= '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
     if($flag){
@@ -179,7 +180,8 @@ function loadExamQuestions($parameters) {
     while($row = $result->fetch_assoc()){
       $examTable .= '<tr><td>' . $counter . '</td><td>' . $row['question'] . '</td><td>' . $row['image'] . '</td><td>' . $row['answer'] . '</td>';
       if(!$flag){
-        $examTable .= '<td><button style="margin-right:10px; margin-left:10px" class="btn btn-outline-danger btn-sm" onclick="deleteQuestion(\'' . $row['question_id'] . '\')">Delete</button></td>';
+        $examTable .= '<td style="width:200px;"><button style="margin-right:10px; margin-left:10px" class="btn btn-outline-danger btn-sm" onclick="deleteQuestion(\'' . $row['question_id'] . '\')">Delete</button>';
+        $examTable .= '<button style="margin-right:10px; margin-left:10px" class="btn btn-outline-success btn-sm">Edit</button></td>';
       }
       $examTable .= '</tr>';
       $answer = mysqli_query($connect, "SELECT answer FROM answers" . $parameters['exam'] . " WHERE question_id = " . $row['question_id'] . ";");
@@ -198,6 +200,19 @@ function loadExamQuestions($parameters) {
     else{
       $examTable .= '<button class="btn btn-lg btn-success" onclick="modify()">Add Question</button></div></div></div>';
     }
+    if($counter == 1){
+      $examTable = '<h1 style="text-align:center">' . $parameters['exam'] . '</h1>';
+      $examTable .= '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="background-color:green; color:white" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Study IDs</a>';
+      $examTable .= '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Links</a></nav>';
+      $examTable .= '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
+      if($flag){
+        $examTable .= '<button class="btn btn-lg btn-success" onclick="modify()" disabled>Add Question</button></div>';
+      }
+      else{
+        $examTable .= '<button class="btn btn-lg btn-success" onclick="modify()">Add Question</button></div>';
+      }
+      $examTable .= '<h4 style="text-align:center">No Questions</h4>';
+    }
     return $examTable;
 }
 
@@ -215,7 +230,7 @@ function loadExamIds($parameters) {
     $sql = "SELECT id, study_id,bday,anumber FROM ids" . $parameters['exam'];
     $result = mysqli_query($connect,$sql);
     $examTable = '<h1 style="text-align:center">' .$parameters['exam'] . '</h1>';
-    $examTable .= '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="border-style:solid;border-color:green; border-width:1px;color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="background-color:green; color:white" class="nav-item nav-link" href="#">Study ids</a>';
+    $examTable .= '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="border-style:solid;border-color:green; border-width:1px;color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="background-color:green; color:white" class="nav-item nav-link" href="#">Study IDs</a>';
     $examTable .= '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Links</a></nav>';
     $examTable .= '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
 
@@ -246,8 +261,8 @@ function loadExamIds($parameters) {
     }
     if($count == 1){
       $examTable = '<h1 style="text-align:center">' .$parameters['exam'] . '</h1>';
-      $examTable .= '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="background-color:green; color:white" class="nav-item nav-link" href="#">Study ids</a>';
-      $examTable .= '<a id="tab3" onclick="switchTabs(\'links\')" style="color:green" class="nav-item nav-link" href="#">Links</a></nav>';
+      $examTable .= '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="border-style:solid;border-color:green; border-width:1px;color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="background-color:green; color:white" class="nav-item nav-link" href="#">Study IDs</a>';
+      $examTable .= '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Links</a></nav>';
       $examTable .= '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
       if($flag){
         $examTable .= '<div style="display:flex justify-content:space-between"><button data-toggle="modal" data-target="#importModal" style="margin-right:10px"class="btn btn-lg btn-outline-secondary" disabled>Import</button><button class="btn btn-lg btn-success" data-toggle="modal" data-target="#idInput" disabled>Add new ID</button></div></div></div></div>';

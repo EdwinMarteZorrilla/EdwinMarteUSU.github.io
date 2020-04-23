@@ -350,6 +350,8 @@ function goBack(){
           document.getElementById('exam').style.display = 'none';
           document.getElementById('study_ids').style.display = 'none';
           document.getElementById('links').style.display = 'none';
+          document.getElementById('questions').style.display = 'none';
+
 
 
           var currentExam = document.getElementById('current');
@@ -375,8 +377,7 @@ function goBack(){
 
 
 function backToExams(){
-  document.getElementById('exam').style.display = 'block';
-  document.getElementById('questions').style.display = 'none';
+  editExam(mainExam)
 }
 
 
@@ -652,34 +653,39 @@ function editExam(exam){
 
 function createExam(){
   let name = document.getElementById('name').value
-  mainExam = name
-  if(confirm("You are about to create a new exam. Is " + name + " correct?")){
-    $.ajax({
+  if(name != ''){
+    if(confirm("You are about to create a new exam. Is " + name + " correct?")){
+      mainExam = name
+      $.ajax({
         type: 'POST',
         url: './php/create-exam.php',
         dataType: 'json',
         data: { 'name': name
         },
         success: function (data) {
-            if(data.result){
-              $('#add').modal('hide')
-              document.getElementById('table').style.display = 'none';
-              document.getElementById('exam').style.display = 'none';
-              document.getElementById('questions').style.display = 'block';
-              document.getElementById('name').value = ''
-              return true;
-            }
-            else{
-              alert("Could not create exam")
-              return false;
-            }
+          if(data.result){
+            $('#add').modal('hide')
+            document.getElementById('table').style.display = 'none';
+            document.getElementById('exam').style.display = 'none';
+            document.getElementById('questions').style.display = 'block';
+            document.getElementById('name').value = ''
+            return true;
+          }
+          else{
+            document.getElementById('name').value = ''
+            alert(data.error)
+            return false;
+          }
         },
         error: function (msg) {
-            console.log("AJAX Error");
-            console.log(msg);
-            return false;
+          console.log("AJAX Error");
+          console.log(msg);
+          return false;
         }
-    });
+      });
+    }
   }
-
+  else{
+    alert("You need to give a name for the exam")
+  }
 }
