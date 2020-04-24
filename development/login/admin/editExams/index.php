@@ -179,7 +179,7 @@ if (isset($_GET['logout'])) {
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-secondary btn-success" onclick="saveLink()">Add</button>
+			<button id="linkBtn" type="button" class="btn btn-secondary btn-success" onclick="saveLink()">Add</button>
 		</div>
 	</div>
 </div>

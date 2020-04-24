@@ -1,5 +1,6 @@
 let mainExam = '';
 let question = {}
+let links = {}
 
 function updateExam(value){
   let json = {new: value}
@@ -183,6 +184,15 @@ function importIds(){
   });
 }
 
+function showLinkModal(){
+  $('#addLink').modal('show')
+  document.getElementById('linkName').value = ''
+  document.getElementById('newLink').value = ''
+  document.getElementById('time').value = ''
+  document.getElementById('linkBtn').textContent = 'Add Link'
+  document.getElementById('linkBtn').onclick = () => saveLink()
+}
+
 function saveLink(){
   let linkName = document.getElementById('linkName').value
   let link = document.getElementById('newLink').value
@@ -198,6 +208,39 @@ function saveLink(){
         $('#addLink').modal('hide')
         document.getElementById('linkName').value = ''
         document.getElementById('newLink').value = ''
+        document.getElementById('time').value = ''
+        switchTabs('links')
+        // console.log(examQuestions);
+        return true;
+      },
+      error: function (msg) {
+        console.log("AJAX Error");
+        console.log(msg);
+        return false;
+      }
+    });
+  }
+  else{
+    alert("You need to fill all three boxes")
+  }
+}
+
+function modifyLink(id){
+  let linkName = document.getElementById('linkName').value
+  let link = document.getElementById('newLink').value
+  let on = document.getElementById('time').value
+  let json = {exam: mainExam,newLink:link,name:linkName,on_question:on,id:id}
+  if(linkName != '' && link != '' && time != ''){
+    $.ajax({
+      type: 'POST',
+      url: './php/edit-link.php',
+      dataType: 'json',
+      data: json,
+      success: function (data) {
+        $('#addLink').modal('hide')
+        document.getElementById('linkName').value = ''
+        document.getElementById('newLink').value = ''
+        document.getElementById('time').value = ''
         switchTabs('links')
         // console.log(examQuestions);
         return true;
@@ -215,7 +258,13 @@ function saveLink(){
 }
 
 function editLink(id){
-  console.log(id)
+  document.getElementById('linkName').value = links.links[id].name
+  document.getElementById('newLink').value = links.links[id].link
+  document.getElementById('time').value = links.links[id].on_question
+  document.getElementById('linkBtn').textContent = 'Update Link'
+  document.getElementById('linkBtn').onclick = () => modifyLink(links.links[id].id)
+
+  $('#addLink').modal('show')
 }
 
 function deleteLink(link){
@@ -239,6 +288,7 @@ function deleteLink(link){
   }
 }
 
+//This function call the ajax with all the information when the update button is clicked. Updates questions
 function modifyQuestion(id,number){
   let question = document.getElementById('question').value
   let a = document.getElementById('A').value
@@ -294,6 +344,7 @@ function modifyQuestion(id,number){
   }
 }
 
+// Modifies the onclick attribute of a button to change functionality and passes attributes to modifyQuestion
 function editQuestion(id){
   btn = document.getElementById('addBtn')
   btn.onclick = () => modifyQuestion(question[id].id,id+1)
@@ -385,13 +436,14 @@ function switchTabs(tab){
     jQuery.ajax({
         type: "POST",
         url: './php/editExamsConnect.php',
-        dataType: 'html',
+        dataType: 'json',
         data: {functionname: 'loadExamLinks', parameters: { 'exam': mainExam }},
         success: function (data) {
+            links = data
+            document.getElementById('links').innerHTML = getLinksHtml();
             document.getElementById('exam').style = "display:none;"
             document.getElementById('links').style = "display:block;"
             document.getElementById('study_ids').style = "display:none;"
-            document.getElementById('links').innerHTML = data;
             return true;
         },
         error: function (msg) {
@@ -737,6 +789,55 @@ function getExamHtml(data){
       html += '<button class="btn btn-lg btn-success" onclick="modify()">Add Question</button></div>';
     }
     html += '<h4 style="text-align:center">No Questions</h4>';
+  }
+  return html
+}
+
+function getLinksHtml(){
+  if(links.links == undefined){links.links = []}
+  let html = '<h1 style="text-align:center">' + links.name +  '</h1>';
+  html += '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="border-style:solid;border-color:green; border-width:1px;color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px; color:green" class="nav-item nav-link" href="#">Study IDs</a>';
+  html += '<a id="tab3" onclick="switchTabs(\'links\')" style="color:white; background-color:green" class="nav-item nav-link" href="#">Links</a></nav>';
+  html += '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
+  if(links.editable){
+    html += '<button class="btn btn-lg btn-success" onclick="showLinkModal()" disabled>Add new Link</button></div>';
+    html += '<table class="table table-striped table-bordered"><tr><th>#</th><th>Name</th><th>Link</th><th>On question</th></tr>';
+  }
+  else{
+    html += '<button class="btn btn-lg btn-success" onclick="showLinkModal()">Add new Link</button></div>';
+    html += '<table class="table table-striped table-bordered"><tr><th>#</th><th>Name</th><th>Link</th><th>On question</th><th></th></tr>';
+  }
+
+  for(let i = 0;i<links.links.length;i++){
+    html += '<tr><td>' + (i+1).toString() + '</td><td>' + links.links[i].name + '</td><td>' + links.links[i].link + '</td><td>' + links.links[i].on_question +'</td>';
+    if(!links.editable){
+      html += '<td style="width:200px"><button style="margin-right:10px; margin-left:10px" class="btn btn-outline-danger btn-sm" onclick="deleteLink(\'' + links.links[i].link + '\')">Delete</button>';
+      html += '<button style="margin-right:10px; margin-left:10px" class="btn btn-outline-success btn-sm" onclick="editLink(' + i + ')">Edit</button></td>';
+    }
+    html += '</tr>';
+  }
+  html += '</table>';
+  html += '<div style="display:flex; justify-content:space-between; padding:15px"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
+  if(links.editable){
+    html += '<button class="btn btn-lg btn-success" onclick="showLinkModal()" disabled>Add new Link</button></div></div></div>';
+  }
+  else{
+    html += '<button class="btn btn-lg btn-success" onclick="showLinkModal()">Add new Link</button></div></div></div>';
+  }
+
+  if(links.links.length == 0){
+    html = '<h1 style="text-align:center">' + links.name + '</h1>';
+    html += '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="border-style:solid;border-color:green; border-width:1px;color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Study IDs</a>';
+    html += '<a id="tab3" onclick="switchTabs(\'links\')" style="color:white; background-color:green" class="nav-item nav-link" href="#">Links</a></nav>';
+    html += '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
+    if(links.editable){
+      html += '<button class="btn btn-lg btn-success" onclick="showLinkModal()" disabled>Add new Link</button></div></div></div>';
+      html += '<h4 style="text-align:center">No links</h4>';
+    }
+    else{
+      html += '<button class="btn btn-lg btn-success" onclick="showLinkModal()">Add new Link</button></div></div></div>';
+      html += '<h4 style="text-align:center">No links</h4>';
+    }
   }
   return html
 }
