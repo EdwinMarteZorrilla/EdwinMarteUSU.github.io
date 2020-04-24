@@ -239,14 +239,64 @@ function deleteLink(link){
   }
 }
 
-function modifyQuestion(){
+function modifyQuestion(id){
+  let question = document.getElementById('question').value
+  let a = document.getElementById('A').value
+  let b = document.getElementById('B').value
+  let c = document.getElementById('C').value
+  let d = document.getElementById('D').value
+  let e = document.getElementById('E').value
+  let correct = document.getElementById('correct').value.toUpperCase()
+  var input = document.getElementById('image');
+  let properties = input.files[0]
 
-  console.log(5)
+  let formData = new FormData();
+  var value = input.value;
+  var fileNameStart = value.lastIndexOf('\\');
+  value = value.substr(fileNameStart + 1);
+  const json = {question: question,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam,image:value,id:id}
+  formData.append("file", properties)
+  for (var key in json){
+    formData.append(key,json[key])
+  }
+  if(a != '' && b != '' && correct != ''){
+    if(confirm("Update Question?")){
+      $.ajax({
+        type: 'POST',
+        url: './php/edit-question.php',
+        dataType: 'json',
+        data: formData,
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function (data) {
+          if(data.result){
+            document.getElementById('addBtn').onclick = () => newQuestion()
+            document.getElementById('addBtn').textContent = "Add Question"
+            editExam(mainExam)
+            return true;
+          }
+          else{
+            alert("Could not add question")
+            return false;
+          }
+        },
+        error: function (msg) {
+          console.log("AJAX Error");
+          console.log(msg);
+          return false;
+        }
+      });
+    }
+  }
+  else{
+    alert("Please enter at least answers A and B and the correct answer")
+  }
 }
 
 function editQuestion(id){
   btn = document.getElementById('addBtn')
-  btn.onclick = () => modifyQuestion()
+  btn.onclick = () => modifyQuestion(question[id].id,question[id].name)
   btn.textContent = "Update Question"
   let ans = ['A','B','C','D','E']
   document.getElementById('question').value = question[id].question
@@ -693,6 +743,7 @@ function getExamHtml(data){
 
 function editExam(exam){
   mainExam = exam
+  document.getElementById('label').textContent = 'Choose file'
 
     jQuery.ajax({
         type: "POST",
