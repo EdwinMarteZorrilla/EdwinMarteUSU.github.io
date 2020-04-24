@@ -114,7 +114,7 @@ function loadExamLinks($parameters) {
     }
     $json = rtrim($json,",");
     $json .= ']}';
-    
+
     return $json;
 }
 
@@ -173,11 +173,11 @@ function loadExamIds($parameters) {
 
     if($flag){
       $examTable .= '<div style="display:flex justify-content:space-between"><button data-toggle="modal" data-target="#importModal" style="margin-right:10px"class="btn btn-lg btn-outline-secondary" disabled>Import</button><button class="btn btn-lg btn-success" data-toggle="modal" data-target="#idInput" disabled>Add new ID</button></div></div>';
-      $examTable .= '<table class="table table-striped table-bordered"><tr><th>#</th><th>ID</th><th>Birthday</th><th>A-number</th></tr>';
+      $examTable .= '<table class="table table-striped table-bordered"><tr><th>#</th><th>ID</th><th>Birthday</th><th>Last 4 numbers of Student ID</th></tr>';
     }
     else{
       $examTable .= '<div style="display:flex justify-content:space-between"><button data-toggle="modal" data-target="#importModal" style="margin-right:10px"class="btn btn-lg btn-outline-secondary">Import</button><button class="btn btn-lg btn-success" data-toggle="modal" data-target="#idInput">Add new ID</button></div></div>';
-      $examTable .= '<table class="table table-striped table-bordered"><tr><th>#</th><th>ID</th><th>Birthday</th><th>A-number</th><th></th></tr>';
+      $examTable .= '<table class="table table-striped table-bordered"><tr><th>#</th><th>ID</th><th>Birthday</th><th>Last 4 numbers of Student ID</th><th></th></tr>';
     }
     $count = 1;
     while($row = $result->fetch_assoc()){

@@ -105,7 +105,7 @@ if (isset($_GET['logout'])) {
         <input style="text-transform: uppercase" onkeyup="this.value = this.value.toUpperCase()" type="text" class="form-control" id="newID">
 				<label for="bday" class="col-form-label">Day of birth (dd):</label>
         <input type="number" min="1" max="31" class="form-control" id="bday" maxlength="2">
-				<label for="a-num" class="col-form-label">Last 4 digits of A-number:</label>
+				<label for="a-num" class="col-form-label">Last 4 digits of Student ID:</label>
 				<input maxlength="4" type="text" class="form-control" id="a-num">
 			</div>
       <div class="modal-footer">
