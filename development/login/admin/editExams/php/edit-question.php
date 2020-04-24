@@ -50,6 +50,6 @@ if($_POST['e'] != ''){
 }
 
 
-// addEntryEvent(date("Y/m/d"), $_POST['exam'], "Added question to exam", "");
+addEntryEvent(date("Y/m/d"), $_POST['exam'], "Edited question " . $_POST['number'] . " from " . $_POST['exam'], "");
 echo '{"result": true}';
 ?>

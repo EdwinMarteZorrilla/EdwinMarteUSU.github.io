@@ -239,7 +239,7 @@ function deleteLink(link){
   }
 }
 
-function modifyQuestion(id){
+function modifyQuestion(id,number){
   let question = document.getElementById('question').value
   let a = document.getElementById('A').value
   let b = document.getElementById('B').value
@@ -254,7 +254,7 @@ function modifyQuestion(id){
   var value = input.value;
   var fileNameStart = value.lastIndexOf('\\');
   value = value.substr(fileNameStart + 1);
-  const json = {question: question,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam,image:value,id:id}
+  const json = {question: question,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam,image:value,id:id,number:number}
   formData.append("file", properties)
   for (var key in json){
     formData.append(key,json[key])
@@ -296,7 +296,7 @@ function modifyQuestion(id){
 
 function editQuestion(id){
   btn = document.getElementById('addBtn')
-  btn.onclick = () => modifyQuestion(question[id].id,question[id].name)
+  btn.onclick = () => modifyQuestion(question[id].id,id+1)
   btn.textContent = "Update Question"
   let ans = ['A','B','C','D','E']
   document.getElementById('question').value = question[id].question
