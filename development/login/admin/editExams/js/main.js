@@ -712,7 +712,7 @@ function newQuestion(){
             return true;
           }
           else{
-            alert("Could not add question")
+            alert(data.error)
             return false;
           }
         },

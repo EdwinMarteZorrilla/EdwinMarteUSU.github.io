@@ -3,6 +3,11 @@
 require_once('../../../../../include/config.php');
 require_once('/var/www/html/NHR-Core/development/login/admin/journal/journalFunctions.php');
 
+if(is_file($_FILES['file']['name'])){
+  echo '{"result":false,"error":"File already exists,please rename the image"}';
+  die();
+}
+
 
 if(isset($_FILES['file']['tmp_name'])){
   move_uploaded_file($_FILES['file']['tmp_name'],'/var/www/html/NHR-Core/media/' . $_FILES['file']['name']);

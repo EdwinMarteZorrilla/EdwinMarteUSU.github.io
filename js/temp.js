@@ -4,11 +4,14 @@ let answers_key = []
 var timeCounter;
 var studyID = "FA18M01W01ES"; // Fall - 2018 - Midterm 1 -Wednesday Session- Seat 1- EDA & Saliva
 var currentSurvey = '';
+let ids = []
+let links = []
 
 
 var NUM_TEST_QUESTIONS = 0; // 0 for all
 var GAME_TIME = 3.0;   // 30 seconds
 var SELF_EFFICACY_ANSWERS_DELAY = (1.0 / 60) * 60; // 1 seconds
+
 
 
 var salivaSample = {
@@ -20,6 +23,7 @@ var salivaSample = {
     END: 5
 };
 
+var currentSalivaSample = salivaSample.SAMPLE_A;
 var examQuestionEvent = {
     GO_TO_EXAM_QUESTION: 0,
     RETURN_FROM_EXAM_QUESTION: 1
@@ -224,6 +228,18 @@ function submitSelfEfficacy(event) {
     var nervousness = $("input[name=nervousness]:checked").val();
 
     if ((typeof (confidence) != 'undefined' && confidence != "") && (typeof (nervousness) != 'undefined' && nervousness != "")) {
+
+        for(let i = 0;i<links.length;i++){
+          if(links[i].on_question == examQuestions.exam.pos + 1){
+            document.getElementById('go_survey').href = links[i].link
+            $("#go_survey").html("Go to Survey");
+            $("#go_survey").addClass("btn-primary");
+            $("#go_survey").removeClass("btn-success");
+            $("#msg").html("<h4>Please complete the following survey.</h4>");
+            currentSurvey = links[i].name
+            $('#message-modal').modal('show')
+          }
+        }
         var date = new Date();
         var str_date = date.toISOString().substring(0, 19).replace('T', ' ');
         var unixtime = (date.getTime() / 1000).toFixed(0);
@@ -398,7 +414,7 @@ function goSurvey(event) {
 
         submitSurveyEvent(surveyEvent.RETURN_FROM_SURVEY);
 
-        if (currentSurvey == Survey.PROMPT_ESSAY) {
+        if (currentSurvey == 'No') {
             showMessage(getSurveyMessageHTML());
         }
         else if(false){
@@ -415,9 +431,9 @@ function goSurvey(event) {
           $("#message-modal").modal('hide')
         }
 
-        if (currentSurvey == Survey.END) {
-            $("#test").html(getFinalMessage());
-        }
+        // if (currentSurvey == Survey.END) {
+        //     $("#test").html(getFinalMessage());
+        // }
 
     } else {
         // Save event for returning from saliva sample

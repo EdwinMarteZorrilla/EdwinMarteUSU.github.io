@@ -620,7 +620,7 @@ function goSurvey(event) {
 
         if (currentSurvey == Survey.PROMPT_ESSAY) {
             showMessage(getSurveyMessageHTML());
-        } else if(false){
+        } else {
             switch (currentSalivaSample) {
                 case salivaSample.SAMPLE_A:
                 case salivaSample.SAMPLE_B:
@@ -630,10 +630,7 @@ function goSurvey(event) {
                     break;
             }
         }
-        else{
-          $("#message-modal").modal('hide')
-        }
-
+        
         if (currentSurvey == Survey.END) {
             $(".test").html(getFinalMessage());
         }
@@ -1017,12 +1014,6 @@ $(document).ready(function () {
             document.getElementById('login-modal').innerHTML += getIdsOptionsHtml()
             $(".participant_id").on('input', function () {
                 var study_id = $('#study_id').val();
-                for(let i = 0;i<ids.length;i++){
-                  if(study_id == ids[i].study_id){
-                    document.getElementById('dob').value = ids[i].bday.substring(8,10)
-                    document.getElementById('a_number').value = ids[i].aNum.substring(ids[i].aNum.length-4,ids[i].aNum.length)
-                  }
-                }
                 var dob = $('#dob').val();
                 var a_number = $('#a_number').val();
 
