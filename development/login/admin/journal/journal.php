@@ -36,7 +36,7 @@ require_once('./journalFunctions.php');
 
 <body>
     <h1>Exams Journal</h1>
-	<form method="post" action="journalFunctions.php">
+	<form id="newEntryForm" method="post" action="journalFunctions.php">
 
 		<?php echo display_error(); ?>
 
@@ -62,7 +62,7 @@ require_once('./journalFunctions.php');
 	</form>
     <div>
         <table id="journalTable">
-            <tr>
+            <tr class="headerRow">
                 <th>Date of Entry</th>
                 <th>User</th>
                 <th>Email</th>

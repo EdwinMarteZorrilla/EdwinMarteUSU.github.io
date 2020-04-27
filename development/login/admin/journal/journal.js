@@ -20,6 +20,9 @@ function generateJournalTable(journalData) {
     var journalTable = document.getElementById("journalTable");
     for (i = 0; i < journalData.length; i++) {
         var row = document.createElement("tr");
+        if (i%2 == 1) {
+            row.className = "oddRow";
+        }
         for (j = 0; j < 7; j++) {
             var rowData = document.createElement("td");
             var text = document.createTextNode(journalData[i][j]);
@@ -31,6 +34,7 @@ function generateJournalTable(journalData) {
         deleteForm.method = "post";
         deleteForm.action = "journalFunctions.php";
         var deleteButton = document.createElement("BUTTON");   // Create a <button> element
+        deleteButton.className = "deleteEntry";
         deleteButton.innerHTML = "Delete Entry";                   // Insert text
         deleteButton.setAttribute("type", "submit");
         deleteButton.name = "delete_entry_btn[" + journalData[i][7] + "]";
