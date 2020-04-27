@@ -4,13 +4,23 @@ let answers_key = []
 var timeCounter;
 var studyID = "FA18M01W01ES"; // Fall - 2018 - Midterm 1 -Wednesday Session- Seat 1- EDA & Saliva
 var currentSurvey = '';
+var currentSaliva = 0
 let ids = []
 let links = []
+let queue = []
+let samples = [{sample:'A',done:false},
+               {sample:'B',done:false},
+                {sample:'C',done:false},
+                {sample:'D',done:false},
+                {sample:'E',done:false}]
 
 
 var NUM_TEST_QUESTIONS = 0; // 0 for all
 var GAME_TIME = 3.0;   // 30 seconds
 var SELF_EFFICACY_ANSWERS_DELAY = (1.0 / 60) * 60; // 1 seconds
+var SALIVA_SAMPLE_TIME = (6.0 / 60) * 60;; // seconds
+var ONE_SECOND = (1.0 / 60) * 60; // 1 second
+
 
 
 
@@ -280,13 +290,13 @@ function submitSalivaEvent(event) {
 
     switch (event) {
         case salivaEvent.GO_TO_SAMPLE:
-            strEvent += "GS_Going to saliva sample # " + currentSalivaSample;
+            strEvent += "GS_Going to saliva sample # " + samples[currentSaliva-1].sample;
             break;
         case salivaEvent.RETURN_FROM_SAMPLE:
-            strEvent += "RS_Returning from saliva sample # " + currentSalivaSample;
+            strEvent += "RS_Returning from saliva sample # " + samples[currentSaliva-1].sample;
             break;
         default:
-            strEvent += "US_Unknown saliva event in sample # " + currentSalivaSample;
+            strEvent += "US_Unknown saliva event in sample # " + samples[currentSaliva-1].sample
             break;
     }
 
@@ -366,12 +376,12 @@ function goSalivaSample(event) {
     timer = SALIVA_SAMPLE_TIME;
     var x = setInterval(function () {
 
-        $("#msg").html("<div class='timer'>00:" + pad(--timer, 2) + "</div>");
+        $("#saliva-msg").html("<div class='timer'>00:" + pad(--timer, 2) + "</div>");
 
         if (timer < 0) {
             clearInterval(x);
-            $("#msg").html('');
-            $("#msg").html('<h4>Please click OK to continue.</h4>');
+            $("#saliva-msg").html('');
+            $("#saliva-msg").html('<h4>Please click OK to continue.</h4>');
             $("#msg_button").html('<a id="timer_ok" onclick="returnFromSaliva()" class="btn btn-lg btn-primary" data-dismiss="modal">OK</a>');
             submitSalivaEvent(salivaEvent.RETURN_FROM_SAMPLE);
         }
@@ -382,24 +392,24 @@ function goSalivaSample(event) {
 
 function returnFromSaliva() {
 
-    switch (currentSalivaSample) {
-        case salivaSample.SAMPLE_B:
+    switch (currentSaliva) {
+        case 1:
             coolDownTime();
             break;
-        case salivaSample.SAMPLE_D:
+        case 3:
             // set timer for Survey Link after 10 minutes
             var x = setInterval(function () {
                 showMessage(getSalivaMessageHTML());
                 clearInterval(x);
-                $(".test").html('<h2>DO NOT CLOSE this window. Please wait 10 minutes for the final survey and saliva collection.</h2>');
+                $("#test").html('<h2>DO NOT CLOSE this window. Please wait 10 minutes for the final survey and saliva collection.</h2>');
             }, AFTER_10_MIN_TIME * 1000);
             break;
-        case salivaSample.SAMPLE_E:
+        case 4:
             // set timer for Survey Link after 10 minutes
             var x = setInterval(function () {
                 showMessage(getSurveyMessageHTML());
                 clearInterval(x);
-                $(".test").html('');
+                $("#test").html('');
             }, AFTER_10_MIN_TIME * 1000);
             break;
     }
@@ -413,23 +423,7 @@ function goSurvey(event) {
         // $('#message-modal').modal('hide');
 
         submitSurveyEvent(surveyEvent.RETURN_FROM_SURVEY);
-
-        if (currentSurvey == 'No') {
-            showMessage(getSurveyMessageHTML());
-        }
-        else if(false){
-            switch (currentSalivaSample) {
-                case salivaSample.SAMPLE_A:
-                case salivaSample.SAMPLE_B:
-                case salivaSample.SAMPLE_C:
-                case salivaSample.SAMPLE_E:
-                    showMessage(getSalivaMessageHTML());
-                    break;
-            }
-        }
-        else{
-          $("#message-modal").modal('hide')
-        }
+        $("#message-modal").modal('hide')
 
         // if (currentSurvey == Survey.END) {
         //     $("#test").html(getFinalMessage());
@@ -656,24 +650,13 @@ function getGameHTML() {
 }
 
 function getSalivaMessageHTML() {
-
-    var order = getSalivaSampleOrder();
-
-    var ret = '<div class="modal-header">\
-                <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->\
-                <h3 class="modal-title">Saliva Collection</h3>\
-            </div>\
-            <div class="modal-body">\
-                <div id="msg">\
-                <h4>\
-                    Now is time to take the saliva sample. Please take the swab labeled <b>' + order + '</b>\
-                    and put it in your mouth and then click OK</h4>\
-                </div>\
-            </div>\
-            <div id="msg_button" class="modal-footer">\
-                <br><br><a id="go_saliva" onclick="goSalivaSample(event)" class="btn btn-lg btn-primary">OK</a>\
-            </div>';
-    return ret;
+    $('#saliva-modal').modal({
+        backdrop: 'static',
+        keyboard: false
+    });
+    $('#msg_button').html('<br><br><a id="go_saliva" onclick="goSalivaSample(event)" class="btn btn-lg btn-primary">OK</a>')
+    $('#saliva-msg').html('<h4>Now is time to take the saliva sample. Please take the swab labeled <b>' + samples[currentSaliva - 1].sample + '</b> and put it in your mouth and then click OK</h4>')
+    $('#saliva-modal').modal('show')
 }
 
 function showMessage(message){
@@ -796,6 +779,26 @@ $(document).ready(function () {
         // Show first
         $("#test").html(getExamQuestionHTML());
 
+        let x = setInterval(function(){
+          queue.push(samples[currentSaliva])
+          samples[currentSaliva].done = true
+          currentSaliva += 1
+          if(currentSaliva == samples.length){
+            clearInterval(x)
+          }
+        },1000*30)
+
+        let y = setInterval(function(){
+          if(samples[samples.length - 1].done){
+            clearInterval(y)
+          }
+          if(!$('#message-modal').hasClass('in') && queue.length != 0 && !$('#saliva-modal').hasClass('in')){   //Checks if the message-modal (survey modal) is shown or not
+            queue.splice(0,1)
+            getSalivaMessageHTML()
+          }
+
+        },1000*5)
+
         // TEST: reducing the number of questions
         if (NUM_TEST_QUESTIONS != 0) {
             examQuestions.exam.total = NUM_TEST_QUESTIONS;
@@ -805,6 +808,8 @@ $(document).ready(function () {
         submitExamQuestionEvent(examQuestionEvent.GO_TO_EXAM_QUESTION);
 
     });
+
+
 
 
 
