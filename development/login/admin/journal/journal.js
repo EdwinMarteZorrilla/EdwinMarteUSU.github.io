@@ -1,3 +1,8 @@
+var entriesData;
+var entryInterval = 50;
+var firstEntryToShow = 0;
+var lastEntryToShow = firstEntryToShow + entryInterval;
+
 function loadJournal() {
     jQuery.ajax({
         type: "POST",
@@ -7,6 +12,7 @@ function loadJournal() {
     
         success: function (obj, textstatus) {
                       if( !('error' in obj) ) {
+                          entriesData = obj.data;
                           generateJournalTable(obj.data);
                       }
                       else {
@@ -23,6 +29,7 @@ function generateJournalTable(journalData) {
         if (i%2 == 1) {
             row.className = "oddRow";
         }
+        row.classList.add("entryRow");
         for (j = 0; j < 7; j++) {
             var rowData = document.createElement("td");
             var text = document.createTextNode(journalData[i][j]);
@@ -42,6 +49,50 @@ function generateJournalTable(journalData) {
         rowData.appendChild(deleteForm);
         row.appendChild(rowData);
         journalTable.appendChild(row);
+    }
+    showFirstGroup();
+}
+
+function showFirstGroup() {
+    var entriesAll = document.getElementsByClassName("entryRow");
+    for (i = 0; i < entriesAll.length; i++) {
+        if (i > lastEntryToShow-1) {
+            entriesAll[i].style.display = "none";
+        }
+    }
+}
+
+function loadPrevious() {
+    var entriesAll = document.getElementsByClassName("entryRow");
+    if (firstEntryToShow > 0) {
+        firstEntryToShow -= entryInterval;
+        lastEntryToShow -= entryInterval;
+    }
+    for (i = 0; i < entriesAll.length; i++) {
+        if (i < firstEntryToShow) {
+            entriesAll[i].style.display = "none";
+        } else if (i < lastEntryToShow) {
+            entriesAll[i].style.display = "";
+        } else {
+            entriesAll[i].style.display = "none";
+        }
+    }
+}
+
+function loadNext() {
+    var entriesAll = document.getElementsByClassName("entryRow");
+    if (lastEntryToShow < entriesAll.length) {
+        firstEntryToShow += entryInterval;
+        lastEntryToShow += entryInterval;
+    }
+    for (i = 0; i < entriesAll.length; i++) {
+        if (i < firstEntryToShow) {
+            entriesAll[i].style.display = "none";
+        } else if (i < lastEntryToShow) {
+            entriesAll[i].style.display = "";
+        } else {
+            entriesAll[i].style.display = "none";
+        }
     }
 }
 

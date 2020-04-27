@@ -60,6 +60,10 @@ require_once('./journalFunctions.php');
 			<button type="submit" class="btn" name="add_entry_btn">Add Entry</button>
 		</div>
 	</form>
+
+	<button type="submit" class="btn" onclick="loadPrevious()">&lt&lt&lt</button>
+	<button type="submit" class="btn" onclick="loadNext()">&gt&gt&gt</button>
+
     <div>
         <table id="journalTable">
             <tr class="headerRow">
