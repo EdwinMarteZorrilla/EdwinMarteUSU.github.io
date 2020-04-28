@@ -179,14 +179,36 @@
     </div>
   </div>
 
-  <!-- Modal -->
-  <div class="modal fade" id="message-modal" role="dialog">
-    <div class="modal-dialog">
 
-      <!-- Modal content-->
-      <div id="message" class="modal-content">
+
+  <div class="modal" id="message-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Survey</h3>
+        </div>
+        <div id="msg" class="modal-body">
+          <h4>Please complete the following survey.</h4>
+        </div>
+        <div class="modal-footer">
+          <br><br><a id="go_survey" onclick="goSurvey(event)" target="_blank" class="btn btn-lg btn-primary">Go to Survey</a>
+        </div>
       </div>
+    </div>
+  </div>
 
+  <div class="modal" id="saliva-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Saliva Collection</h3>
+        </div>
+        <div id="saliva-msg" class="modal-body">
+        </div>
+        <div id="msg_button" class="modal-footer">
+          
+        </div>
+      </div>
     </div>
   </div>
 
@@ -215,6 +237,8 @@
 
     </div>
   </div>
+
+
 
 </body>
 

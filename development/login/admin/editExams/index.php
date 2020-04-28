@@ -48,8 +48,8 @@ if (isset($_GET['logout'])) {
     <input type="text" id="name" name="name">
     <button class="btn btn-lg btn-success" onclick="createExam()">Create</button>
   </div> -->
-
-  <div id="questions" style="display:none;">
+	<div style="display:flex; justify-content:center">
+  <div id="questions" style="display:none; width:85vw; align:center">
 		`<div class="form-group">
       <label for="name">Question:</label>
       <input type="text" class="form-control"  id="question" placeholder="Enter the question" name"question">
@@ -85,9 +85,10 @@ if (isset($_GET['logout'])) {
 	    </div>
     <div style="display:flex; justify-content:space-between; padding:10px;">
       <button class="btn btn-secondary" onclick="backToExams()">Back to exams</button>
-      <button class="btn btn-lg btn-success" onclick="newQuestion()">Add Question</button>
+      <button id="addBtn" class="btn btn-lg btn-success" onclick="newQuestion()">Add Question</button>
     </div>`
   </div>
+</div>
 
 
 	<div class="modal fade" id="idInput" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -102,10 +103,10 @@ if (isset($_GET['logout'])) {
       <div class="modal-body">
         <label for="newID" class="col-form-label">New ID:</label>
         <input style="text-transform: uppercase" onkeyup="this.value = this.value.toUpperCase()" type="text" class="form-control" id="newID">
-				<label for="bday" class="col-form-label">Birthdate:</label>
-        <input type="date" class="form-control" id="bday">
-				<label for="a-num" class="col-form-label">A-number:</label>
-				<input style="text-transform: uppercase" onkeyup="this.value = this.value.toUpperCase()" type="text" class="form-control" id="a-num">
+				<label for="bday" class="col-form-label">Day of birth (dd):</label>
+        <input type="number" min="1" max="31" class="form-control" id="bday" maxlength="2">
+				<label for="a-num" class="col-form-label">Last 4 digits of Student ID:</label>
+				<input maxlength="4" type="text" class="form-control" id="a-num">
 			</div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -178,7 +179,7 @@ if (isset($_GET['logout'])) {
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-			<button type="button" class="btn btn-secondary btn-success" onclick="saveLink()">Add</button>
+			<button id="linkBtn" type="button" class="btn btn-secondary btn-success" onclick="saveLink()">Add</button>
 		</div>
 	</div>
 </div>

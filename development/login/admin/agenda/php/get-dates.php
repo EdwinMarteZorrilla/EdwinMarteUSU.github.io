@@ -5,7 +5,7 @@ require_once('../../../../../include/config.php');
 $connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "agenda");
 $sql = "SELECT exam, taken FROM dates;";
 $result = mysqli_query($connect,$sql);
-$html = '<h1 style="text-align:center">Agenda</h1>';
+$html = '<h1 style="text-align:center">Exam Scheduler</h1>';
 $html .= '<div style="display:flex; justify-content:center"><div style="width:85vw"><div style="display:flex; justify-content:flex-end; padding:15px;">';
 $html .= '<button class="btn btn-lg btn-success" data-toggle="modal" data-target="#schedule">Schedule exam</button></div>';
 $html .= '<table style="width:85vw;" class="table table-striped table-bordered"><tr><th>Exam</th><th>Taken/To be taken</th></tr>';
