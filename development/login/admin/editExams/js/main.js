@@ -1,6 +1,7 @@
 let mainExam = '';
 let question = {}
 let links = {}
+let variables = {}
 
 function updateExam(value){
   let json = {new: value}
@@ -267,6 +268,75 @@ function editLink(id){
   $('#addLink').modal('show')
 }
 
+function modifyVariable(id){
+  let value = document.getElementById('variable-select').value
+  let json = {exam:mainExam,value:value,id:id}
+  $.ajax({
+    type: 'POST',
+    url: './php/edit-variable.php',
+    dataType: 'json',
+    data: json,
+    success: function (data) {
+      if(data.result){
+        $('#variableModal').modal('hide')
+        switchTabs('variables')
+        // console.log(examQuestions);
+        return true;
+      }
+      else{
+        alert(data.error)
+        $('#variableModal').modal('hide')
+        switchTabs('variables')
+        return false
+      }
+    },
+    error: function (msg) {
+      console.log("AJAX Error");
+      console.log(msg);
+      return false;
+    }
+  });
+
+}
+
+function editVariable(id){
+  if(id == 1){
+    let html = '<label for="variable-select" class="col-form-label">Do you want saliva samples on the experiment?</label>'
+    html += '<select class="form-control" id="variable-select"><option value="Yes">Yes</option><option value="No">No</option></select>'
+    document.getElementById('varsInputs').innerHTML = html
+    document.getElementById('varsBtn').onclick = () => modifyVariable(1)
+    $('#variableModal').modal('show')
+  }
+  else if(id == 2){
+    let html2 = '<label for="variable-select" class="col-form-label">How much time do you want between saliva samples?</label>'
+    html2 += '<input type="number" class="form-control" id="variable-select"></input>'
+    document.getElementById('varsInputs').innerHTML = html2
+    document.getElementById('varsBtn').onclick = () => modifyVariable(2)
+    $('#variableModal').modal('show')
+  }
+  else if(id == 3){
+    let html3 = '<label for="variable-select" class="col-form-label">Please enter a title for the intro</label>'
+    html3 += '<input type="text" class="form-control" id="variable-select"></input>'
+    document.getElementById('varsInputs').innerHTML = html3
+    document.getElementById('varsBtn').onclick = () => modifyVariable(3)
+    $('#variableModal').modal('show')
+  }
+  else if(id == 4){
+    let html4 = '<label for="variable-select" class="col-form-label">Please enter the intro message</label>'
+    html4 += '<input type="text" class="form-control" id="variable-select"></input>'
+    document.getElementById('varsInputs').innerHTML = html4
+    document.getElementById('varsBtn').onclick = () => modifyVariable(4)
+    $('#variableModal').modal('show')
+  }
+  else if(id == 5){
+    let html5 = '<label for="variable-select" class="col-form-label">Please select the intro video</label>'
+    html5 += '<input type="text" class="form-control" id="variable-select"></input>'
+    document.getElementById('varsInputs').innerHTML = html5
+    document.getElementById('varsBtn').onclick = () => modifyVariable(5)
+    $('#variableModal').modal('show')
+  }
+}
+
 function deleteLink(link){
   let json = {exam:mainExam,link:link}
   if(confirm("Are you sure you want to delete this link?")){
@@ -395,15 +465,18 @@ function switchTabs(tab){
     tab3 = document.getElementById('tab3')
     tab3.style = "border-style:solid;border-color:green; border-width:1px;color:green;"
 
+    tab4 = document.getElementById('tab4')
+    tab4.style = "border-style:solid;border-color:green; border-width:1px;color:green;"
+
     document.getElementById('exam').style = "display:block;"
     document.getElementById('study_ids').style = "display:none;"
     document.getElementById('links').style = "display:none;"
+    document.getElementById('variables').style = "display:none;"
+
 
 
   }
   else if(tab == 'ids'){
-
-
     jQuery.ajax({
         type: "POST",
         url: './php/editExamsConnect.php',
@@ -412,6 +485,7 @@ function switchTabs(tab){
         success: function (data) {
             document.getElementById('exam').style = "display:none;"
             document.getElementById('links').style = "display:none;"
+            document.getElementById('variables').style = "display:none;"
             document.getElementById('study_ids').style = "display:block;"
             document.getElementById('study_ids').innerHTML = data;
             // console.log(examQuestions);
@@ -430,6 +504,8 @@ function switchTabs(tab){
     tab2.style = "background-color:green; color:white"
     tab3 = document.getElementById('tab3')
     tab3.style = "border-style:solid;border-color:green; border-width:1px;color:green;"
+    tab4 = document.getElementById('tab4')
+    tab4.style = "border-style:solid;border-color:green; border-width:1px;color:green;"
   }
 
   else if(tab == 'links'){
@@ -444,6 +520,7 @@ function switchTabs(tab){
             document.getElementById('exam').style = "display:none;"
             document.getElementById('links').style = "display:block;"
             document.getElementById('study_ids').style = "display:none;"
+            document.getElementById('variables').style = "display:none;"
             return true;
         },
         error: function (msg) {
@@ -460,6 +537,43 @@ function switchTabs(tab){
 
     tab3 = document.getElementById('tab3')
     tab3.style = "background-color:green; color:white"
+
+    tab4 = document.getElementById('tab4')
+    tab4.style = "border-style:solid;border-color:green; border-width:1px;color:green;"
+  }
+  else if(tab == 'variables'){
+    jQuery.ajax({
+        type: "POST",
+        url: './php/editExamsConnect.php',
+        dataType: 'json',
+        data: {functionname: 'loadExamVariables', parameters: { 'exam': mainExam }},
+        success: function (data) {
+            variables = data
+            document.getElementById('variables').innerHTML = getVariablesHtml()
+            document.getElementById('exam').style = "display:none;"
+            document.getElementById('links').style = "display:none;"
+            document.getElementById('study_ids').style = "display:none;"
+            document.getElementById('variables').style = "display:block;"
+
+            return true;
+        },
+        error: function (msg) {
+            console.log("AJAX Error");
+            console.log(msg);
+            return false;
+        }
+    });
+    tab1 = document.getElementById('tab1')
+    tab1.style = "border-style:solid;border-color:green; border-width:1px;color:green;"
+
+    tab2 = document.getElementById('tab2')
+    tab2.style = "border-style:solid;border-color:green; border-width:1px;color:green;"
+
+    tab3 = document.getElementById('tab3')
+    tab3.style = "border-style:solid;border-color:green; border-width:1px;color:green;"
+
+    tab4 = document.getElementById('tab4')
+    tab4.style = "background-color:green; color:white"
   }
 }
 
@@ -478,6 +592,7 @@ function goBack(){
           document.getElementById('study_ids').style.display = 'none';
           document.getElementById('links').style.display = 'none';
           document.getElementById('questions').style.display = 'none';
+          document.getElementById('variables').style.display = 'none';
 
 
 
@@ -746,7 +861,8 @@ function getExamHtml(data){
   if(data.questions == undefined){data.questions = []}
   let html = '<h1 style="text-align:center">' + data.name + '</h1>';
   html += '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="background-color:green; color:white" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Study IDs</a>';
-  html += '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Links</a></nav>';
+  html += '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Links</a>';
+  html += '<a id="tab4" onclick="switchTabs(\'variables\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Variables</a></nav>';
   html += '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
   if(data.editable){
     html += '<button class="btn btn-lg btn-success" onclick="modify()" disabled>Add Question</button></div>';
@@ -780,7 +896,8 @@ function getExamHtml(data){
   if(data.questions.length == 0){
     html = '<h1 style="text-align:center">' + data.name + '</h1>';
     html += '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="background-color:green; color:white" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Study IDs</a>';
-    html += '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Links</a></nav>';
+    html += '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Links</a>';
+    html += '<a id="tab4" onclick="switchTabs(\'variables\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Variables</a></nav>';
     html += '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
     if(data.editable){
       html += '<button class="btn btn-lg btn-success" onclick="modify()" disabled>Add Question</button></div>';
@@ -797,7 +914,8 @@ function getLinksHtml(){
   if(links.links == undefined){links.links = []}
   let html = '<h1 style="text-align:center">' + links.name +  '</h1>';
   html += '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="border-style:solid;border-color:green; border-width:1px;color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px; color:green" class="nav-item nav-link" href="#">Study IDs</a>';
-  html += '<a id="tab3" onclick="switchTabs(\'links\')" style="color:white; background-color:green" class="nav-item nav-link" href="#">Links</a></nav>';
+  html += '<a id="tab3" onclick="switchTabs(\'links\')" style="color:white; background-color:green" class="nav-item nav-link" href="#">Links</a>';
+  html += '<a id="tab4" onclick="switchTabs(\'variables\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Variables</a></nav>';
   html += '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
   if(links.editable){
     html += '<button class="btn btn-lg btn-success" onclick="showLinkModal()" disabled>Add new Link</button></div>';
@@ -828,7 +946,9 @@ function getLinksHtml(){
   if(links.links.length == 0){
     html = '<h1 style="text-align:center">' + links.name + '</h1>';
     html += '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="border-style:solid;border-color:green; border-width:1px;color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Study IDs</a>';
-    html += '<a id="tab3" onclick="switchTabs(\'links\')" style="color:white; background-color:green" class="nav-item nav-link" href="#">Links</a></nav>';
+    html += '<a id="tab3" onclick="switchTabs(\'links\')" style="color:white; background-color:green" class="nav-item nav-link" href="#">Links</a>';
+    html += '<a id="tab4" onclick="switchTabs(\'variables\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Variables</a></nav>';
+
     html += '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
     if(links.editable){
       html += '<button class="btn btn-lg btn-success" onclick="showLinkModal()" disabled>Add new Link</button></div></div></div>';
@@ -839,6 +959,32 @@ function getLinksHtml(){
       html += '<h4 style="text-align:center">No links</h4>';
     }
   }
+  return html
+}
+
+function getVariablesHtml(){
+  let html = '<h1 style="text-align:center">' + variables.name +  '</h1>';
+  html += '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="border-style:solid;border-color:green; border-width:1px;color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px; color:green" class="nav-item nav-link" href="#">Study IDs</a>';
+  html += '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green;" class="nav-item nav-link" href="#">Links</a>';
+  html += '<a id="tab4" onclick="switchTabs(\'variables\')" style="color:white; background-color:green"" class="nav-item nav-link" href="#">Variables</a></nav>';
+  html += '<div style="display:flex; justify-content:start; padding:15px;"><button style="padding:12px" class="btn btn-outline-success" onclick="goBack()">Go Back</button></div>';
+
+  if(variables.editable){
+    html += '<table class="table table-striped table-bordered"><tr><th>Variable</th><th>Value</th></tr>'
+  }
+  else{
+    html += '<table class="table table-striped table-bordered"><tr><th>Variable</th><th>Value</th><th></th></tr>'
+  }
+  for(let i = 0;i<variables.variables.length;i++){
+    html += '<tr><td>' + variables.variables[i].name + '</td><td>' + variables.variables[i].value + '</td>'
+    if(!variables.editable){
+      html += '<td><button style="margin-right:10px; margin-left:10px" class="btn btn-outline-success btn-sm" onclick="editVariable(' + variables.variables[i].id + ')">Edit</button></td>';
+    }
+    html +='</tr>'
+  }
+  html += '</table>'
+  html += '</div></div>'
+
   return html
 }
 

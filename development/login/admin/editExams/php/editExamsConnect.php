@@ -33,6 +33,10 @@ if( !isset($aResult['error']) ) {
             $parameters = $_POST['parameters'];
             $aResult = loadExamIds($parameters);
             break;
+        case 'loadExamVariables':
+            $parameters = $_POST['parameters'];
+            $aResult = loadExamVariables($parameters);
+            break;
 
         default:
            $aResult['error'] = 'Not found function '.$_POST['functionname'].'!';
@@ -45,4 +49,3 @@ if( !isset($aResult['error']) ) {
 echo $aResult;
 
 ?>
-

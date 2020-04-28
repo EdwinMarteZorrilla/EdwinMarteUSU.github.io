@@ -63,21 +63,25 @@ function copyExams($parameters) {
     $exam = "CREATE TABLE exams." . $parameters['new'] . " ( question_id INT NOT NULL AUTO_INCREMENT, question VARCHAR(21844) NOT NULL, image VARCHAR(1000), answer VARCHAR(5) NOT NULL, PRIMARY KEY (question_id));";
     $answers = "CREATE TABLE exams.answers" . $parameters['new'] . " ( answer_id INT NOT NULL AUTO_INCREMENT, question_id INT NOT NULL, answer VARCHAR(21844) NOT NULL, PRIMARY KEY (answer_id));";
     $ids = "CREATE TABLE exams.ids" . $parameters['new'] . " (id INT NOT NULL AUTO_INCREMENT, study_id VARCHAR(100) NOT NULL, bday VARCHAR(30) NOT NULL, anumber VARCHAR(20) NOT NULL, PRIMARY KEY (id))";
-    $links = "CREATE TABLE exams.links" . $parameters['new'] . "(id INT NOT NULL AUTO_INCREMENT, name VARCHAR(200) NOT NULL, link VARCHAR(2000), on_question INT NOT NULL, PRIMARY KEY (id))";
+    $links = "CREATE TABLE exams.links" . $parameters['new'] . " (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(200) NOT NULL, link VARCHAR(2000), on_question INT NOT NULL, PRIMARY KEY (id))";
+    $variables = "CREATE TABLE exam_variables." . $parameters['new'] . " (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(100) NOT NULL, value VARCHAR(20000), PRIMARY KEY (id));";
     $result = mysqli_query($connect,$exam);
     $result2 = mysqli_query($connect,$answers);
     $result3 = mysqli_query($connect,$ids);
     $result4 = mysqli_query($connect,$links);
+    $result5 = mysqli_query($connect,$variables);
 
     $copyQuests = 'INSERT exams.' . $parameters['new'] . ' SELECT * FROM exams.' . $parameters['copy'];
     $copyIds = 'INSERT exams.ids' . $parameters['new'] . ' SELECT * FROM exams.ids' . $parameters['copy'];
     $copyAns = 'INSERT exams.answers' . $parameters['new'] . ' SELECT * FROM exams.answers' . $parameters['copy'];
     $copyLinks = 'INSERT exams.links' . $parameters['new'] . ' SELECT * FROM exams.links' . $parameters['copy'];
-    $result5 = mysqli_query($connect,$copyQuests);
-    $result6 = mysqli_query($connect,$copyAns);
-    $result7 = mysqli_query($connect,$copyLinks);
-    $result8 = mysqli_query($connect,$copyIds);
+    $copyVars = 'INSERT exam_variables.' . $parameters['new'] . ' SELECT * FROM exam_variables.' . $parameters['copy'];
 
+    $result6 = mysqli_query($connect,$copyQuests);
+    $result7 = mysqli_query($connect,$copyAns);
+    $result8 = mysqli_query($connect,$copyLinks);
+    $result9 = mysqli_query($connect,$copyIds);
+    $result10 = mysqli_query($connect,$copyVars);
 
     $sql = "SELECT question_id, question, image, answer FROM exams." . $parameters['copy'];
     $result = mysqli_query($connect,$sql);
@@ -95,6 +99,7 @@ function loadExamLinks($parameters) {
       if($row2['taken'] < date("Y-m-d")){
         $json .= 'true, "links":[';
         $flag = true;
+        break;
       }
     }
     if(!$flag){
@@ -128,6 +133,7 @@ function loadExamQuestions($parameters) {
       if($row2['taken'] < date("Y-m-d")){
         $json .= 'true, "questions":[';
         $flag = true;
+        break;
       }
     }
     if(!$flag){
@@ -168,7 +174,8 @@ function loadExamIds($parameters) {
     $result = mysqli_query($connect,$sql);
     $examTable = '<h1 style="text-align:center">' .$parameters['exam'] . '</h1>';
     $examTable .= '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="border-style:solid;border-color:green; border-width:1px;color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="background-color:green; color:white" class="nav-item nav-link" href="#">Study IDs</a>';
-    $examTable .= '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Links</a></nav>';
+    $examTable .= '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Links</a>';
+    $examTable .= '<a id="tab4" onclick="switchTabs(\'variables\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Variables</a></nav>';
     $examTable .= '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
 
     if($flag){
@@ -199,7 +206,8 @@ function loadExamIds($parameters) {
     if($count == 1){
       $examTable = '<h1 style="text-align:center">' .$parameters['exam'] . '</h1>';
       $examTable .= '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="border-style:solid;border-color:green; border-width:1px;color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="background-color:green; color:white" class="nav-item nav-link" href="#">Study IDs</a>';
-      $examTable .= '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Links</a></nav>';
+      $examTable .= '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Links</a>';
+      $examTable .= '<a id="tab4" onclick="switchTabs(\'variables\')" style="border-style:solid;border-color:green; border-width:1px;color:green" class="nav-item nav-link" href="#">Variables</a></nav>';
       $examTable .= '<div style="display:flex; justify-content:space-between; padding:15px;"><button class="btn btn-outline-success" onclick="goBack()">Go Back</button>';
       if($flag){
         $examTable .= '<div style="display:flex justify-content:space-between"><button data-toggle="modal" data-target="#importModal" style="margin-right:10px"class="btn btn-lg btn-outline-secondary" disabled>Import</button><button class="btn btn-lg btn-success" data-toggle="modal" data-target="#idInput" disabled>Add new ID</button></div></div></div></div>';
@@ -210,5 +218,32 @@ function loadExamIds($parameters) {
       $examTable .= '<h4 style="text-align:center">No IDs</h4>';
     }
     return $examTable;
+}
+
+function loadExamVariables($parameters){
+  $json = '{"name":"' . $parameters['exam'] . '","editable":';
+  $connect2 = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "agenda");
+  $sql = "SELECT taken FROM dates WHERE exam='" . $parameters['exam'] . "'";
+  $result2 = mysqli_query($connect2,$sql);
+  $flag = false;
+  while($row2 = $result2->fetch_assoc()){
+    if($row2['taken'] < date("Y-m-d")){
+      $json .= 'true, "variables":[';
+      $flag = true;
+      break;
+    }
+  }
+  if(!$flag){
+    $json .= 'false, "variables":[';
+  }
+  $connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exam_variables");
+  $sql = "SELECT id,name, value FROM " . $parameters['exam'];
+  $result = mysqli_query($connect,$sql);
+  while($row = $result->fetch_assoc()){
+    $json .= '{"id":' . $row['id'] . ',"name":"' . $row['name'] . '","value":"' . $row['value'] . '"},';
+  }
+  $json = rtrim($json, ",");
+  $json .= ']}';
+  return $json;
 }
 ?>

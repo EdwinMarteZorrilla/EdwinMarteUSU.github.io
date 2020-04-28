@@ -43,6 +43,8 @@ if (isset($_GET['logout'])) {
 	</div>
 	<div id="links" style="display:none;">
 	</div>
+	<div id="variables" style="display:none">
+	</div>
   <!-- <div id="add" style="display:none;">
     <label for="name">Exam name:</label>
     <input type="text" id="name" name="name">
@@ -180,6 +182,26 @@ if (isset($_GET['logout'])) {
 		<div class="modal-footer">
 			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 			<button id="linkBtn" type="button" class="btn btn-secondary btn-success" onclick="saveLink()">Add</button>
+		</div>
+	</div>
+</div>
+</div>
+
+<div class="modal fade" id="variableModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered" role="document">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title" id="variableTitle">Variables</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div id="varsInputs" class="modal-body">
+			<!-- Inputs go here -->
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			<button id="varsBtn" type="button" class="btn btn-secondary btn-success">Save</button>
 		</div>
 	</div>
 </div>
