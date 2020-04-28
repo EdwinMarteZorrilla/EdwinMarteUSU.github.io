@@ -415,6 +415,47 @@ function returnFromSaliva() {
     }
 }
 
+function coolDownTime() {
+
+    var introMsg = 'Please look at the dot located in front.';
+    var closingMsg = 'You can now proceed with the test.';
+    var title = 'ENGR 2010 - Statics';
+
+    pauseScreen(introMsg, closingMsg, title, 10, false);
+}
+
+function pauseScreen(introMsg, closingMsg, title, time, showTimer) {
+    timer = time;
+
+    $('#timer-modal').modal({
+        backdrop: 'static',
+        keyboard: false
+    });
+
+    $('#timer-modal').modal('show');
+
+    $("#timer_message").html('<br><h3>' + introMsg + '</h3>');
+    $("#timer_title").html(title);
+    $("#timer_button").html("");
+    $("#timer_display").html("");
+
+    var x = setInterval(function () {
+
+        timer--;
+
+        if (showTimer) {
+            $("#timer_display").html("<div class='timer'>00:" + pad(timer, 2) + "</div>");
+        }
+
+        if (timer <= 0) {
+            clearInterval(x);
+            $("#timer_message").html('<br><h3>' + closingMsg + '</h3>');
+            $("#timer_button").html('<br><br><a id="timer_ok" class="btn btn-lg btn-primary" data-dismiss="modal">OK</a>');
+        }
+    }, ONE_SECOND * 1000);
+}
+
+
 function goSurvey(event) {
 
     // event.preventDefault();
