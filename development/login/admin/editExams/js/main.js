@@ -592,6 +592,7 @@ function goBack(){
           document.getElementById('study_ids').style.display = 'none';
           document.getElementById('links').style.display = 'none';
           document.getElementById('questions').style.display = 'none';
+          document.getElementById('variables').style.display = 'none';
 
 
 
@@ -966,10 +967,19 @@ function getVariablesHtml(){
   html += '<div style="display:flex; justify-content:center"><div style="width:85vw"><nav class="nav nav-pills nav-fill"><a id="tab1" style="border-style:solid;border-color:green; border-width:1px;color:green;" onclick="switchTabs(\'questions\')" class="nav-item nav-link" href="#">Questions</a><a id="tab2" onclick="switchTabs(\'ids\')" style="border-style:solid;border-color:green; border-width:1px; color:green" class="nav-item nav-link" href="#">Study IDs</a>';
   html += '<a id="tab3" onclick="switchTabs(\'links\')" style="border-style:solid;border-color:green; border-width:1px;color:green;" class="nav-item nav-link" href="#">Links</a>';
   html += '<a id="tab4" onclick="switchTabs(\'variables\')" style="color:white; background-color:green"" class="nav-item nav-link" href="#">Variables</a></nav>';
-  html += '<table style="margin-top:50px" class="table table-striped table-bordered"><tr><th>Variable</th><th>Value</th><th></th>'
+  html += '<div style="display:flex; justify-content:start; padding:15px;"><button style="padding:12px" class="btn btn-outline-success" onclick="goBack()">Go Back</button></div>';
+
+  if(variables.editable){
+    html += '<table class="table table-striped table-bordered"><tr><th>Variable</th><th>Value</th></tr>'
+  }
+  else{
+    html += '<table class="table table-striped table-bordered"><tr><th>Variable</th><th>Value</th><th></th></tr>'
+  }
   for(let i = 0;i<variables.variables.length;i++){
-    html += '<tr><td>' + variables.variables[i].name + '</td><td>' + variables.variables[i].value + '</td><td>'
-    html += '<button style="margin-right:10px; margin-left:10px" class="btn btn-outline-success btn-sm" onclick="editVariable(' + variables.variables[i].id + ')">Edit</button></td>';
+    html += '<tr><td>' + variables.variables[i].name + '</td><td>' + variables.variables[i].value + '</td>'
+    if(!variables.editable){
+      html += '<td><button style="margin-right:10px; margin-left:10px" class="btn btn-outline-success btn-sm" onclick="editVariable(' + variables.variables[i].id + ')">Edit</button></td>';
+    }
     html +='</tr>'
   }
   html += '</table>'
