@@ -24,6 +24,7 @@ $variables2 = "INSERT INTO " . $_POST['name'] . " (name,value) VALUES('Time betw
 $variables3 = "INSERT INTO " . $_POST['name'] . " (name,value) VALUES('Intro Title','');";
 $variables4 = "INSERT INTO " . $_POST['name'] . " (name,value) VALUES('Intro Message','');";
 $variables5 = "INSERT INTO " . $_POST['name'] . " (name,value) VALUES('Intro Video','');";
+$variables6 = "INSERT INTO " . $_POST['name'] . " (name,value) VALUES('Main screen message','');";
 
 $result = mysqli_query($connect,$exam);
 $result2 = mysqli_query($connect,$answers);
@@ -35,6 +36,8 @@ $result5 = mysqli_query($connect2,$variables2);
 $result5 = mysqli_query($connect2,$variables3);
 $result5 = mysqli_query($connect2,$variables4);
 $result5 = mysqli_query($connect2,$variables5);
+$result5 = mysqli_query($connect2,$variables6);
+
 
 
 if($result and $result2 and $result3 and $result4 and $result5){

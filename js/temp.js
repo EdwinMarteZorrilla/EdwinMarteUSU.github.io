@@ -7,6 +7,7 @@ var currentSurvey = '';
 var currentSaliva = 0
 let ids = []
 let links = []
+let variables = []
 let queue = []
 let samples = [{sample:'A',done:false},
                {sample:'B',done:false},
@@ -719,6 +720,49 @@ function getIdsOptionsHtml(){
   return html
 }
 
+
+
+function setBeginButton(){
+  $(".begin").click(function (event) {
+      event.preventDefault();
+      // Hide Instructions
+      $('.instructions').hide();
+      // Show first
+      $("#test").html(getExamQuestionHTML());
+
+      if(variables[0].value == 'Yes'){
+        let x = setInterval(function(){
+          queue.push(samples[currentSaliva])
+          samples[currentSaliva].done = true
+          currentSaliva += 1
+          if(currentSaliva == samples.length){
+            clearInterval(x)
+          }
+        },1000*60*parseInt(variables[1].value))
+
+        let y = setInterval(function(){
+          if(samples[samples.length - 1].done){
+            clearInterval(y)
+          }
+          if(!$('#message-modal').hasClass('in') && queue.length != 0 && !$('#saliva-modal').hasClass('in')){   //Checks if the message-modal (survey modal) is shown or not
+            queue.splice(0,1)
+            getSalivaMessageHTML()
+          }
+
+        },1000*5)
+      }
+      // TEST: reducing the number of questions
+      if (NUM_TEST_QUESTIONS != 0) {
+          examQuestions.exam.total = NUM_TEST_QUESTIONS;
+          examQuestions.games.total = NUM_TEST_QUESTIONS;
+      }
+
+      submitExamQuestionEvent(examQuestionEvent.GO_TO_EXAM_QUESTION);
+
+  });
+
+}
+
 $(document).ready(function () {
 
     $.ajax({
@@ -729,6 +773,26 @@ $(document).ready(function () {
         },
         success: function (data) {
             links = data.links
+            return true;
+        },
+        error: function (msg) {
+            console.log("AJAX Error");
+            console.log(msg);
+            return false;
+        }
+    });
+
+    $.ajax({
+        type: 'POST',
+        url: './db/get_variables.php',
+        dataType: 'json',
+        data: {
+        },
+        success: function (data) {
+            variables = data.variables
+            document.getElementById('instructions').innerHTML = '<p>' + data.variables[5].value + '</p>'
+            document.getElementById('instructions').innerHTML += '<a id="submit_button" class="btn btn-lg btn-success begin" href="#" role="button">Begin</a>'
+            setBeginButton()
             return true;
         },
         error: function (msg) {
@@ -812,47 +876,6 @@ $(document).ready(function () {
             $('#login').hide();
         }
     });
-
-    $(".begin").click(function (event) {
-        event.preventDefault();
-        // Hide Instructions
-        $('.instructions').hide();
-        // Show first
-        $("#test").html(getExamQuestionHTML());
-
-        let x = setInterval(function(){
-          queue.push(samples[currentSaliva])
-          samples[currentSaliva].done = true
-          currentSaliva += 1
-          if(currentSaliva == samples.length){
-            clearInterval(x)
-          }
-        },1000*30)
-
-        let y = setInterval(function(){
-          if(samples[samples.length - 1].done){
-            clearInterval(y)
-          }
-          if(!$('#message-modal').hasClass('in') && queue.length != 0 && !$('#saliva-modal').hasClass('in')){   //Checks if the message-modal (survey modal) is shown or not
-            queue.splice(0,1)
-            getSalivaMessageHTML()
-          }
-
-        },1000*5)
-
-        // TEST: reducing the number of questions
-        if (NUM_TEST_QUESTIONS != 0) {
-            examQuestions.exam.total = NUM_TEST_QUESTIONS;
-            examQuestions.games.total = NUM_TEST_QUESTIONS;
-        }
-
-        submitExamQuestionEvent(examQuestionEvent.GO_TO_EXAM_QUESTION);
-
-    });
-
-
-
-
 
     // Make sure only numbers accepted
     $(".number_text").on('keypress', function (event) {

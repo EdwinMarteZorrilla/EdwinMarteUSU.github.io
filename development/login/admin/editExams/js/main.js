@@ -323,7 +323,7 @@ function editVariable(id){
   }
   else if(id == 4){
     let html4 = '<label for="variable-select" class="col-form-label">Please enter the intro message</label>'
-    html4 += '<input type="text" class="form-control" id="variable-select"></input>'
+    html4 += '<textarea type="text" class="form-control" id="variable-select"></textarea>'
     document.getElementById('varsInputs').innerHTML = html4
     document.getElementById('varsBtn').onclick = () => modifyVariable(4)
     $('#variableModal').modal('show')
@@ -334,6 +334,14 @@ function editVariable(id){
     document.getElementById('varsInputs').innerHTML = html5
     document.getElementById('varsBtn').onclick = () => modifyVariable(5)
     $('#variableModal').modal('show')
+  }
+  else if(id == 6){
+    let html6 = '<label for="variable-select" class="col-form-label">Please enter the main screen message</label>'
+    html6 += '<textarea type="text" class="form-control" id="variable-select"></textarea>'
+    document.getElementById('varsInputs').innerHTML = html6
+    document.getElementById('varsBtn').onclick = () => modifyVariable(6)
+    $('#variableModal').modal('show')
+
   }
 }
 
@@ -976,7 +984,7 @@ function getVariablesHtml(){
     html += '<table class="table table-striped table-bordered"><tr><th>Variable</th><th>Value</th><th></th></tr>'
   }
   for(let i = 0;i<variables.variables.length;i++){
-    html += '<tr><td>' + variables.variables[i].name + '</td><td>' + variables.variables[i].value + '</td>'
+    html += '<tr><td style="width:300px;">' + variables.variables[i].name + '</td><td>' + variables.variables[i].value + '</td>'
     if(!variables.editable){
       html += '<td><button style="margin-right:10px; margin-left:10px" class="btn btn-outline-success btn-sm" onclick="editVariable(' + variables.variables[i].id + ')">Edit</button></td>';
     }
