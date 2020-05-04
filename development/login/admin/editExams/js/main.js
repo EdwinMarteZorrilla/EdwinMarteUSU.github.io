@@ -307,7 +307,8 @@ function spaces(event){
     }
     else{
       let text = document.getElementById('variable-select').value
-      document.getElementById('variable-select').value = [text.slice(0,cursor),'<br><br>' , text.slice(cursor)].join("")
+      document.getElementById('variable-select').value = [text.slice(0,cursor),'<br>' , text.slice(cursor)].join("")
+      document.getElementById('variable-select').selectionEnd = cursor + 4 
     }
     return false
   }

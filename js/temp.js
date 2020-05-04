@@ -243,7 +243,7 @@ function submitSelfEfficacy(event) {
         for(let i = 0;i<links.length;i++){
           if(links[i].on_question == examQuestions.exam.pos + 1){
             document.getElementById('go_survey').href = links[i].link
-            document.getElementById('go_survey').onclick = () => goSurvey(event)
+            document.getElementById('go_survey').onclick = (event) => goSurvey(event)
             document.getElementById('msg-title').innerHTML = 'Survey'
             document.getElementById('msg').innerHTML = '<h4>Please complete the following survey.</h4>'
             $("#go_survey").html("Go to Survey");
