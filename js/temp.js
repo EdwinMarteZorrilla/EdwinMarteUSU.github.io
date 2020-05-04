@@ -243,6 +243,9 @@ function submitSelfEfficacy(event) {
         for(let i = 0;i<links.length;i++){
           if(links[i].on_question == examQuestions.exam.pos + 1){
             document.getElementById('go_survey').href = links[i].link
+            document.getElementById('go_survey').onclick = () => goSurvey(event)
+            document.getElementById('msg-title').innerHTML = 'Survey'
+            document.getElementById('msg').innerHTML = '<h4>Please complete the following survey.</h4>'
             $("#go_survey").html("Go to Survey");
             $("#go_survey").addClass("btn-primary");
             $("#go_survey").removeClass("btn-success");
@@ -501,23 +504,62 @@ function getSurveyMessageHTML() {
     return ret;
 }
 
-function getIntroHTML(){
-  var href = 'https://www.youtube.com';
-  var ret = '<div class="modal-header">\
-              <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->\
-              <h3 class="modal-title">ENGR 2010 - Statics</h3>\
-          </div>\
-          <div class="modal-body">\
-              <div id="msg">\
-                  <h4><b>Welcome to the practice exam for ENGR 2010 - Statics!</b>\
-                  Below you will find the link to a short introduction video. Before you begin, make sure you have put on your sensor, gotten out all materials (calculator, pen, pencil, etc.), and silenced any electronic device before beginning.\
-                  Click on the button below to watch the video:</h4>\
-              </div>\
-          </div>\
-          <div class="modal-footer">\
-              <br><br><a id="go_video" onclick="goToIntroVideo(event)" target="_blank" class="btn btn-lg btn-primary" href="' + href + '">Go to introductory video</a>\
-          </div>';
-  return ret;
+function goToIntroVideo(event) {
+
+    // event.preventDefault();
+    if ($("#go_survey").html() == "OK") {
+        event.preventDefault();
+        $('#message-modal').modal('hide')
+        submitIntroVideoEvent(videoEvent.RETURN_FROM_VIDEO);
+
+    } else {
+        $("#go_survey").html("OK");
+        $("#go_survey").removeClass("btn-primary");
+        $("#go_survey").addClass("btn-success");
+        $("#msg").html("<h4>If you have watched the video, please click OK to continue.</h4>");
+        submitIntroVideoEvent(videoEvent.GO_TO_VIDEO);
+
+    }
+}
+
+function submitIntroVideoEvent(event) {
+    var date = new Date();
+    var str_date = date.toISOString().substring(0, 19).replace('T', ' ');
+    var unixtime = (date.getTime() / 1000).toFixed(0);
+
+    var strEvent = unixtime + "_" + str_date + "_0_0__";
+    // console.log(strEvent);
+
+    var id = getUserID();
+    var study_id = getStudyID();
+
+    switch (event) {
+        case videoEvent.GO_TO_VIDEO:
+            strEvent += "GV_Going to intro video";
+            break;
+        case videoEvent.RETURN_FROM_VIDEO:
+            strEvent += "RV_Returning from intro video ";
+            break;
+        default:
+            strEvent += "UV_Unknown video event";
+            break;
+    }
+
+    var data = strEvent.split("_");
+
+    var buttonEvent = {
+        unixtime: data[0],
+        date: data[1],
+        study_id: study_id,
+        id: id,
+        type: data[5],
+        question: data[2],
+        answer_num: data[3],
+        answer_alpha: data[4],
+        description: data[6]
+    };
+
+    saveEventToCSV(buttonEvent);
 }
 
 function getSelfEfficacyQuestionsHTML() {
@@ -847,7 +889,12 @@ $(document).ready(function () {
                 setStudyID(study_id);
 
                 $('#login-modal').modal('hide');
-
+                document.getElementById('msg-title').innerHTML = '<b>' + variables[2].value + '</b>'
+                document.getElementById('msg').innerHTML = '<h4>' + variables[3].value + '</h4>'
+                document.getElementById('go_survey').href = variables[4].value
+                document.getElementById('go_survey').onclick = (event) => goToIntroVideo(event)
+                document.getElementById('go_survey').innerHTML = 'Go to introductory video'
+                $('#message-modal').modal('show')
                 // Show Study intro message
                 // showMessage(getIntroHTML());
 
