@@ -4,11 +4,12 @@ let answers_key = []
 var timeCounter;
 var studyID = "FA18M01W01ES"; // Fall - 2018 - Midterm 1 -Wednesday Session- Seat 1- EDA & Saliva
 var currentSurvey = '';
-var currentSaliva = 0
+var currentSaliva = 1
 let ids = []
 let links = []
 let variables = []
 let queue = []
+let salivaFlag = false
 let samples = [{sample:'A',done:false},
                {sample:'B',done:false},
                 {sample:'C',done:false},
@@ -469,6 +470,7 @@ function goSurvey(event) {
 
         submitSurveyEvent(surveyEvent.RETURN_FROM_SURVEY);
         $("#message-modal").modal('hide')
+        checkBeggingSurveys()
 
         // if (currentSurvey == Survey.END) {
         //     $("#test").html(getFinalMessage());
@@ -504,6 +506,33 @@ function getSurveyMessageHTML() {
     return ret;
 }
 
+function checkBeggingSurveys(){
+  let flag = false
+  for(let i = 0;i<links.length;i++){
+    if(links[i].on_question == 0 && !links[i].done){
+      links[i].done = true
+      flag = true
+      document.getElementById('go_survey').href = links[i].link
+      document.getElementById('go_survey').onclick = (event) => goSurvey(event)
+      document.getElementById('msg-title').innerHTML = 'Survey'
+      document.getElementById('msg').innerHTML = '<h4>Please complete the following survey.</h4>'
+      $("#go_survey").html("Go to Survey");
+      $("#go_survey").addClass("btn-primary");
+      $("#go_survey").removeClass("btn-success");
+      $("#msg").html("<h4>Please complete the following survey.</h4>");
+      currentSurvey = links[i].name
+      $('#message-modal').modal('show')
+    }
+  }
+  if(!flag && !salivaFlag){
+    salivaFlag = true
+  }
+  if(salivaFlag && variables[0].value == 'Yes'){
+    salivaFlag = false
+    getSalivaMessageHTML()
+  }
+}
+
 function goToIntroVideo(event) {
 
     // event.preventDefault();
@@ -511,6 +540,7 @@ function goToIntroVideo(event) {
         event.preventDefault();
         $('#message-modal').modal('hide')
         submitIntroVideoEvent(videoEvent.RETURN_FROM_VIDEO);
+        checkBeggingSurveys()
 
     } else {
         $("#go_survey").html("OK");
