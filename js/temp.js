@@ -470,7 +470,9 @@ function goSurvey(event) {
 
         submitSurveyEvent(surveyEvent.RETURN_FROM_SURVEY);
         $("#message-modal").modal('hide')
-        checkBeggingSurveys()
+        if(!salivaFlag){
+          checkBeggingSurveys()
+        }
 
         // if (currentSurvey == Survey.END) {
         //     $("#test").html(getFinalMessage());
@@ -528,7 +530,6 @@ function checkBeggingSurveys(){
     salivaFlag = true
   }
   if(salivaFlag && variables[0].value == 'Yes'){
-    salivaFlag = false
     getSalivaMessageHTML()
   }
 }
