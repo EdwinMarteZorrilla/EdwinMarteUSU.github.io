@@ -243,7 +243,7 @@ function submitSelfEfficacy(event) {
 
         for(let i = 0;i<links.length;i++){
           if(links[i].on_question == examQuestions.exam.pos + 1){
-            document.getElementById('go_survey').href = links[i].link
+            document.getElementById('go_survey').href = links[i].link + "?participant_id=" + getUserID() + "&study_id=" + getStudyID();
             document.getElementById('go_survey').onclick = (event) => goSurvey(event)
             document.getElementById('msg-title').innerHTML = 'Survey'
             document.getElementById('msg').innerHTML = '<h4>Please complete the following survey.</h4>'
@@ -417,6 +417,9 @@ function returnFromSaliva() {
                 $("#test").html('');
             }, AFTER_10_MIN_TIME * 1000);
             break;
+
+        case 5:
+            getFinalMessage()
     }
 }
 
@@ -514,7 +517,7 @@ function checkBeggingSurveys(){
     if(links[i].on_question == 0 && !links[i].done){
       links[i].done = true
       flag = true
-      document.getElementById('go_survey').href = links[i].link
+      document.getElementById('go_survey').href = links[i].link + "?participant_id=" + getUserID() + "&study_id=" + getStudyID();
       document.getElementById('go_survey').onclick = (event) => goSurvey(event)
       document.getElementById('msg-title').innerHTML = 'Survey'
       document.getElementById('msg').innerHTML = '<h4>Please complete the following survey.</h4>'
@@ -718,6 +721,68 @@ function getExamAnswersHTML() {
     return ret;
 }
 
+function getEmailMessageHTML() {
+
+    var table = getAnswersKeyHTMLTable(answers_key);
+    var study_id = getStudyID();
+
+    var html = 'Hi,<br><br>Here is the answer key of your practice exam.<br><br>' + table + '<br><br>';
+
+    html += "Your ID was: <b>" + study_id + ".</b><br><br>";
+    html += "Thank you for your participation.<br><br>";
+    html += "<b>Feelings and Emotions in Engineering Learning Laboratory (FEEL Lab)</b>";
+    html += '<br>Department of Engineering Education';
+    html += '<br>Utah State University';
+
+    return html;
+}
+
+function getEmailPopMessageHTML() {
+
+    $('#msg-title').html(variables[2].value)
+    $('#msg').html('<h4>Please wait while your email is sent</h4>')
+    $('#go_survey').html('OK')
+    $('#message-modal').modal('show')
+
+
+    var ret = '<div class="modal-header">\
+                <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->\
+                <h3 class="modal-title">ENGR 2010 - Statics</h3>\
+            </div>\
+            <div class="modal-body">\
+                <div id="msg">\
+                    <h4>Please wait while your email is sent.</h4>\
+                </div>\
+            </div>\
+            <div id="msg_button" class="modal-footer"></div>';
+    return ret;
+}
+
+function sendEmailClicked(event) {
+
+    var email = $('#email').val();
+    var subject = 'ENGR 2010 (Statics) Practice Exam Results';
+    var body = getEmailMessageHTML();
+    var ccmail = '';
+
+    sendEMail(email, subject, body, ccmail);
+    getEmailPopMessageHTML()
+}
+
+function getFinalMessage() {
+
+    var html = '<h2>Thank you, you have completed this test.</h2><br><p>Here is the Answer Key</p><br>';
+    html += getAnswersKeyHTMLTable(answers_key);
+
+    // TODO: add input for email
+    html += '<br><br><div class="form-group">';
+    html += '<label for="email">If you want to recive these results, please insert your Email</label>';
+    html += '<input type="text" class="form-control" id="email"><br>';
+    html += '<a id="send_email" onclick="sendEmailClicked(event)" class="btn btn-primary">Send Results to Email</a>';
+    html += '</div>';
+    return html;
+}
+
 function getGameHTML() {
 
     var ret = "<h4>" + examQuestions.games.questions[examQuestions.games.pos].id + " - " + examQuestions.games.questions[examQuestions.games.pos].text + "</h4>";
@@ -748,7 +813,12 @@ function getGameHTML() {
                 updateProgress(0);
                 if (examQuestions.games.pos >= examQuestions.games.total ||
                     examQuestions.exam.pos >= examQuestions.exam.total) {
-                    $("#test").html("<h2>DO NOT CLOSE this window. Please wait 10 minutes for the next saliva collection.</h2>");
+                    if(variables[0].value == 'Yes'){
+                      $("#test").html("<h2>DO NOT CLOSE this window. Please wait 10 minutes for the next saliva collection.</h2>");
+                    }
+                    else{
+                      $('#test').html(getFinalMessage())
+                    }
                     // showMessage(getSurveyMessageHTML());
                 } else {
                     $("#test").html(getExamQuestionHTML());
@@ -887,12 +957,7 @@ $(document).ready(function () {
             document.getElementById('login-modal').innerHTML += getIdsOptionsHtml()
             $(".participant_id").on('input', function () {
                 var study_id = $('#study_id').val();
-                for(let i = 0;i<ids.length;i++){
-                  if(study_id == ids[i].study_id){
-                    document.getElementById('dob').value = ids[i].bday.substring(8,10)
-                    document.getElementById('a_number').value = ids[i].aNum.substring(ids[i].aNum.length-4,ids[i].aNum.length)
-                  }
-                }
+
                 var dob = $('#dob').val();
                 var a_number = $('#a_number').val();
 
