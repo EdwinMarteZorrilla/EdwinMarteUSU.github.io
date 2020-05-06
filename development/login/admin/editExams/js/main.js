@@ -299,6 +299,21 @@ function modifyVariable(id){
 
 }
 
+function spaces(event){
+  if(event.keyCode == 13){
+    let cursor = $('#variable-select').prop('selectionStart')
+    if(cursor == document.getElementById('variable-select').value.length){
+      document.getElementById('variable-select').value += '<br><br>'
+    }
+    else{
+      let text = document.getElementById('variable-select').value
+      document.getElementById('variable-select').value = [text.slice(0,cursor),'<br>' , text.slice(cursor)].join("")
+      document.getElementById('variable-select').selectionEnd = cursor + 4 
+    }
+    return false
+  }
+}
+
 function editVariable(id){
   if(id == 1){
     let html = '<label for="variable-select" class="col-form-label">Do you want saliva samples on the experiment?</label>'
@@ -309,31 +324,39 @@ function editVariable(id){
   }
   else if(id == 2){
     let html2 = '<label for="variable-select" class="col-form-label">How much time do you want between saliva samples?</label>'
-    html2 += '<input type="number" class="form-control" id="variable-select"></input>'
+    html2 += '<input type="number" class="form-control" id="variable-select" value="' + variables.variables[1].value + '"></input>'
     document.getElementById('varsInputs').innerHTML = html2
     document.getElementById('varsBtn').onclick = () => modifyVariable(2)
     $('#variableModal').modal('show')
   }
   else if(id == 3){
     let html3 = '<label for="variable-select" class="col-form-label">Please enter a title for the intro</label>'
-    html3 += '<input type="text" class="form-control" id="variable-select"></input>'
+    html3 += '<input type="text" class="form-control" id="variable-select" value="' + variables.variables[2].value + '"></input>'
     document.getElementById('varsInputs').innerHTML = html3
     document.getElementById('varsBtn').onclick = () => modifyVariable(3)
     $('#variableModal').modal('show')
   }
   else if(id == 4){
     let html4 = '<label for="variable-select" class="col-form-label">Please enter the intro message</label>'
-    html4 += '<input type="text" class="form-control" id="variable-select"></input>'
+    html4 += '<textarea type="text" class="form-control" id="variable-select" onkeypress="return spaces(event)">' + variables.variables[3].value + '</textarea>'
     document.getElementById('varsInputs').innerHTML = html4
     document.getElementById('varsBtn').onclick = () => modifyVariable(4)
     $('#variableModal').modal('show')
   }
   else if(id == 5){
     let html5 = '<label for="variable-select" class="col-form-label">Please select the intro video</label>'
-    html5 += '<input type="text" class="form-control" id="variable-select"></input>'
+    html5 += '<input type="text" class="form-control" id="variable-select" value="' + variables.variables[4].value + '"></input>'
     document.getElementById('varsInputs').innerHTML = html5
     document.getElementById('varsBtn').onclick = () => modifyVariable(5)
     $('#variableModal').modal('show')
+  }
+  else if(id == 6){
+    let html6 = '<label for="variable-select" class="col-form-label">Please enter the main screen message</label>'
+    html6 += '<textarea type="text" class="form-control" id="variable-select" onkeypress="return spaces(event)">' + variables.variables[5].value + '</textarea>'
+    document.getElementById('varsInputs').innerHTML = html6
+    document.getElementById('varsBtn').onclick = () => modifyVariable(6)
+    $('#variableModal').modal('show')
+
   }
 }
 
@@ -976,7 +999,7 @@ function getVariablesHtml(){
     html += '<table class="table table-striped table-bordered"><tr><th>Variable</th><th>Value</th><th></th></tr>'
   }
   for(let i = 0;i<variables.variables.length;i++){
-    html += '<tr><td>' + variables.variables[i].name + '</td><td>' + variables.variables[i].value + '</td>'
+    html += '<tr><td style="width:300px;">' + variables.variables[i].name + '</td><td>' + variables.variables[i].value + '</td>'
     if(!variables.editable){
       html += '<td><button style="margin-right:10px; margin-left:10px" class="btn btn-outline-success btn-sm" onclick="editVariable(' + variables.variables[i].id + ')">Edit</button></td>';
     }

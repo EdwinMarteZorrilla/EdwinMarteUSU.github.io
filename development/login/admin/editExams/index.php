@@ -176,7 +176,7 @@ if (isset($_GET['logout'])) {
 			<input type="text" class="form-control" id="linkName">
 			<label for="newLink" class="col-form-label">Link:</label>
 			<input type="text" class="form-control" id="newLink">
-			<label for="time" class="col-form-label">On what question do you want the link displayed:</label>
+			<label for="time" class="col-form-label">On what question do you want the link displayed ( 0 for before the exam):</label>
 			<input type="number" class="form-control" id="time">
 		</div>
 		<div class="modal-footer">
