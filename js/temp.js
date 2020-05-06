@@ -398,28 +398,21 @@ function goSalivaSample(event) {
 function returnFromSaliva() {
 
     switch (currentSaliva) {
-        case 1:
+        default:
             coolDownTime();
-            break;
-        case 3:
-            // set timer for Survey Link after 10 minutes
-            var x = setInterval(function () {
-                showMessage(getSalivaMessageHTML());
-                clearInterval(x);
-                $("#test").html('<h2>DO NOT CLOSE this window. Please wait 10 minutes for the final survey and saliva collection.</h2>');
-            }, AFTER_10_MIN_TIME * 1000);
             break;
         case 4:
             // set timer for Survey Link after 10 minutes
-            var x = setInterval(function () {
-                showMessage(getSurveyMessageHTML());
+            let x = setInterval(function () {
+                currentSaliva += 1
+                getSalivaMessageHTML()
+                console.log("in here")
                 clearInterval(x);
-                $("#test").html('');
-            }, AFTER_10_MIN_TIME * 1000);
+                $("#test").html('<h2>DO NOT CLOSE this window. Please wait 10 minutes for the final survey and saliva collection.</h2>');
+            }, 60 * 10 * 1000);
             break;
-
         case 5:
-            getFinalMessage()
+            $('#test').html(getFinalMessage())
     }
 }
 
@@ -815,6 +808,12 @@ function getGameHTML() {
                     examQuestions.exam.pos >= examQuestions.exam.total) {
                     if(variables[0].value == 'Yes'){
                       $("#test").html("<h2>DO NOT CLOSE this window. Please wait 10 minutes for the next saliva collection.</h2>");
+                      let x = setInterval(function(){
+                        currentSaliva +=1
+                        getSalivaMessageHTML()
+                        clearInterval(x)
+                        clearInterval(gameTimer)
+                      },1000*60*10)
                     }
                     else{
                       $('#test').html(getFinalMessage())
@@ -878,7 +877,7 @@ function setBeginButton(){
           queue.push(samples[currentSaliva])
           samples[currentSaliva].done = true
           currentSaliva += 1
-          if(currentSaliva == samples.length){
+          if(currentSaliva == samples.length - 2){
             clearInterval(x)
           }
         },1000*60*parseInt(variables[1].value))
