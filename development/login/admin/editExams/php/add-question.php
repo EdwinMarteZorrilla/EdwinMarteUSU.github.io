@@ -14,39 +14,56 @@ if(isset($_FILES['file']['tmp_name'])){
 }
 
 $connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exams");
-$question = "INSERT INTO " . $_POST['exam'] . " (question, image, answer) VALUES ('" . $_POST['question'] . "','" . $_POST['image'] . "','" . $_POST['correct'] . "');";
-$result = mysqli_query($connect,$question);
 
-$number = mysqli_query($connect,"SELECT question_id FROM " . $_POST['exam'] . " WHERE question = '" . $_POST['question'] . "';");
+if($_POST['type'] == 'mulchoice'){
+  $question = "INSERT INTO " . $_POST['exam'] . " (question, image, answer,type) VALUES ('" . $_POST['question'] . "','" . $_POST['image'] . "','" . $_POST['correct'] . "','Multiple Choice');";
+  $result = mysqli_query($connect,$question);
 
-while($row = $number->fetch_assoc()){
-  $num = $row['question_id'];
+  $number = mysqli_query($connect,"SELECT question_id FROM " . $_POST['exam'] . " WHERE question = '" . $_POST['question'] . "';");
 
+  while($row = $number->fetch_assoc()){
+    $num = $row['question_id'];
+
+  }
+
+  $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $num . ",'" . $_POST['a'] . "');";
+  $result = mysqli_query($connect,$answer);
+
+  $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $num . ",'" . $_POST['b'] . "');";
+
+  $result = mysqli_query($connect,$answer);
+
+  if($_POST['c'] != ''){
+    $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $num . ",'" . $_POST['c'] . "');";
+    $result = mysqli_query($connect,$answer);
+  }
+
+  if($_POST['d'] != ''){
+    $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $num . ",'" . $_POST['d'] . "');";
+    $result = mysqli_query($connect,$answer);
+  }
+
+  if($_POST['e'] != ''){
+    $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $num . ",'" . $_POST['e'] . "');";
+    $result = mysqli_query($connect,$answer);
+  }
 }
 
-$answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $num . ",'" . $_POST['a'] . "');";
-$result = mysqli_query($connect,$answer);
+else if($_POST['type'] == 'textbox'){
+  $question = "INSERT INTO " . $_POST['exam'] . " (question, image, answer,type) VALUES ('" . $_POST['question'] . "','" . $_POST['image'] . "','N/A','Short Answer');";
+  $result = mysqli_query($connect,$question);
 
+  $number = mysqli_query($connect,"SELECT question_id FROM " . $_POST['exam'] . " WHERE question = '" . $_POST['question'] . "';");
 
+  while($row = $number->fetch_assoc()){
+    $num = $row['question_id'];
+  }
 
-$answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $num . ",'" . $_POST['b'] . "');";
-
-$result = mysqli_query($connect,$answer);
-
-if($_POST['c'] != ''){
-  $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $num . ",'" . $_POST['c'] . "');";
+  $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $num . ",'Short Answer');";
   $result = mysqli_query($connect,$answer);
 }
 
-if($_POST['d'] != ''){
-  $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $num . ",'" . $_POST['d'] . "');";
-  $result = mysqli_query($connect,$answer);
-}
 
-if($_POST['e'] != ''){
-  $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $num . ",'" . $_POST['e'] . "');";
-  $result = mysqli_query($connect,$answer);
-}
 
 
 addEntryEvent(date("Y/m/d"), $_POST['exam'], "Added question to exam", "");

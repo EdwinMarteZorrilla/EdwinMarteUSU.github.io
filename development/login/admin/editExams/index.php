@@ -50,6 +50,27 @@ if (isset($_GET['logout'])) {
     <input type="text" id="name" name="name">
     <button class="btn btn-lg btn-success" onclick="createExam()">Create</button>
   </div> -->
+	<div id="types" style="display:none; justify-content:center;">
+		<div style="display:flex; flex-direction:column; align:center; width:85vw">
+			<h2 style="align-self:center"> Please select the type of question you would like</h2><br>
+			<div style="align-self:center">
+				<input id="mulchoice" type="radio" name="quesType" value="mulchoice"></input>
+				<label for="mulchoice">Multiple Choice/True or False</label><br>
+				<input id="textbox"type="radio" name="quesType" value="textbox"></input>
+				<label for="textbox">Text Box</label><br>
+				<input id="mulresponses"type="radio" name="quesType" value="mulresponses"></input>
+				<label for="mulresponses">Multiple Responses</label><br>
+				<input id="fillin" type="radio" name="quesType" value="fillin"></input>
+				<label for="fillin">Fill in the blank</label>
+			</div><br>
+			<div style="align-self:center;width:50vw;display:flex; justify-content:space-between; padding:10px;">
+	      <button class="btn btn-secondary" onclick="backToExams()">Back to exams</button>
+				<button class="btn btn-lg btn-success" onclick="questionType()">Next</button>
+	    </div>`
+		</div>
+	</div>
+
+
 	<div style="display:flex; justify-content:center">
   <div id="questions" style="display:none; width:85vw; align:center">
 		`<div class="form-group">
@@ -87,10 +108,11 @@ if (isset($_GET['logout'])) {
 	    </div>
     <div style="display:flex; justify-content:space-between; padding:10px;">
       <button class="btn btn-secondary" onclick="backToExams()">Back to exams</button>
-      <button id="addBtn" class="btn btn-lg btn-success" onclick="newQuestion()">Add Question</button>
+      <button id="addBtn" class="btn btn-lg btn-success" onclick="newQuestion('mulchoice')">Add Question</button>
     </div>`
   </div>
 </div>
+
 
 
 	<div class="modal fade" id="idInput" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

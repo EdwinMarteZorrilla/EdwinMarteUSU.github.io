@@ -308,7 +308,7 @@ function spaces(event){
     else{
       let text = document.getElementById('variable-select').value
       document.getElementById('variable-select').value = [text.slice(0,cursor),'<br>' , text.slice(cursor)].join("")
-      document.getElementById('variable-select').selectionEnd = cursor + 4 
+      document.getElementById('variable-select').selectionEnd = cursor + 4
     }
     return false
   }
@@ -615,6 +615,7 @@ function goBack(){
           document.getElementById('study_ids').style.display = 'none';
           document.getElementById('links').style.display = 'none';
           document.getElementById('questions').style.display = 'none';
+          document.getElementById('types').style.display = 'none';
           document.getElementById('variables').style.display = 'none';
 
 
@@ -809,8 +810,7 @@ function limitInput(event) {
   return ((key >= 65 && key <= limit1) || key == 8 || (key>=97 && key<=limit2));
 };
 
-function newQuestion(){
-
+function newQuestion(type){
   let question = document.getElementById('question').value
   let a = document.getElementById('A').value
   let b = document.getElementById('B').value
@@ -826,58 +826,134 @@ function newQuestion(){
   var value = input.value;
   var fileNameStart = value.lastIndexOf('\\');
   value = value.substr(fileNameStart + 1);
-  const json = {question: question,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam,image:value}
+  const json = {question: question,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam,image:value,type:type}
   formData.append("file", properties)
   for (var key in json){
     formData.append(key,json[key])
   }
-
-
-
-  if(a != '' && b != '' && correct != ''){
-    if(confirm("Add question?")){
-      $.ajax({
-        type: 'POST',
-        url: './php/add-question.php',
-        dataType: 'json',
-        data: formData,
-        contentType: false,
-        cache: false,
-        processData: false,
-        success: function (data) {
-          if(data.result){
-            editExam(mainExam)
-            return true;
-          }
-          else{
-            alert(data.error)
+  if(type == 'mulchoice'){
+    if(a != '' && b != '' && correct != ''){
+      if(confirm("Add question?")){
+        $.ajax({
+          type: 'POST',
+          url: './php/add-question.php',
+          dataType: 'json',
+          data: formData,
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function (data) {
+            if(data.result){
+              editExam(mainExam)
+              return true;
+            }
+            else{
+              alert(data.error)
+              return false;
+            }
+          },
+          error: function (msg) {
+            console.log("AJAX Error");
+            console.log(msg);
             return false;
           }
-        },
-        error: function (msg) {
-          console.log("AJAX Error");
-          console.log(msg);
-          return false;
-        }
-      });
+        });
+      }
+    }
+    else{
+      alert("Please enter at least answers A and B and the correct answer")
     }
   }
-  else{
-    alert("Please enter at least answers A and B and the correct answer")
+  else if(type == 'textbox'){
+    if(question != ''){
+      if(confirm("Add question?")){
+        $.ajax({
+          type: 'POST',
+          url: './php/add-question.php',
+          dataType: 'json',
+          data: formData,
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function (data) {
+            if(data.result){
+              editExam(mainExam)
+              return true;
+            }
+            else{
+              alert(data.error)
+              return false;
+            }
+          },
+          error: function (msg) {
+            console.log("AJAX Error");
+            console.log(msg);
+            return false;
+          }
+        });
+      }
+    }
+    else{
+      alert("You need to add a question")
+    }
   }
-
 }
 
 function modify(){
   document.getElementById('exam').style.display = 'none'
-  document.getElementById('questions').style.display = "block";
-  document.getElementById('question').value = ''
-  document.getElementById('A').value = ''
-  document.getElementById('B').value = ''
-  document.getElementById('C').value = ''
-  document.getElementById('D').value = ''
-  document.getElementById('E').value = ''
-  document.getElementById('correct').value = ''
+  document.getElementById('types').style.display = 'flex'
+  // document.getElementById('questions').style.display = "block";
+  // document.getElementById('question').value = ''
+  // document.getElementById('A').value = ''
+  // document.getElementById('B').value = ''
+  // document.getElementById('C').value = ''
+  // document.getElementById('D').value = ''
+  // document.getElementById('E').value = ''
+  // document.getElementById('correct').value = ''
+}
+
+function questionType(){
+  let group = document.getElementsByName('quesType')
+  let selected = ''
+  let flag = false
+  for(let i = 0; i<group.length;i++){
+    if(group[i].checked){
+      selected = group[i].value
+      flag = true
+      break;
+    }
+  }
+
+  if(!flag){
+    alert("You must select an option")
+  }
+  else if(flag){
+    switch(selected){
+      case 'mulchoice':
+        document.getElementById('A').removeAttribute('disabled')
+        document.getElementById('B').removeAttribute('disabled')
+        document.getElementById('C').removeAttribute('disabled')
+        document.getElementById('D').removeAttribute('disabled')
+        document.getElementById('E').removeAttribute('disabled')
+        document.getElementById('correct').removeAttribute('disabled')
+        document.getElementById('addBtn').onclick = (value) => newQuestion('mulchoice')
+        break;
+
+      case 'textbox':
+        document.getElementById('A').setAttribute('disabled','true')
+        document.getElementById('B').setAttribute('disabled','true')
+        document.getElementById('C').setAttribute('disabled','true')
+        document.getElementById('D').setAttribute('disabled','true')
+        document.getElementById('E').setAttribute('disabled','true')
+        document.getElementById('correct').setAttribute('disabled','true')
+        document.getElementById('addBtn').onclick = (value) => newQuestion('textbox')
+        break;
+
+    }
+    document.getElementById('types').style.display = 'none'
+    document.getElementById('questions').style.display = 'block'
+  }
+
 }
 
 function getExamHtml(data){
@@ -902,7 +978,7 @@ function getExamHtml(data){
       html += '<button style="margin-right:10px; margin-left:10px" class="btn btn-outline-success btn-sm" onclick="editQuestion(' + i + ')">Edit</button></td>';
     }
     html += '</tr>';
-    html += '<tr><td>Answers</td><td colspan=4><ol>';
+    html += '<tr><td>Answers</td><td colspan=4><b>' + data.questions[i].type + '</b><ol>';
     for(let j = 0; j<data.questions[i].answers.length;j++){
       html += "<li = type='A'>" + data.questions[i].answers[j] + "</li>";
     }
@@ -1035,6 +1111,8 @@ function editExam(exam){
   document.getElementById('exam').style.display = 'block';
   document.getElementById('add').style.display = 'none';
   document.getElementById('questions').style.display = 'none';
+  document.getElementById('types').style.display = 'none';
+
 
 
 
@@ -1056,8 +1134,8 @@ function createExam(){
             $('#add').modal('hide')
             document.getElementById('table').style.display = 'none';
             document.getElementById('exam').style.display = 'none';
-            document.getElementById('questions').style.display = 'block';
             document.getElementById('name').value = ''
+            editExam(mainExam)
             return true;
           }
           else{

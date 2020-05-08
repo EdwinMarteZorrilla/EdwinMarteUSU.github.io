@@ -60,7 +60,7 @@ function loadExams() {
 
 function copyExams($parameters) {
     global $connect;
-    $exam = "CREATE TABLE exams." . $parameters['new'] . " ( question_id INT NOT NULL AUTO_INCREMENT, question VARCHAR(21844) NOT NULL, image VARCHAR(1000), answer VARCHAR(5) NOT NULL, PRIMARY KEY (question_id));";
+    $exam = "CREATE TABLE exams." . $parameters['new'] . " ( question_id INT NOT NULL AUTO_INCREMENT, question VARCHAR(21844) NOT NULL, image VARCHAR(1000), answer VARCHAR(5) NOT NULL, type VARCHAR(20) NOT NULL, PRIMARY KEY (question_id));";
     $answers = "CREATE TABLE exams.answers" . $parameters['new'] . " ( answer_id INT NOT NULL AUTO_INCREMENT, question_id INT NOT NULL, answer VARCHAR(21844) NOT NULL, PRIMARY KEY (answer_id));";
     $ids = "CREATE TABLE exams.ids" . $parameters['new'] . " (id INT NOT NULL AUTO_INCREMENT, study_id VARCHAR(100) NOT NULL, bday VARCHAR(30) NOT NULL, anumber VARCHAR(20) NOT NULL, PRIMARY KEY (id))";
     $links = "CREATE TABLE exams.links" . $parameters['new'] . " (id INT NOT NULL AUTO_INCREMENT, name VARCHAR(200) NOT NULL, link VARCHAR(2000), on_question INT NOT NULL, PRIMARY KEY (id))";
@@ -140,11 +140,11 @@ function loadExamQuestions($parameters) {
       $json .= 'false, "questions":[';
     }
     $connect = mysqli_connect("127.0.0.1:3306", "root", DB_PASS, "exams");
-    $sql = "SELECT question_id, question, image, answer FROM " . $parameters['exam'];
+    $sql = "SELECT question_id, question, image, answer, type FROM " . $parameters['exam'];
     $result = mysqli_query($connect,$sql);
     $counter = 1;
     while($row = $result->fetch_assoc()){
-      $json .= '{"id":' . $row['question_id'] . ',"number":' . $counter . ',"question":"' . $row['question'] . '","image":"' .$row['image'] . '","correct":"' . $row['answer'] . '","answers":[';
+      $json .= '{"id":' . $row['question_id'] . ',"number":' . $counter . ',"question":"' . $row['question'] . '","image":"' .$row['image'] . '","correct":"' . $row['answer'] . '","type":"' . $row['type'] . '","answers":[';
 
       $answer = mysqli_query($connect, "SELECT answer FROM answers" . $parameters['exam'] . " WHERE question_id = " . $row['question_id'] . ";");
       while($row2 = $answer->fetch_assoc()){

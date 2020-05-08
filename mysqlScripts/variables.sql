@@ -6,3 +6,4 @@ INSERT INTO exam1 (name,value) VALUES('Time between saliva samples (mins)','45')
 INSERT INTO exam1 (name,value) VALUES('Intro Title','');
 INSERT INTO exam1 (name,value) VALUES('Intro Message','');
 INSERT INTO exam1 (name,value) VALUES('Intro Video','');
+INSERT INTO exam1 (name,value) VALUES('Main screen message','');
