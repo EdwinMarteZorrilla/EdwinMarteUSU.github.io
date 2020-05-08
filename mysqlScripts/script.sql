@@ -1,6 +1,6 @@
 CREATE SCHEMA exams;
 use exams;
-CREATE TABLE exam1 ( question_id INT NOT NULL AUTO_INCREMENT, question VARCHAR(21844) NOT NULL, image VARCHAR(1000), answer VARCHAR(5) NOT NULL, type VARCHAR(20) NOT NULL, PRIMARY KEY (question_id));
+CREATE TABLE exam1 ( question_id INT NOT NULL AUTO_INCREMENT, question VARCHAR(21844) NOT NULL, image VARCHAR(1000), answer VARCHAR(10) NOT NULL, type VARCHAR(20) NOT NULL, PRIMARY KEY (question_id));
 INSERT INTO exam1 (question, answer,type) VALUES ('According to Hibbelers convention, all zero force members are two force members.','A','Multiple Choice');
 INSERT INTO exam1 (question, answer,type) VALUES ('Using method of sections to analyze compression or tension in a truss member requires you to interpret a force pointing into the cut member as compressive?','A','Multiple Choice');
 INSERT INTO exam1 (question, answer,type) VALUES ('If we have a joint on a truss experiencing a force from an external load, then we can say one of the members attached to this joint is a zero force member?','B','Multiple Choice');

@@ -777,6 +777,7 @@ function exportCSV(exam){
 }
 
 function limitInput(event) {
+  console.log
   var key = event.keyCode;
   let limit1 = 64
   let limit2 = 96
@@ -806,9 +807,20 @@ function limitInput(event) {
     limit1 +=1
     limit2 +=1
   }
+  if(key == 188){ return}
 
   return ((key >= 65 && key <= limit1) || key == 8 || (key>=97 && key<=limit2));
 };
+
+function resetInputs(){
+  document.getElementById('question').value = ''
+  document.getElementById('A').value = ''
+  document.getElementById('B').value = ''
+  document.getElementById('C').value = ''
+  document.getElementById('D').value = ''
+  document.getElementById('E').value = ''
+  document.getElementById('correct').value = ''
+}
 
 function newQuestion(type){
   let question = document.getElementById('question').value
@@ -844,6 +856,7 @@ function newQuestion(type){
           processData: false,
           success: function (data) {
             if(data.result){
+              resetInputs()
               editExam(mainExam)
               return true;
             }
@@ -877,6 +890,7 @@ function newQuestion(type){
           processData: false,
           success: function (data) {
             if(data.result){
+              resetInputs()
               editExam(mainExam)
               return true;
             }
@@ -895,6 +909,40 @@ function newQuestion(type){
     }
     else{
       alert("You need to add a question")
+    }
+  }
+  if(type == 'mulresponses'){
+    if(a != '' && b != '' && correct != ''){
+      if(confirm("Add question?")){
+        $.ajax({
+          type: 'POST',
+          url: './php/add-question.php',
+          dataType: 'json',
+          data: formData,
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function (data) {
+            if(data.result){
+              resetInputs()
+              editExam(mainExam)
+              return true;
+            }
+            else{
+              alert(data.error)
+              return false;
+            }
+          },
+          error: function (msg) {
+            console.log("AJAX Error");
+            console.log(msg);
+            return false;
+          }
+        });
+      }
+    }
+    else{
+      alert("Please enter at least answers A and B and the correct answer")
     }
   }
 }
@@ -930,23 +978,36 @@ function questionType(){
   else if(flag){
     switch(selected){
       case 'mulchoice':
-        document.getElementById('A').removeAttribute('disabled')
-        document.getElementById('B').removeAttribute('disabled')
-        document.getElementById('C').removeAttribute('disabled')
-        document.getElementById('D').removeAttribute('disabled')
-        document.getElementById('E').removeAttribute('disabled')
-        document.getElementById('correct').removeAttribute('disabled')
+        document.getElementById('inputA').style.display = 'block'
+        document.getElementById('inputB').style.display = 'block'
+        document.getElementById('inputC').style.display = 'block'
+        document.getElementById('inputD').style.display = 'block'
+        document.getElementById('inputE').style.display = 'block'
+        document.getElementById('inputCorrect').style.display = 'block'
+        document.getElementById('correct').placeholder = "Please enter the letter of the correct answer A-E"
+        document.getElementById('correct').setAttribute('maxlength',1)
         document.getElementById('addBtn').onclick = (value) => newQuestion('mulchoice')
         break;
 
       case 'textbox':
-        document.getElementById('A').setAttribute('disabled','true')
-        document.getElementById('B').setAttribute('disabled','true')
-        document.getElementById('C').setAttribute('disabled','true')
-        document.getElementById('D').setAttribute('disabled','true')
-        document.getElementById('E').setAttribute('disabled','true')
-        document.getElementById('correct').setAttribute('disabled','true')
+        document.getElementById('inputA').style.display = 'none'
+        document.getElementById('inputB').style.display = 'none'
+        document.getElementById('inputC').style.display = 'none'
+        document.getElementById('inputD').style.display = 'none'
+        document.getElementById('inputE').style.display = 'none'
+        document.getElementById('inputCorrect').style.display = 'none'
         document.getElementById('addBtn').onclick = (value) => newQuestion('textbox')
+        break;
+      case 'mulresponses':
+        document.getElementById('inputA').style.display = 'block'
+        document.getElementById('inputB').style.display = 'block'
+        document.getElementById('inputC').style.display = 'block'
+        document.getElementById('inputD').style.display = 'block'
+        document.getElementById('inputE').style.display = 'block'
+        document.getElementById('inputCorrect').style.display = 'block'
+        document.getElementById('correct').placeholder = "Enter all the correct responses separated by a comma e.g. (A,B,D)"
+        document.getElementById('correct').removeAttribute('maxlength')
+        document.getElementById('addBtn').onclick = (value) => newQuestion('mulresponses')
         break;
 
     }

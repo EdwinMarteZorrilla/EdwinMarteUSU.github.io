@@ -57,7 +57,7 @@ if (isset($_GET['logout'])) {
 				<input id="mulchoice" type="radio" name="quesType" value="mulchoice"></input>
 				<label for="mulchoice">Multiple Choice/True or False</label><br>
 				<input id="textbox"type="radio" name="quesType" value="textbox"></input>
-				<label for="textbox">Text Box</label><br>
+				<label for="textbox">Short Answer</label><br>
 				<input id="mulresponses"type="radio" name="quesType" value="mulresponses"></input>
 				<label for="mulresponses">Multiple Responses</label><br>
 				<input id="fillin" type="radio" name="quesType" value="fillin"></input>
@@ -75,37 +75,39 @@ if (isset($_GET['logout'])) {
   <div id="questions" style="display:none; width:85vw; align:center">
 		`<div class="form-group">
       <label for="name">Question:</label>
-      <input type="text" class="form-control"  id="question" placeholder="Enter the question" name"question">
+      <input type="text" class="form-control"  id="question" placeholder="Enter the question" name"inputs">
     </div>
-    <div class="form-group">
+    <div id="inputA" class="form-group">
       <label for="name">Possible answer A:</label>
-      <input type="text" class="form-control" placeholder="Answer A" id="A" name"a">
+      <input type="text" class="form-control" placeholder="Answer A" id="A" name"inputs">
     </div>
-    <div class="form-group">
+    <div id="inputB" class="form-group">
       <label for="name">Possible answer B:</label>
-      <input type="text" class="form-control" id="B" placeholder="Answer B" name"b">
+      <input type="text" class="form-control" id="B" placeholder="Answer B" name"inputs">
     </div>
-    <div class="form-group">
+    <div id="inputC" class="form-group">
       <label for="name">Possible answer C:</label>
-      <input type="text" class="form-control" id="C" placeholder="Answer C" name"c">
+      <input type="text" class="form-control" id="C" placeholder="Answer C" name"inputs">
     </div>
-    <div class="form-group">
+    <div id="inputD" class="form-group">
       <label for="name">Possible answer D:</label>
-      <input type="text" class="form-control" id="D" placeholder="Answer D" name"d">
+      <input type="text" class="form-control" id="D" placeholder="Answer D" name"inputs">
     </div>
-    <div class="form-group">
+    <div id="inputE" class="form-group">
       <label for="name">Possible answer E:</label>
-      <input type="text" class="form-control" id="E" placeholder="Answer E" name"e">
+      <input type="text" class="form-control" id="E" placeholder="Answer E" name"inputs">
     </div>
-    <div class="form-group">
+    <div id="inputCorrect" class="form-group">
       <label for="name">Correct answer:</label>
-      <input type="text" class="form-control" maxlength="1"style="text-transform: uppercase" onkeydown="return limitInput(event);" id="correct" name"correct" placeholder="Please enter the letter of the correct answer A-E">
+      <input type="text" class="form-control" maxlength="1"style="text-transform: uppercase" onkeydown="return limitInput(event);" id="correct" name"inputs" placeholder="Please enter the letter of the correct answer A-E">
     </div>
-    <label for="image">Image:</label>
-	    <div class="custom-file">
-	      <input accept="image/*" type="file" class="custom-file-input" id="image" name='userfile'>
-	      <label class="custom-file-label" for="image" id="label">Choose file</label>
-	    </div>
+		<div id="inputImage">
+	    <label for="image">Image:</label>
+		    <div class="custom-file">
+		      <input accept="image/*" type="file" class="custom-file-input" id="image" name='userfile'>
+		      <label class="custom-file-label" for="image" id="label">Choose file</label>
+		    </div>
+		</div>
     <div style="display:flex; justify-content:space-between; padding:10px;">
       <button class="btn btn-secondary" onclick="backToExams()">Back to exams</button>
       <button id="addBtn" class="btn btn-lg btn-success" onclick="newQuestion('mulchoice')">Add Question</button>
