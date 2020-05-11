@@ -42,6 +42,7 @@ while($row = $result->fetch_assoc()){
       $questionsJSON .= '"image": "' . '""' . '",';
     }
     $questionsJSON .= '"correct": "' . $row['answer'] . '",';
+    $questionsJSON .= '"type":"' . $row['type'] . '",';
     $questionsJSON .= '"answers": [';
     $sql = "SELECT * FROM answers" . $exam . " WHERE question_id = " .  $row['question_id'];
     $answers = mysqli_query($connect,$sql);

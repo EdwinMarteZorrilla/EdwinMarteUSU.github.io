@@ -130,7 +130,6 @@ function saveEventToCSV(event) {
     //console.log("Sent: " + file);
 
     var str_json = JSON.stringify(event);
-    // console.log(str_json);
 
     $.ajax({
         type: 'POST',

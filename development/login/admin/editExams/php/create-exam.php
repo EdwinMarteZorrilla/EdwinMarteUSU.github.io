@@ -13,7 +13,7 @@ while($row = $result->fetch_assoc()){
 }
 
 
-$exam = "CREATE TABLE " . $_POST['name'] . " ( question_id INT NOT NULL AUTO_INCREMENT, question VARCHAR(21844) NOT NULL, image VARCHAR(1000), answer VARCHAR(5) NOT NULL, PRIMARY KEY (question_id));";
+$exam = "CREATE TABLE " . $_POST['name'] . " ( question_id INT NOT NULL AUTO_INCREMENT, question VARCHAR(21844) NOT NULL, image VARCHAR(1000), answer VARCHAR(10) NOT NULL, type VARCHAR(20) NOT NULL, PRIMARY KEY (question_id));";
 $answers = "CREATE TABLE answers" . $_POST['name'] . " ( answer_id INT NOT NULL AUTO_INCREMENT, question_id INT NOT NULL, answer VARCHAR(21844) NOT NULL, PRIMARY KEY (answer_id));
 ";
 $ids = "CREATE TABLE ids" . $_POST['name'] . " (id INT NOT NULL AUTO_INCREMENT, study_id VARCHAR(100) NOT NULL, bday VARCHAR(30) NOT NULL, anumber VARCHAR(20) NOT NULL, PRIMARY KEY (id))";
