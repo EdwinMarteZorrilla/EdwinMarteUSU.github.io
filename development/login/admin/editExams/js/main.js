@@ -777,8 +777,8 @@ function exportCSV(exam){
 }
 
 function limitInput(event) {
-  console.log
   var key = event.keyCode;
+  console.log(key)
   let limit1 = 64
   let limit2 = 96
   let a = document.getElementById('A').value
@@ -807,7 +807,7 @@ function limitInput(event) {
     limit1 +=1
     limit2 +=1
   }
-  if(key == 188){ return}
+  if(key == 191){ return}
 
   return ((key >= 65 && key <= limit1) || key == 8 || (key>=97 && key<=limit2));
 };
@@ -1039,7 +1039,7 @@ function questionType(){
         document.getElementById('inputD').style.display = 'block'
         document.getElementById('inputE').style.display = 'block'
         document.getElementById('inputCorrect').style.display = 'block'
-        document.getElementById('correct').placeholder = "Enter all the correct responses separated by a comma e.g. (A,B,D)"
+        document.getElementById('correct').placeholder = "Enter all the correct responses separated by a / e.g. (A/B/D)"
         document.getElementById('correct').removeAttribute('maxlength')
         document.getElementById('addBtn').onclick = (value) => newQuestion('mulresponses')
         break;

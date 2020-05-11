@@ -364,16 +364,30 @@ function submitSurveyEvent(event) {
 }
 // ==================================
 
-function moveToNextQuestion() {
+function moveToNextQuestion(type) {
 
+  if(type == 'multiple'){
     var res = $('input[name=answer]:checked').val();
     if (typeof (res) != 'undefined' && res != "") {
-        $("#test").html(getGameHTML());
-        submitExamQuestionEvent(examQuestionEvent.RETURN_FROM_EXAM_QUESTION);
-        submitGameEvent(gameQuestionEvent.GO_TO_GAME_QUESTION);
+      $("#test").html(getGameHTML());
+      submitExamQuestionEvent(examQuestionEvent.RETURN_FROM_EXAM_QUESTION);
+      submitGameEvent(gameQuestionEvent.GO_TO_GAME_QUESTION);
     } else {
-        alert("Please select an answer");
+      alert("Please select an answer");
     }
+  }
+  else if(type == 'shortAns' || type == 'fillin'){
+    let val = document.getElementById('answer').value
+    if(val != ''){
+      textBoxes(val,type)
+      $("#test").html(getGameHTML());
+      submitExamQuestionEvent(examQuestionEvent.RETURN_FROM_EXAM_QUESTION);
+      submitGameEvent(gameQuestionEvent.GO_TO_GAME_QUESTION);
+    }
+    else{
+      alert("Please type an answer")
+    }
+  }
 }
 
 function goSalivaSample(event) {
@@ -696,6 +710,111 @@ function getExamQuestionHTML() {
     return ret;
 }
 
+function textBoxes(val,type){
+
+  var date = new Date();
+  var str_date = date.toISOString().substring(0, 19).replace('T', ' ');
+  var unixtime = (date.getTime() / 1000).toFixed(0);
+  var correct;
+  var questionText = examQuestions.exam.questions[examQuestions.exam.pos - 1].text
+  var id = getUserID();
+  var study_id = getStudyID();
+  var answer = val
+
+  if(val.toUpperCase() == examQuestions.exam.questions[examQuestions.exam.pos - 1].answers[0].toUpperCase()){
+    correct = 'Correct'
+  }
+  else{
+    correct = 'Incorrect'
+  }
+
+  // Fill the answer key
+  if(type == 'shortAns'){
+    correct = "Pending review"
+    answer = "Text Answer"
+  }
+
+  answers_key[examQuestions.exam.pos] = {
+    question: examQuestions.exam.pos,
+    answer: answer,
+    text: questionText,
+    correct: correct
+  }
+
+  var answerEvent = {
+      unixtime: unixtime,
+      date: str_date,
+      study_id: study_id,
+      id: id,
+      type: 'EA',
+      question: examQuestions.exam.pos,
+      answer_num: 0,
+      answer_alpha: val,
+      description: "Response for exam question # " + (examQuestions.exam.pos),
+      correct: correct
+  };
+  saveEventToCSV(answerEvent);
+}
+
+function checkboxes(event){
+  var date = new Date();
+  var str_date = date.toISOString().substring(0, 19).replace('T', ' ');
+  var unixtime = (date.getTime() / 1000).toFixed(0);
+
+  var strEvent = unixtime + "_" + str_date + "_" + event.target.value;
+
+  var correct;
+  var questionText;
+
+  if (event.target.value.startsWith("E")) {
+      correct = examQuestions.exam.questions[examQuestions.exam.pos - 1].correct;
+      questionText = examQuestions.exam.questions[examQuestions.exam.pos - 1].text
+      strEvent += "_Response for exam question # " + (examQuestions.exam.pos);
+  } else {
+      correct = "";
+      strEvent += "_Response for game question # " + (examQuestions.games.pos);
+  }
+
+  var id = getUserID();
+  var study_id = getStudyID();
+
+  var data = strEvent.split("_");
+  let x = document.getElementsByName('answer')
+  let result = ''
+  for(let i = 0;i<x.length;i++){
+    if(x[i].checked){
+      result += x[i].value[x[i].value.length-1] + '/';
+    }
+  }
+  result = result.substring(0,result.length - 1)
+
+  // Fill the answer key
+  if (event.target.value.startsWith("E")) {
+      var correctString = result == correct ? "Correct" : "Incorrect";
+
+      answers_key[parseInt(data[3])] = {
+          question: data[3],
+          answer: result,
+          text: questionText,
+          correct: correctString
+      };
+  }
+
+  var answerEvent = {
+      unixtime: data[0],
+      date: data[1],
+      study_id: study_id,
+      id: id,
+      type: data[2],
+      question: data[3],
+      answer_num: 0,
+      answer_alpha: result,
+      description: data[6],
+      correct: correct
+  };
+  saveEventToCSV(answerEvent);
+}
+
 function getExamAnswersHTML() {
 
     var ret = "";
@@ -708,20 +827,20 @@ function getExamAnswersHTML() {
           ret += "<label for='a" + index + "'><span></span>" + answer + "</label><br>";
         }
         else if(examQuestions.exam.questions[examQuestions.exam.pos].type == 'Short Answer'){
-          ret += "<textarea type='text' style='width:65vw; height:200px'></textarea>"
-          ret += "<br><br><p><a id='play_submit_button' class='btn btn-lg btn-success submit-resp' href='#' role='button' onclick='moveToNextQuestion()'>Next</a></p>";
-
+          ret += "<textarea type='text' style='width:65vw; height:200px' id='answer'></textarea>"
+          ret += "<br><br><p><a id='play_submit_button' class='btn btn-lg btn-success submit-resp' href='#' role='button' onclick='moveToNextQuestion(\"shortAns\")'>Next</a></p>";
         }
         else if(examQuestions.exam.questions[examQuestions.exam.pos].type == 'Multiple Responses'){
-          ret += "<input type='checkbox' id='a" + index + "' name='answer'/>";
+          ret += "<input type='checkbox' id='a" + index + "' name='answer' onclick='checkboxes(event)' value='EA_" + (examQuestions.exam.pos + 1) + "_" + (parseInt(index) + 1) + "_" + char + "'/>";
           ret += "<label for='a" + index + "'><span></span>" + answer + "</label><br>";
         }
         else if(examQuestions.exam.questions[examQuestions.exam.pos].type == 'Fill in the blank'){
-          ret += "<input type='text'></input>"
+          ret += "<input type='text' id='answer'></input>"
+          ret += "<br><br><p><a id='play_submit_button' class='btn btn-lg btn-success submit-resp' href='#' role='button' onclick='moveToNextQuestion(\"fillin\")'>Next</a></p>";
         }
     }
-    if(examQuestions.exam.questions[examQuestions.exam.pos].type == 'Multiple Choice'){
-      ret += "<br><br><p><a id='play_submit_button' class='btn btn-lg btn-success submit-resp' href='#' role='button' onclick='moveToNextQuestion()'>Next</a></p>";
+    if(examQuestions.exam.questions[examQuestions.exam.pos].type == 'Multiple Choice' || examQuestions.exam.questions[examQuestions.exam.pos].type == 'Multiple Responses'){
+      ret += "<br><br><p><a id='play_submit_button' class='btn btn-lg btn-success submit-resp' href='#' role='button' onclick='moveToNextQuestion(\"multiple\")'>Next</a></p>";
     }
 
     if (examQuestions.exam.pos < examQuestions.exam.total) {
