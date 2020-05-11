@@ -30,6 +30,20 @@ if($_POST['type'] == 'textbox'){
   $result = mysqli_query($connect,$answer);
 }
 
+else if($_POST['type'] == 'fillin'){
+  $question = "INSERT INTO " . $_POST['exam'] . " (question, image, answer,type) VALUES ('" . $_POST['question'] . "','" . $_POST['image'] . "','A','Fill in the blank');";
+  $result = mysqli_query($connect,$question);
+
+  $number = mysqli_query($connect,"SELECT question_id FROM " . $_POST['exam'] . " WHERE question = '" . $_POST['question'] . "';");
+
+  while($row = $number->fetch_assoc()){
+    $num = $row['question_id'];
+  }
+
+  $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $num . ",'" . $_POST['a'] . "');";
+  $result = mysqli_query($connect,$answer);
+}
+
 else{
   if($_POST['type'] == 'mulchoice'){
     $question = "INSERT INTO " . $_POST['exam'] . " (question, image, answer,type) VALUES ('" . $_POST['question'] . "','" . $_POST['image'] . "','" . $_POST['correct'] . "','Multiple Choice');";

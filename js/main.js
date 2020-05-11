@@ -180,6 +180,8 @@ function submitGameEvent(event) {
     saveEventToCSV(buttonEvent);
 }
 
+
+
 function answerSelected(event) {
     // event.preventDefault();
 
@@ -701,11 +703,26 @@ function getExamAnswersHTML() {
     for (var index in examQuestions.exam.questions[examQuestions.exam.pos].answers) {
         var answer = examQuestions.exam.questions[examQuestions.exam.pos].answers[index];
         var char = String.fromCharCode(65 + parseInt(index));
-        ret += "<input type='radio' onclick='answerSelected(event)' id='a" + index + "' name='answer' value='EA_" + (examQuestions.exam.pos + 1) + "_" + (parseInt(index) + 1) + "_" + char + "'/>";
-        ret += "<label for='a" + index + "'><span></span>" + answer + "</label><br>";
-    }
+        if(examQuestions.exam.questions[examQuestions.exam.pos].type == 'Multiple Choice'){
+          ret += "<input type='radio' onclick='answerSelected(event)' id='a" + index + "' name='answer' value='EA_" + (examQuestions.exam.pos + 1) + "_" + (parseInt(index) + 1) + "_" + char + "'/>";
+          ret += "<label for='a" + index + "'><span></span>" + answer + "</label><br>";
+        }
+        else if(examQuestions.exam.questions[examQuestions.exam.pos].type == 'Short Answer'){
+          ret += "<textarea type='text' style='width:65vw; height:200px'></textarea>"
+          ret += "<br><br><p><a id='play_submit_button' class='btn btn-lg btn-success submit-resp' href='#' role='button' onclick='moveToNextQuestion()'>Next</a></p>";
 
-    ret += "<br><br><p><a id='play_submit_button' class='btn btn-lg btn-success submit-resp' href='#' role='button' onclick='moveToNextQuestion()'>Next</a></p>";
+        }
+        else if(examQuestions.exam.questions[examQuestions.exam.pos].type == 'Multiple Responses'){
+          ret += "<input type='checkbox' id='a" + index + "' name='answer'/>";
+          ret += "<label for='a" + index + "'><span></span>" + answer + "</label><br>";
+        }
+        else if(examQuestions.exam.questions[examQuestions.exam.pos].type == 'Fill in the blank'){
+          ret += "<input type='text'></input>"
+        }
+    }
+    if(examQuestions.exam.questions[examQuestions.exam.pos].type == 'Multiple Choice'){
+      ret += "<br><br><p><a id='play_submit_button' class='btn btn-lg btn-success submit-resp' href='#' role='button' onclick='moveToNextQuestion()'>Next</a></p>";
+    }
 
     if (examQuestions.exam.pos < examQuestions.exam.total) {
         examQuestions.exam.pos += 1;

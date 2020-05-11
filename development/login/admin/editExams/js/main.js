@@ -911,7 +911,7 @@ function newQuestion(type){
       alert("You need to add a question")
     }
   }
-  if(type == 'mulresponses'){
+  else if(type == 'mulresponses'){
     if(a != '' && b != '' && correct != ''){
       if(confirm("Add question?")){
         $.ajax({
@@ -943,6 +943,40 @@ function newQuestion(type){
     }
     else{
       alert("Please enter at least answers A and B and the correct answer")
+    }
+  }
+  else if(type == 'fillin'){
+    if(a != '' && question != ''){
+      if(confirm("Add question?")){
+        $.ajax({
+          type: 'POST',
+          url: './php/add-question.php',
+          dataType: 'json',
+          data: formData,
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function (data) {
+            if(data.result){
+              resetInputs()
+              editExam(mainExam)
+              return true;
+            }
+            else{
+              alert(data.error)
+              return false;
+            }
+          },
+          error: function (msg) {
+            console.log("AJAX Error");
+            console.log(msg);
+            return false;
+          }
+        });
+      }
+    }
+    else{
+      alert("Please enter at least answer A and the question")
     }
   }
 }
@@ -1009,6 +1043,17 @@ function questionType(){
         document.getElementById('correct').removeAttribute('maxlength')
         document.getElementById('addBtn').onclick = (value) => newQuestion('mulresponses')
         break;
+
+      case 'fillin':
+        document.getElementById('inputA').style.display = 'block'
+        document.getElementById('inputB').style.display = 'none'
+        document.getElementById('inputC').style.display = 'none'
+        document.getElementById('inputD').style.display = 'none'
+        document.getElementById('inputE').style.display = 'none'
+        document.getElementById('inputCorrect').style.display = 'none'
+        document.getElementById('addBtn').onclick = (value) => newQuestion('fillin')
+        break;
+
 
     }
     document.getElementById('types').style.display = 'none'
