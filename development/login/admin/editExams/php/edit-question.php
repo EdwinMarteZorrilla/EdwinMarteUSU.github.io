@@ -14,8 +14,10 @@ $sql = "UPDATE " .  $_POST['exam'] . " set question ='" . $_POST['question'] . "
 $result = mysqli_query($connect,$sql);
 
 // Updating image
-$sql = "UPDATE " .  $_POST['exam'] . " set image ='" . $_POST['image'] . "' WHERE question_id = " . $_POST['id'];
-$result = mysqli_query($connect,$sql);
+if($_POST['image'] != ''){
+  $sql = "UPDATE " .  $_POST['exam'] . " set image ='" . $_POST['image'] . "' WHERE question_id = " . $_POST['id'];
+  $result = mysqli_query($connect,$sql);
+}
 
 // Updating correct answer
 $sql = "UPDATE " .  $_POST['exam'] . " set answer ='" . $_POST['correct'] . "' WHERE question_id = " . $_POST['id'];
@@ -30,24 +32,28 @@ $deletePrevious = mysqli_query($connect,$deleteQuery);
 $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $_POST['id'] . ",'" . $_POST['a'] . "');";
 $result = mysqli_query($connect,$answer);
 
+if($_POST['type'] == 'Multiple Choice' || $_POST['type'] == 'Multiple Responses'){
+
+  $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $_POST['id'] . ",'" . $_POST['b'] . "');";
+  $result = mysqli_query($connect,$answer);
+
+  if($_POST['c'] != ''){
+    $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $_POST['id'] . ",'" . $_POST['c'] . "');";
+    $result = mysqli_query($connect,$answer);
+  }
+
+  if($_POST['d'] != ''){
+    $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $_POST['id'] . ",'" . $_POST['d'] . "');";
+    $result = mysqli_query($connect,$answer);
+  }
+
+  if($_POST['e'] != ''){
+    $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $_POST['id'] . ",'" . $_POST['e'] . "');";
+    $result = mysqli_query($connect,$answer);
+  }
+}
+
 // Inserting second answer
-$answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $_POST['id'] . ",'" . $_POST['b'] . "');";
-$result = mysqli_query($connect,$answer);
-
-if($_POST['c'] != ''){
-  $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $_POST['id'] . ",'" . $_POST['c'] . "');";
-  $result = mysqli_query($connect,$answer);
-}
-
-if($_POST['d'] != ''){
-  $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $_POST['id'] . ",'" . $_POST['d'] . "');";
-  $result = mysqli_query($connect,$answer);
-}
-
-if($_POST['e'] != ''){
-  $answer = "INSERT INTO answers" . $_POST['exam'] . " (question_id,answer) VALUES(" . $_POST['id'] . ",'" . $_POST['e'] . "');";
-  $result = mysqli_query($connect,$answer);
-}
 
 
 addEntryEvent(date("Y/m/d"), $_POST['exam'], "Edited question " . $_POST['number'] . " from " . $_POST['exam'], "");

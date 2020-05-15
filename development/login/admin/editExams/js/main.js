@@ -383,12 +383,13 @@ function deleteLink(link){
 
 //This function call the ajax with all the information when the update button is clicked. Updates questions
 function modifyQuestion(id,number){
-  let question = document.getElementById('question').value
+  let questionText = document.getElementById('question').value
   let a = document.getElementById('A').value
   let b = document.getElementById('B').value
   let c = document.getElementById('C').value
   let d = document.getElementById('D').value
   let e = document.getElementById('E').value
+  let type = question[number -1].type
   let correct = document.getElementById('correct').value.toUpperCase()
   var input = document.getElementById('image');
   let properties = input.files[0]
@@ -397,12 +398,12 @@ function modifyQuestion(id,number){
   var value = input.value;
   var fileNameStart = value.lastIndexOf('\\');
   value = value.substr(fileNameStart + 1);
-  const json = {question: question,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam,image:value,id:id,number:number}
+  const json = {question: questionText,a: a,b: b, c: c,d: d,e: e,correct: correct,exam: mainExam,image:value,id:id,number:number,type:type}
   formData.append("file", properties)
   for (var key in json){
     formData.append(key,json[key])
   }
-  if(a != '' && b != '' && correct != ''){
+  if(a != '' && correct != ''){
     if(confirm("Update Question?")){
       $.ajax({
         type: 'POST',
@@ -416,6 +417,7 @@ function modifyQuestion(id,number){
           if(data.result){
             document.getElementById('addBtn').onclick = () => newQuestion()
             document.getElementById('addBtn').textContent = "Add Question"
+            resetInputs()
             editExam(mainExam)
             return true;
           }
@@ -433,7 +435,7 @@ function modifyQuestion(id,number){
     }
   }
   else{
-    alert("Please enter at least answers A and B and the correct answer")
+    alert("Please enter at least answers A and the correct answer")
   }
 }
 
@@ -451,9 +453,51 @@ function editQuestion(id){
   if(!question[id].image == ''){
     document.getElementById('label').textContent = question[id].image
   }
+
+  switch(question[id].type){
+    case 'Multiple Choice':
+      document.getElementById('inputA').style.display = 'block'
+      document.getElementById('inputB').style.display = 'block'
+      document.getElementById('inputC').style.display = 'block'
+      document.getElementById('inputD').style.display = 'block'
+      document.getElementById('inputE').style.display = 'block'
+      document.getElementById('inputCorrect').style.display = 'block'
+      document.getElementById('correct').placeholder = "Please enter the letter of the correct answer A-E"
+      document.getElementById('correct').setAttribute('maxlength',1)
+      break;
+
+    case 'Short Answer':
+      document.getElementById('inputA').style.display = 'none'
+      document.getElementById('inputB').style.display = 'none'
+      document.getElementById('inputC').style.display = 'none'
+      document.getElementById('inputD').style.display = 'none'
+      document.getElementById('inputE').style.display = 'none'
+      document.getElementById('inputCorrect').style.display = 'none'
+      break;
+    case 'Multiple Responses':
+      document.getElementById('inputA').style.display = 'block'
+      document.getElementById('inputB').style.display = 'block'
+      document.getElementById('inputC').style.display = 'block'
+      document.getElementById('inputD').style.display = 'block'
+      document.getElementById('inputE').style.display = 'block'
+      document.getElementById('inputCorrect').style.display = 'block'
+      document.getElementById('correct').placeholder = "Enter all the correct responses separated by a / e.g. (A/B/D)"
+      document.getElementById('correct').removeAttribute('maxlength')
+      break;
+
+    case 'Fill in the blank':
+      document.getElementById('inputA').style.display = 'block'
+      document.getElementById('inputB').style.display = 'none'
+      document.getElementById('inputC').style.display = 'none'
+      document.getElementById('inputD').style.display = 'none'
+      document.getElementById('inputE').style.display = 'none'
+      document.getElementById('inputCorrect').style.display = 'none'
+      break;
+
+
+  }
   document.getElementById('exam').style.display = 'none'
   document.getElementById('questions').style.display = 'block'
-
 }
 
 function deleteQuestion(id){
